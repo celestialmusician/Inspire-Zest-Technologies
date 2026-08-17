@@ -221,26 +221,38 @@ export default function PortalOpeningHero() {
       0
     )
 
-    // ── 2. Wordmark: tighten tracking + signature glow as sequence unfolds ─
+    // ── 2. Wordmark: tighten tracking + solid contrast glow as sequence unfolds ─
     tl.fromTo(
       wmLeftRef.current,
-      { scale: 1.0, letterSpacing: '0.06em', color: '#FFFFFF' },
       {
-        scale:         isMobile ? 1.05 : 1.1,
+        scale: 1.0,
+        letterSpacing: '0.06em',
+        color: '#FFFFFF',
+        textShadow: '0 4px 30px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8)',
+      },
+      {
+        scale:         isMobile ? 1.04 : 1.08,
         letterSpacing: '-0.01em',
         color:         '#00F5A0',
-        textShadow:    '0 0 45px rgba(0,245,160,0.95), 0 0 20px rgba(0,245,160,0.7)',
+        textShadow:    '0 4px 30px rgba(0,0,0,0.98), 0 0 40px rgba(0,245,160,0.85), 0 0 15px rgba(0,245,160,0.5)',
         ease:          'power2.inOut',
       },
       0,
     ).fromTo(
       wmRightRef.current,
-      { scale: 1.0, letterSpacing: '0.06em', webkitTextStroke: '2.5px #FFFFFF' },
       {
-        scale:           isMobile ? 1.05 : 1.1,
+        scale: 1.0,
+        letterSpacing: '0.06em',
+        color: '#FFFFFF',
+        webkitTextStroke: '2px #FFFFFF',
+        textShadow: '0 4px 30px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8)',
+      },
+      {
+        scale:           isMobile ? 1.04 : 1.08,
         letterSpacing:   '-0.01em',
-        webkitTextStroke: '2.5px #00F0FF',
-        textShadow:      '0 0 45px rgba(0,240,255,0.95), 0 0 20px rgba(0,240,255,0.7)',
+        color:           '#00F0FF',
+        webkitTextStroke: '1px #00F0FF',
+        textShadow:      '0 4px 30px rgba(0,0,0,0.98), 0 0 40px rgba(0,240,255,0.85), 0 0 15px rgba(0,240,255,0.5)',
         ease:            'power2.inOut',
       },
       0,
@@ -250,7 +262,7 @@ export default function PortalOpeningHero() {
     tl.fromTo(
       overlayRef.current,
       { opacity: 0 },
-      { opacity: 0.4, ease: 'power1.inOut' },
+      { opacity: 0.35, ease: 'power1.inOut' },
       0,
     )
 
@@ -264,9 +276,9 @@ export default function PortalOpeningHero() {
     // ── 5. CTAs reveal smoothly near the end of the sequence ──────────────
     tl.fromTo(
       ctasRef.current,
-      { opacity: 0, y: 28, scale: 0.96 },
+      { opacity: 0, y: 20, scale: 0.95 },
       { opacity: 1, y: 0, scale: 1, ease: 'power3.out' },
-      0.72,
+      0.65,
     )
 
     return () => {
@@ -321,35 +333,37 @@ export default function PortalOpeningHero() {
         <div className="portal-op-veil" aria-hidden="true" />
         <div ref={overlayRef} className="portal-op-duotone" aria-hidden="true" />
 
-        {/* ── Layer 4: Wordmark with 3D Parallax ── */}
-        <div ref={wmWrapRef} className="portal-op-wordmark" aria-label="InspireZest">
-          <span ref={wmLeftRef} className="portal-op-wm-span portal-op-wm-span--left">
-            INSPIRE
-          </span>
-          <span ref={wmRightRef} className="portal-op-wm-span portal-op-wm-span--right">
-            ZEST
-          </span>
-        </div>
+        {/* ── Layer 4: Unified Content Box (Wordmark + CTAs placed in natural flow) with 3D Parallax ── */}
+        <div ref={wmWrapRef} className="portal-op-content" aria-label="InspireZest">
+          <div className="portal-op-wordmark">
+            <span ref={wmLeftRef} className="portal-op-wm-span portal-op-wm-span--left">
+              INSPIRE
+            </span>
+            <span ref={wmRightRef} className="portal-op-wm-span portal-op-wm-span--right">
+              ZEST
+            </span>
+          </div>
 
-        {/* ── Layer 5: CTAs (Interactive hover & reveal) ── */}
-        <div ref={ctasRef} className="portal-op-ctas" aria-label="Call to action">
-          <button
-            className="portal-op-btn-primary"
-            onClick={scrollToWork}
-            data-cursor="view"
-            aria-label="Explore our work"
-          >
-            EXPLORE OUR WORK
-            <span className="portal-op-btn-arrow" aria-hidden="true"> →</span>
-          </button>
-          <button
-            className="portal-op-btn-secondary"
-            onClick={scrollToContact}
-            data-cursor="go"
-            aria-label="Start a project with us"
-          >
-            START A PROJECT
-          </button>
+          {/* ── Layer 5: CTAs (Placed cleanly below ZEST with guaranteed spacing) ── */}
+          <div ref={ctasRef} className="portal-op-ctas" aria-label="Call to action">
+            <button
+              className="portal-op-btn-primary"
+              onClick={scrollToWork}
+              data-cursor="view"
+              aria-label="Explore our work"
+            >
+              EXPLORE OUR WORK
+              <span className="portal-op-btn-arrow" aria-hidden="true"> →</span>
+            </button>
+            <button
+              className="portal-op-btn-secondary"
+              onClick={scrollToContact}
+              data-cursor="go"
+              aria-label="Start a project with us"
+            >
+              START A PROJECT
+            </button>
+          </div>
         </div>
 
         {/* ── Layer 6: Interactive Cyber HUD Frame Tracker ── */}
