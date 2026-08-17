@@ -22,6 +22,7 @@ import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 import ScrollProgress from '@/components/ScrollProgress'
 import FloatingWhatsApp from '@/components/FloatingWhatsApp'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './index.css'
 
 export default function App() {
@@ -31,7 +32,12 @@ export default function App() {
   // Initialize Lenis + ScrollTrigger sync
   useLenis()
 
-  const handleLoad = () => setLoaded(true)
+  const handleLoad = () => {
+    setLoaded(true)
+    setTimeout(() => {
+      ScrollTrigger.refresh()
+    }, 150)
+  }
 
   const scrollToContact = () => {
     const el = document.getElementById('contact')
