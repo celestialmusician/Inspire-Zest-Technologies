@@ -1,0 +1,146 @@
+/* ---------- One-Tap Cybernetic Theme Switcher Button ---------- */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.42rem 0.85rem 0.42rem 0.55rem;
+  border-radius: 30px;
+  cursor: pointer;
+  user-select: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.2s ease,
+              box-shadow 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px) scale(1.03);
+}
+
+.theme-toggle:active {
+  transform: scale(0.94);
+}
+
+/* Icon Box */
+.theme-toggle__icon-box {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 0.3s ease,
+              color 0.3s ease;
+}
+
+.theme-toggle:hover .theme-toggle__icon-box {
+  transform: rotate(20deg) scale(1.1);
+}
+
+.theme-toggle__label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1;
+  transition: color 0.3s ease;
+}
+
+/* Pulsing Status Dot */
+.theme-toggle__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ── DARK MODE VARIANT (Signature Cyber) ── */
+.theme-toggle--dark {
+  background: rgba(14, 18, 24, 0.9);
+  border: 1px solid rgba(0, 245, 160, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 12px rgba(0, 245, 160, 0.1);
+}
+
+.theme-toggle--dark:hover {
+  border-color: #00F5A0;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.5), 0 0 18px rgba(0, 245, 160, 0.25);
+}
+
+.theme-toggle--dark .theme-toggle__icon-box {
+  background: rgba(0, 245, 160, 0.15);
+  color: #00F5A0;
+  box-shadow: 0 0 10px rgba(0, 245, 160, 0.3);
+}
+
+.theme-toggle--dark .theme-toggle__label {
+  color: #F5F5F0;
+}
+
+.theme-toggle--dark .theme-toggle__dot {
+  background: #00F5A0;
+  box-shadow: 0 0 8px #00F5A0;
+  animation: themeDotPulse 1.8s infinite alternate;
+}
+
+/* ── LIGHT MODE VARIANT (Clean Studio Bright) ── */
+.theme-toggle--light {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.theme-toggle--light:hover {
+  border-color: #0066FF;
+  box-shadow: 0 6px 20px rgba(0, 102, 255, 0.15);
+}
+
+.theme-toggle--light .theme-toggle__icon-box {
+  background: rgba(0, 102, 255, 0.12);
+  color: #0066FF;
+  box-shadow: 0 0 10px rgba(0, 102, 255, 0.25);
+}
+
+.theme-toggle--light .theme-toggle__label {
+  color: #0A0D12;
+}
+
+.theme-toggle--light .theme-toggle__dot {
+  background: #0066FF;
+  box-shadow: 0 0 8px #0066FF;
+  animation: themeDotPulse 2s infinite alternate;
+}
+
+@keyframes themeDotPulse {
+  0% { opacity: 0.4; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1.15); }
+}
+
+/* ── MINIMAL MOBILE BUTTON DESIGN ── */
+@media (max-width: 767px) {
+  .theme-toggle {
+    width: 36px;
+    height: 36px;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+  }
+
+  .theme-toggle__label,
+  .theme-toggle__dot {
+    display: none !important;
+  }
+
+  .theme-toggle__icon-box {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 50%;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+}

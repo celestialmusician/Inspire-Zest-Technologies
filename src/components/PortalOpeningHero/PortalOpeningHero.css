@@ -1,0 +1,390 @@
+/* ═══════════════════════════════════════════════════
+   Portal Opening Hero — Scroll Frame Sequence
+═══════════════════════════════════════════════════ */
+
+/* ── Scroll container (gives GSAP scroll room) ── */
+.portal-op-container {
+  height: 300vh;
+  position: relative;
+  background: #050505;
+}
+
+/* ── Sticky stage — pinned for the whole scroll ── */
+.portal-op-stage {
+  height: 100vh;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ════════════════════════════════════════════════
+   Layer 1 — Canvas (frame sequence)
+════════════════════════════════════════════════ */
+.portal-op-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+  object-fit: cover;
+}
+
+/* ════════════════════════════════════════════════
+   Layer 2 — Vignette & duotone overlay
+════════════════════════════════════════════════ */
+
+/* Radial vignette & top/bottom fades: darkens edges for depth and guarantees navbar readability */
+.portal-op-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    /* Top fade — ensures navigation links remain crisp & legible over bright animation parts */
+    linear-gradient(to bottom,
+      rgba(5, 5, 5, 0.85) 0%,
+      rgba(5, 5, 5, 0.45) 10%,
+      transparent 22%
+    ),
+    /* Bottom fade — dissolves into the next section (#050505) */
+    linear-gradient(to bottom,
+      transparent 55%,
+      rgba(5, 5, 5, 0.6) 75%,
+      rgba(5, 5, 5, 0.92) 90%,
+      #050505 100%
+    ),
+    /* Radial edge darkening */
+    radial-gradient(
+      ellipse 90% 90% at center,
+      transparent 30%,
+      rgba(5, 5, 5, 0.75) 100%
+    );
+  pointer-events: none;
+}
+
+/* Duotone tint — starts at 0, tweened to 0.45 by GSAP */
+.portal-op-duotone {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 245, 160, 0.28) 0%,
+    rgba(0, 240, 255, 0.28) 100%
+  );
+  mix-blend-mode: overlay;
+  opacity: 0;
+  will-change: opacity;
+  pointer-events: none;
+}
+
+/* ════════════════════════════════════════════════
+   Layer 3 — Wordmark
+════════════════════════════════════════════════ */
+.portal-op-wordmark {
+  position: absolute;
+  left: 4rem;
+  top: 50%;
+  transform: translateY(-60%);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  pointer-events: none;
+  line-height: 0.82;
+}
+
+.portal-op-wm-span {
+  font-family: 'Bebas Neue', 'Oswald', sans-serif;
+  font-size: clamp(4.5rem, 13.5vw, 11rem);
+  font-weight: 400;
+  line-height: 0.82;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  will-change: transform, letter-spacing, color, text-shadow;
+  display: block;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.portal-op-wm-span--left {
+  color: #FFFFFF;
+  text-shadow: 0 4px 32px rgba(0, 0, 0, 0.9);
+}
+
+.portal-op-wm-span--right {
+  color: transparent;
+  -webkit-text-stroke: 2.5px #FFFFFF;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+/* ════════════════════════════════════════════════
+   Layer 4 — CTAs
+════════════════════════════════════════════════ */
+.portal-op-ctas {
+  position: absolute;
+  bottom: 7rem;
+  left: 4rem;
+  z-index: 6;
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  /* Starts invisible — GSAP fades in at 72% progress */
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.portal-op-btn-primary {
+  display: flex;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.65rem, 1.2vw, 0.75rem);
+  letter-spacing: 0.15em;
+  color: #050505;
+  background: #F5F5F0;
+  border: none;
+  padding: 1rem 2rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+.portal-op-btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #00F5A0 0%, #00D2FF 50%, #B026FF 100%);
+  transform: translateX(-100%);
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.portal-op-btn-primary:hover::before { transform: translateX(0); }
+.portal-op-btn-primary:hover { color: #050505; }
+.portal-op-btn-arrow {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.2s;
+}
+.portal-op-btn-primary span { position: relative; z-index: 1; }
+.portal-op-btn-primary:hover .portal-op-btn-arrow { transform: translateX(4px); }
+
+.portal-op-btn-secondary {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.65rem, 1.2vw, 0.75rem);
+  letter-spacing: 0.15em;
+  color: rgba(245, 245, 240, 0.75);
+  background: none;
+  border: 1px solid rgba(245, 245, 240, 0.3);
+  padding: 1rem 2rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.portal-op-btn-secondary:hover {
+  color: #F5F5F0;
+  border-color: rgba(245, 245, 240, 0.6);
+}
+
+/* ════════════════════════════════════════════════
+   Layer 5 — Scroll hint
+════════════════════════════════════════════════ */
+.portal-op-hint {
+  position: absolute;
+  bottom: 2.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  pointer-events: none;
+  width: 90%;
+  max-width: 500px;
+  justify-content: center;
+  will-change: transform, opacity;
+}
+
+.portal-op-line {
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 245, 160, 0.5),
+    transparent
+  );
+}
+
+.portal-op-text {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  font-size: clamp(0.6rem, 1vw, 0.72rem);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #00F5A0;
+  text-transform: uppercase;
+  white-space: nowrap;
+  animation: portalPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes portalPulse {
+  0%   { transform: translateY(0);   opacity: 0.8; }
+  100% { transform: translateY(5px); opacity: 1; text-shadow: 0 0 14px #00F5A0; }
+}
+
+/* ════════════════════════════════════════════════
+   Tablet — 768px to 1023px
+════════════════════════════════════════════════ */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .portal-op-wordmark {
+    left: 2.5rem;
+    transform: translateY(-58%);
+  }
+
+  .portal-op-wm-span {
+    font-size: clamp(4rem, 11vw, 7rem);
+  }
+
+  .portal-op-ctas {
+    bottom: 6rem;
+    left: 2.5rem;
+    gap: 1rem;
+  }
+
+  .portal-op-btn-primary,
+  .portal-op-btn-secondary {
+    padding: 0.9rem 1.75rem;
+  }
+}
+
+/* ════════════════════════════════════════════════
+   Mobile — up to 767px
+════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  /* Shorter scroll container since we halve the frames */
+  .portal-op-container {
+    height: 250vh;
+  }
+
+  /* Tighter vignette on mobile so text stays legible */
+  .portal-op-veil {
+    background: radial-gradient(
+      ellipse 110% 100% at 20% 50%,
+      transparent 15%,
+      rgba(5, 5, 5, 0.82) 75%
+    );
+  }
+
+  /* ── Wordmark ── */
+  .portal-op-wordmark {
+    left: 1.25rem;
+    top: 50%;
+    transform: translateY(-62%);
+  }
+
+  .portal-op-wm-span {
+    font-size: clamp(3rem, 15.5vw, 4.8rem);
+    letter-spacing: 0.03em;
+    white-space: normal;        /* allow wrap if viewport is very narrow */
+  }
+
+  .portal-op-wm-span--right {
+    -webkit-text-stroke: 1.5px #FFFFFF;
+  }
+
+  /* ── CTAs — stack vertically on very small screens ── */
+  .portal-op-ctas {
+    left: 1.25rem;
+    right: 1.25rem;             /* keeps buttons from bleeding off edge */
+    bottom: 5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .portal-op-btn-primary,
+  .portal-op-btn-secondary {
+    width: 100%;                /* full width tap targets on mobile */
+    justify-content: center;
+    padding: 0.9rem 1.25rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+  }
+
+  /* ── Scroll hint — tighter on mobile ── */
+  .portal-op-hint {
+    bottom: 1.5rem;
+    width: 85%;
+  }
+
+  .portal-op-text {
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+  }
+}
+
+/* ════════════════════════════════════════════════
+   Very small phones — up to 390px
+════════════════════════════════════════════════ */
+@media (max-width: 390px) {
+  .portal-op-wm-span {
+    font-size: clamp(2.6rem, 14.5vw, 3.5rem);
+  }
+
+  .portal-op-wordmark {
+    left: 1rem;
+    transform: translateY(-60%);
+  }
+
+  .portal-op-ctas {
+    left: 1rem;
+    right: 1rem;
+    bottom: 4.5rem;
+  }
+
+  .portal-op-btn-primary,
+  .portal-op-btn-secondary {
+    font-size: 0.62rem;
+    padding: 0.8rem 1rem;
+  }
+}
+
+/* ════════════════════════════════════════════════
+   Landscape phones — short viewport
+════════════════════════════════════════════════ */
+@media (max-width: 767px) and (orientation: landscape) {
+  .portal-op-wordmark {
+    top: 42%;
+    transform: translateY(-50%);
+  }
+
+  .portal-op-wm-span {
+    font-size: clamp(2.2rem, 8vw, 3.5rem);
+  }
+
+  .portal-op-ctas {
+    bottom: 2.5rem;
+    flex-direction: row;        /* side-by-side in landscape */
+    gap: 0.875rem;
+    right: auto;
+  }
+
+  .portal-op-btn-primary,
+  .portal-op-btn-secondary {
+    width: auto;
+    padding: 0.7rem 1.25rem;
+    font-size: 0.62rem;
+  }
+
+  .portal-op-hint {
+    bottom: 1rem;
+  }
+}

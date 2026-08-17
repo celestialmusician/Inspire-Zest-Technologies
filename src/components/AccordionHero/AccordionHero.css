@@ -1,0 +1,670 @@
+/* ── HORIZONTAL ACCORDION HERO ─────────────────────────────────── */
+.hax-hero {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  --hax-ease: cubic-bezier(0.65, 0, 0.35, 1);
+  --hax-speed: 0.85s;
+  --hax-grow-hover: 1.6;
+  --hax-grow-open: 11;
+  position: relative !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  height: 100vh !important;
+  min-height: 100vh !important;
+  gap: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background-color: #050505 !important;
+}
+
+/* Top-edge blend — fades from the solid black of PortalOpeningHero into panels */
+.hax-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 28%;
+  background: linear-gradient(
+    to bottom,
+    #050505 0%,
+    rgba(5, 5, 5, 0.55) 40%,
+    transparent 100%
+  );
+  z-index: 10;
+  pointer-events: none;
+}
+
+
+/* ---------- Panels ---------- */
+.hax-panel {
+  position: relative !important;
+  flex: 1 1 0% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+  box-shadow: inset 1px 0 0 0 rgba(255, 255, 255, 0.08) !important;
+  transition: flex-grow var(--hax-speed) var(--hax-ease) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+.hax-panel:first-child {
+  box-shadow: none !important;
+}
+.hax-hero--open .hax-panel--active {
+  box-shadow: none !important;
+}
+
+/* Background darken overlay */
+.hax-panel::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: rgba(5, 5, 5, 0.65) !important;
+  z-index: 1 !important;
+  transition: opacity var(--hax-speed) var(--hax-ease) !important;
+}
+
+/* Desktop hover */
+@media (hover: hover) and (pointer: fine) {
+  .hax-hero:not(.hax-hero--open) .hax-panel:hover {
+    flex-grow: var(--hax-grow-hover) !important;
+  }
+  .hax-hero:not(.hax-hero--open) .hax-panel:hover::before {
+    opacity: 0.35 !important;
+  }
+}
+
+/* Active / Expanded */
+.hax-hero--open .hax-panel--active {
+  flex-grow: var(--hax-grow-open) !important;
+  cursor: default !important;
+}
+.hax-hero--open .hax-panel--active::before {
+  opacity: 0.25 !important;
+}
+
+/* ---------- Rail: Vertical Line + Rotated Title + Plus Icon ---------- */
+.hax-panel__rail {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 80px !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  padding-bottom: 34px !important;
+  z-index: 6 !important;
+  pointer-events: none !important;
+  transition: opacity 0.45s ease !important;
+}
+.hax-panel--active .hax-panel__rail {
+  opacity: 0 !important;
+}
+
+.hax-panel__line {
+  width: 1px !important;
+  flex: 1 1 auto !important;
+  min-height: 40px !important;
+  background: rgba(255, 255, 255, 0.25) !important;
+  margin-bottom: 20px !important;
+}
+
+.hax-panel__title {
+  writing-mode: vertical-rl !important;
+  transform: rotate(180deg) !important;
+  white-space: nowrap !important;
+  font-family: 'Syne', 'Space Grotesk', sans-serif;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em !important;
+  color: #FFFFFF !important;
+  margin-bottom: 20px !important;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.hax-panel__plus {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50% !important;
+  border: 1px solid rgba(0, 245, 160, 0.5) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #00F5A0 !important;
+  font-size: 1.1rem !important;
+  background: rgba(0, 245, 160, 0.1) !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 0 15px rgba(0, 245, 160, 0.2);
+}
+
+/* ---------- Panel Number ---------- */
+.hax-panel__num {
+  position: absolute !important;
+  left: 34px !important;
+  bottom: 28px !important;
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(3rem, 5.5vw, 5rem) !important;
+  font-weight: 800 !important;
+  color: #FFFFFF !important;
+  text-shadow: 0 0 30px rgba(0, 245, 160, 0.4) !important;
+  z-index: 6 !important;
+  pointer-events: none !important;
+  line-height: 1 !important;
+}
+
+/* ---------- Expanded Content ---------- */
+.hax-panel__content {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  padding: 8vh 12% 8vh 44% !important;
+  z-index: 4 !important;
+  background-image: linear-gradient(90deg, rgba(5, 5, 5, 0) 0%, rgba(5, 5, 5, 0.6) 30%, rgba(5, 5, 5, 0.98) 100%) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity 0.35s ease 0.3s, visibility 0s linear 0.65s !important;
+}
+.hax-panel--active .hax-panel__content {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transition: none !important;
+}
+
+/* Inner content elements animation */
+.hax-panel__content > * {
+  opacity: 0 !important;
+  transform: translateY(26px) !important;
+  transition: opacity 0.3s ease, transform 0.3s var(--hax-ease) !important;
+}
+.hax-panel--active .hax-panel__content > * {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+.hax-panel--active .hax-panel__content > *:nth-child(1) { transition-delay: 0.25s !important; }
+.hax-panel--active .hax-panel__content > *:nth-child(2) { transition-delay: 0.35s !important; }
+.hax-panel--active .hax-panel__content > *:nth-child(3) { transition-delay: 0.45s !important; }
+.hax-panel--active .hax-panel__content > *:nth-child(4) { transition-delay: 0.55s !important; }
+.hax-panel--active .hax-panel__content > *:nth-child(5) { transition-delay: 0.65s !important; }
+
+.hax-panel__csub {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+  font-weight: 700;
+  color: #00F5A0;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: rgba(0, 245, 160, 0.1);
+  border: 1px solid rgba(0, 245, 160, 0.3);
+  padding: 0.35rem 0.85rem;
+  border-radius: 1.5rem;
+  margin-bottom: 0.85rem;
+  box-shadow: 0 0 12px rgba(0, 245, 160, 0.15);
+}
+
+.hax-panel__ctitle {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.2rem, 4.8vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, #FFFFFF 0%, #E0E0E0 60%, #00F5A0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1.25rem;
+}
+
+.hax-panel__text {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: clamp(0.875rem, 1.4vw, 1.05rem);
+  color: #D6DEE3;
+  line-height: 1.8;
+  max-width: 540px;
+  margin-bottom: 1.5rem;
+}
+
+.hax-panel__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 2rem;
+}
+.hax-panel__meta-item {
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.hax-panel__meta-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #00F5A0;
+}
+
+.hax-panel__cta {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  padding: 0.85rem 1.75rem !important;
+  border-radius: 0.5rem !important;
+  background: linear-gradient(135deg, #00F5A0 0%, #0066FF 100%) !important;
+  color: #050505 !important;
+  font-family: var(--font-body, 'Inter', sans-serif) !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+.hax-panel__cta:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(0, 245, 160, 0.35);
+}
+
+/* Close Button */
+.hax-panel__close {
+  position: absolute !important;
+  top: 36px !important;
+  right: 44px !important;
+  z-index: 8 !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #FFFFFF !important;
+  font-size: 1.2rem !important;
+  cursor: pointer !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: opacity 0.35s ease, transform 0.3s ease !important;
+}
+.hax-panel--active .hax-panel__close {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition-delay: 0.4s !important;
+}
+.hax-panel__close:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+  transform: rotate(90deg);
+}
+
+/* ---------- Header Eyebrow (Logo + Contact Quick Bar) ---------- */
+.hax-eyebrow {
+  position: absolute !important;
+  top: 32px !important;
+  left: 40px !important;
+  right: 40px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+}
+
+.hax-eyebrow-logo {
+  pointer-events: auto !important;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+}
+.hax-eyebrow-brand {
+  font-family: var(--font-display, 'Space Grotesk', sans-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+.hax-eyebrow-contact {
+  pointer-events: auto !important;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+.hax-eyebrow-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+.hax-eyebrow-icon:hover {
+  background: rgba(0, 245, 160, 0.2);
+  border-color: #00F5A0;
+  color: #00F5A0;
+}
+
+/* ---------- Central Gen Z Floating Caption Overlay ---------- */
+.hax-center-caption {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 7 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  width: 90% !important;
+  max-width: 900px !important;
+  pointer-events: none !important;
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease !important;
+}
+
+.hax-center-caption--hidden {
+  opacity: 0 !important;
+  transform: translate(-50%, -45%) scale(0.95) !important;
+  visibility: hidden !important;
+}
+
+.hax-caption-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.25rem 0.5rem;
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(0.7rem, 1.1vw, 0.85rem);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+}
+
+.hax-caption-spark {
+  color: #00F5A0;
+  animation: sparkPulse 2s ease-in-out infinite alternate;
+}
+@keyframes sparkPulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.35); opacity: 1; text-shadow: 0 0 15px #00F5A0; }
+}
+
+.hax-caption-badge {
+  background: linear-gradient(135deg, #00F5A0 0%, #0066FF 100%);
+  color: #050505;
+  padding: 0.15rem 0.55rem;
+  border-radius: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.hax-caption-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.75rem, 6.5vw, 6rem);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  text-shadow: 0 20px 40px rgba(0, 0, 0, 0.95), 0 0 30px rgba(0, 0, 0, 0.9);
+}
+
+.hax-caption-outline {
+  display: inline-block;
+  color: transparent;
+  -webkit-text-stroke: 2px #00F5A0;
+  text-shadow: 0 0 35px rgba(0, 245, 160, 0.85), 0 0 10px #00F5A0, 0 4px 20px rgba(0, 0, 0, 0.9);
+}
+
+.hax-caption-gradient {
+  display: inline-block;
+  color: transparent;
+  -webkit-text-stroke: 2px #00F0FF;
+  text-shadow: 0 0 35px rgba(0, 240, 255, 0.85), 0 0 10px #00F0FF, 0 4px 20px rgba(0, 0, 0, 0.9);
+}
+
+.hax-caption-sub {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(0.75rem, 1.2vw, 0.9rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.9);
+  background: transparent;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  display: inline-block;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+}
+
+/* ---------- Slide-Up Detail Modal Drawer ---------- */
+.hax-project-drawer {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100vh !important;
+  z-index: 99999 !important;
+  overflow-y: auto !important;
+  background: #050505 !important;
+  transform: translateY(100%) !important;
+  visibility: hidden !important;
+  transition: transform 0.75s cubic-bezier(0.65, 0, 0.35, 1), visibility 0s linear 0.75s !important;
+  padding: 4rem 4rem 6rem !important;
+}
+.hax-project-drawer--open {
+  transform: translateY(0) !important;
+  visibility: visible !important;
+  transition: transform 0.75s cubic-bezier(0.65, 0, 0.35, 1), visibility 0s linear 0s !important;
+}
+
+.hax-drawer-close {
+  position: sticky;
+  top: 2rem;
+  float: right;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  padding: 0.6rem 1.25rem;
+  border-radius: 2rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+.hax-drawer-close:hover {
+  background: #00F5A0;
+  color: #050505;
+}
+
+.hax-drawer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+  .hax-hero {
+    --hax-grow-open: 6;
+    --hax-grow-hover: 1.35;
+  }
+  .hax-panel__content {
+    padding: 10vh 8% 10vh 26% !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .hax-hero {
+    flex-direction: column !important;
+    --hax-grow-open: 4.2;
+    height: 100svh !important;
+    min-height: 100svh !important;
+  }
+  .hax-panel {
+    width: 100% !important;
+    height: 33.33% !important;
+    position: relative !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+  }
+  .hax-panel__rail {
+    position: absolute !important;
+    right: 20px !important;
+    bottom: 14px !important;
+    top: auto !important;
+    left: auto !important;
+    width: auto !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    padding: 0 !important;
+    z-index: 6 !important;
+  }
+  .hax-panel__label-wrap {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+  }
+  .hax-panel__line {
+    display: none !important;
+  }
+  .hax-panel__title {
+    writing-mode: horizontal-tb !important;
+    transform: none !important;
+    margin-bottom: 0 !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.08em !important;
+    white-space: nowrap !important;
+    color: #FFFFFF !important;
+  }
+  .hax-panel__num {
+    position: absolute !important;
+    left: 20px !important;
+    bottom: 14px !important;
+    top: auto !important;
+    right: auto !important;
+    transform: none !important;
+    font-size: 1.35rem !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 800 !important;
+    color: #00F5A0 !important;
+    text-shadow: 0 0 15px rgba(0, 245, 160, 0.6) !important;
+    flex-shrink: 0 !important;
+    line-height: 1 !important;
+    z-index: 6 !important;
+  }
+  .hax-panel__content {
+    padding: 85px 20px 30px 20px !important;
+    justify-content: center !important;
+    background: rgba(5, 5, 5, 0.96) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+  }
+  .hax-panel__close {
+    top: 75px !important;
+    right: 18px !important;
+    width: 36px !important;
+    height: 36px !important;
+    z-index: 50 !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+  }
+  .hax-panel__ctitle {
+    font-size: clamp(1.4rem, 6.5vw, 2.1rem) !important;
+    line-height: 1.1 !important;
+    margin-bottom: 0.75rem !important;
+  }
+  .hax-panel__csub {
+    font-size: 0.7rem !important;
+    padding: 0.25rem 0.65rem !important;
+    margin-bottom: 0.65rem !important;
+  }
+  .hax-panel__text {
+    font-size: 0.85rem !important;
+    line-height: 1.6 !important;
+    margin-bottom: 1.15rem !important;
+  }
+  .hax-panel__meta {
+    gap: 0.5rem 1rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  .hax-panel__meta-item {
+    font-size: 0.75rem !important;
+  }
+  .hax-panel__cta {
+    padding: 0.75rem 1.4rem !important;
+    font-size: 0.825rem !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  .hax-project-drawer {
+    padding: 4.5rem 1.5rem 4rem !important;
+  }
+
+  /* Mobile Central Caption (Text Only) */
+  .hax-center-caption {
+    width: 90% !important;
+    padding: 0 !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .hax-caption-tag {
+    font-size: 0.625rem !important;
+    padding: 0.25rem 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  .hax-caption-title {
+    font-size: clamp(1.4rem, 6vw, 2.2rem) !important;
+    line-height: 1.02 !important;
+    margin-bottom: 0.5rem !important;
+  }
+  .hax-caption-sub {
+    font-size: 0.625rem !important;
+    letter-spacing: 0.14em !important;
+    padding: 0.2rem 0.5rem !important;
+  }
+}

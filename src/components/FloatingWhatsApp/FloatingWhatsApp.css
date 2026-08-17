@@ -1,0 +1,163 @@
+/* ---------- Floating WhatsApp Widget Styles ---------- */
+.wa-float-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 990;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.wa-float-btn {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  text-decoration: none;
+  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4), 0 4px 12px rgba(0, 0, 0, 0.5);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.35s ease;
+  user-select: none;
+}
+
+.wa-float-btn:hover {
+  transform: scale(1.1) translateY(-3px);
+  box-shadow: 0 16px 32px rgba(37, 211, 102, 0.6), 0 6px 16px rgba(0, 0, 0, 0.6);
+}
+
+.wa-float-btn:active {
+  transform: scale(0.95);
+}
+
+/* Icon Box */
+.wa-icon-box {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.wa-float-btn:hover .wa-icon-box {
+  transform: scale(1.08) rotate(6deg);
+}
+
+.wa-icon {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Pulsing Outer Rings */
+.wa-pulse-aura {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(37, 211, 102, 0.4) 0%, transparent 70%);
+  animation: waAuraPulse 2.4s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.wa-pulse-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(37, 211, 102, 0.6);
+  opacity: 0;
+  animation: waRingExpand 2.8s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes waAuraPulse {
+  0% { transform: scale(0.95); opacity: 0.3; }
+  100% { transform: scale(1.25); opacity: 0.7; }
+}
+
+@keyframes waRingExpand {
+  0% { transform: scale(0.9); opacity: 0.9; }
+  70% { transform: scale(1.55); opacity: 0; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Hover Tooltip */
+.wa-tooltip {
+  position: absolute;
+  right: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%) translateX(10px);
+  background: rgba(10, 14, 18, 0.92);
+  border: 1px solid rgba(37, 211, 102, 0.35);
+  padding: 0.5rem 0.95rem;
+  border-radius: 12px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(37, 211, 102, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wa-tooltip--visible {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.wa-tooltip-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #EDE7DC;
+}
+
+.wa-tooltip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #25D366;
+  box-shadow: 0 0 6px #25D366;
+}
+
+/* ── LIGHT THEME TOOLTIP OVERRIDES ── */
+[data-theme="light"] .wa-tooltip {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(37, 211, 102, 0.4);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 0 12px rgba(37, 211, 102, 0.2);
+}
+
+[data-theme="light"] .wa-tooltip-text {
+  color: #0A0D12;
+}
+
+/* ── RESPONSIVE MOBILE ADJUSTMENTS ── */
+@media (max-width: 767px) {
+  .wa-float-container {
+    bottom: 1.5rem;
+    right: 1.25rem;
+  }
+
+  .wa-float-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .wa-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .wa-tooltip {
+    display: none !important;
+  }
+}

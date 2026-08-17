@@ -1,0 +1,200 @@
+/* ---------- Portal Hero Stage Container ---------- */
+.portal-container {
+  height: 220vh;
+  position: relative;
+  background: #0A0C0E;
+}
+
+.portal-stage {
+  height: 100vh;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- Layer 1: Background Image & Wash ---------- */
+.portal-bg-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2000&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  will-change: transform, filter;
+}
+
+.portal-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(10, 12, 14, 0.75) 0%, rgba(5, 5, 5, 0.85) 100%);
+  mix-blend-mode: multiply;
+}
+
+.portal-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: radial-gradient(circle at center, transparent 30%, rgba(10, 12, 14, 0.95) 100%);
+  pointer-events: none;
+}
+
+/* ---------- Layer 3: Opaque Door Panels (Meet in Middle) ---------- */
+.portal-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.5%; /* Slightly over 50% so they overlap seamlessly at center */
+  z-index: 3;
+  background: #0A0C0E;
+  will-change: transform;
+}
+
+.portal-panel--left {
+  left: 0;
+  border-right: 1px solid rgba(0, 245, 160, 0.3);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.8);
+}
+
+.portal-panel--right {
+  right: 0;
+  border-left: 1px solid rgba(0, 245, 160, 0.3);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.8);
+}
+
+.portal-panel-texture {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+}
+
+/* ---------- Layer 4: Accent Dots ---------- */
+.portal-dots-wrap {
+  position: absolute;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.portal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  position: absolute;
+  will-change: transform, opacity;
+}
+
+.portal-dot--amber {
+  background: #E8913C;
+  box-shadow: 0 0 20px #E8913C, 0 0 40px #E8913C;
+}
+
+.portal-dot--teal {
+  background: #00F5A0;
+  box-shadow: 0 0 20px #00F5A0, 0 0 40px #00F5A0;
+}
+
+/* ---------- Layer 5: Wordmark ---------- */
+.portal-wordmark-wrap {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  pointer-events: none;
+  width: 90%;
+  max-width: 1400px;
+}
+
+.portal-wm {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(3rem, 10vw, 8.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  color: #EDE7DC;
+  text-transform: uppercase;
+  will-change: transform, letter-spacing, color;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.portal-wm--left {
+  text-align: right;
+}
+
+.portal-wm--right {
+  text-align: left;
+}
+
+/* ---------- Corner Metadata ---------- */
+.portal-meta {
+  position: absolute;
+  z-index: 6;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(0.65rem, 1vw, 0.75rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: rgba(237, 231, 220, 0.7);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.portal-meta--tl { top: 6.25rem; left: 2.5rem; }
+.portal-meta--tr { top: 6.25rem; right: 2.5rem; }
+.portal-meta--bl { bottom: 2.25rem; left: 2.5rem; }
+.portal-meta--br { bottom: 2.25rem; right: 2.5rem; }
+
+.portal-meta-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00F5A0;
+  box-shadow: 0 0 10px #00F5A0;
+}
+
+.portal-scroll-hint {
+  color: #00F5A0;
+  animation: bounceHint 1.8s infinite alternate;
+}
+@keyframes bounceHint {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px); }
+}
+
+/* Mobile responsive */
+@media (max-width: 767px) {
+  .portal-meta--tl,
+  .portal-meta--tr,
+  .portal-meta--bl {
+    display: none !important;
+  }
+  .portal-meta--br {
+    position: absolute !important;
+    bottom: 1.75rem !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  .portal-wordmark-wrap {
+    gap: 0.5rem;
+    flex-direction: column;
+  }
+  .portal-wm {
+    font-size: clamp(2.2rem, 9vw, 3.8rem);
+    letter-spacing: 0.05em;
+  }
+}

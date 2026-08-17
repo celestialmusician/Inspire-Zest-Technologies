@@ -1,0 +1,111 @@
+.proc {
+  min-height: auto;
+  padding: 5rem 4rem;
+}
+.proc-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.proc-header { margin-bottom: 2.5rem; }
+.proc-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: #00D2FF;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 1rem;
+}
+.proc-heading {
+  font-size: var(--text-display);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: #F5F5F0;
+}
+
+.proc-layout {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+/* Line */
+.proc-line-track {
+  width: 1px;
+  background: rgba(245,245,240,0.08);
+  flex-shrink: 0;
+  margin-top: 1.5rem;
+  position: relative;
+  align-self: stretch;
+  overflow: hidden;
+}
+.proc-line-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #B026FF, #0099FF);
+  transform-origin: top;
+  transform: scaleY(0);
+}
+
+/* Steps */
+.proc-steps {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.proc-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid rgba(245,245,240,0.05);
+}
+.proc-step:last-child { border-bottom: none; }
+
+.proc-step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid #00D2FF;
+  flex-shrink: 0;
+  margin-top: 0.35rem;
+}
+
+.proc-step-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.proc-step-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
+  color: #00D2FF;
+  opacity: 0.8;
+}
+
+.proc-step-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+  font-weight: 500;
+  color: #F5F5F0;
+  letter-spacing: -0.01em;
+}
+
+.proc-step-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.8rem, 1.3vw, 0.9rem);
+  color: #8A8A8A;
+  line-height: 1.7;
+}
+
+@media (max-width: 767px) {
+  .proc { padding: 6rem 1.5rem; }
+  .proc-line-track { display: none; }
+}

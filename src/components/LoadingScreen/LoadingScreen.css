@@ -1,0 +1,82 @@
+/* ── STANDARD MINIMAL ANIMATED PRELOADER ────────────────────── */
+.min-ls-root {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #080A0D;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.min-ls-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 320px;
+  width: 100%;
+}
+
+/* Minimal Brand Header */
+.min-ls-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.min-ls-logo {
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(1.25rem, 3.5vw, 1.6rem);
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  background: linear-gradient(90deg, #00F5A0 0%, #0066FF 50%, #00F0FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.min-ls-tagline {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  color: #6B7280;
+  text-transform: uppercase;
+}
+
+/* Hairline Progress Bar */
+.min-ls-bar-track {
+  width: 140px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.min-ls-bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00F5A0, #0066FF);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(0, 245, 160, 0.5);
+}
+
+/* Minimal Number Counter */
+.min-ls-counter {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #9CA3AF;
+}

@@ -1,0 +1,56 @@
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #F5F5F0;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 245, 240, 0.5);
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    width 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.2s,
+    background-color 0.2s;
+}
+
+.cursor-ring[data-state="view"],
+.cursor-ring[data-state="explore"],
+.cursor-ring[data-state="open"],
+.cursor-ring[data-state="drag"],
+.cursor-ring[data-state="go"] {
+  width: 72px;
+  height: 72px;
+  border-color: rgba(0, 210, 255, 0.7);
+  background: rgba(176, 38, 255, 0.08);
+  box-shadow: 0 0 20px rgba(0, 153, 255, 0.15);
+}
+
+.cursor-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  color: #00D2FF;
+  text-transform: uppercase;
+  font-weight: 600;
+  white-space: nowrap;
+}

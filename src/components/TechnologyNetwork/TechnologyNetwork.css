@@ -1,0 +1,250 @@
+/* ---------- Technology Network & 3D Spline Scene Styles ---------- */
+.tech {
+  min-height: auto;
+  padding: 6rem 4rem;
+  position: relative;
+  overflow: hidden;
+  background: #0A0C0E;
+}
+
+.tech-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- Header & Spline 3D Scene Split Row ---------- */
+.tech-header-wrapper {
+  margin-bottom: 3.5rem;
+  position: relative;
+  z-index: 3;
+}
+
+.tech-header-content {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.tech-header-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 520px;
+}
+
+.tech-tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: #00F0FF;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 0.85rem;
+}
+
+.tech-heading {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.75rem, 5vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: #FFFFFF;
+  margin-bottom: 1.15rem;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+.tech-sub {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(0.9rem, 1.3vw, 1.05rem);
+  color: #9EA5A8;
+  line-height: 1.7;
+}
+
+/* ---------- Floating Spline 3D Scene (No Box / No Border) ---------- */
+.tech-spline-container {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tech-spline-view {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  background: transparent !important;
+}
+
+/* Fallback Loader */
+.spline-fallback-loader {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: transparent;
+}
+
+.spline-spinner {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 245, 160, 0.15);
+  border-top-color: #00F5A0;
+  border-right-color: #00F0FF;
+  animation: splineSpin 0.9s linear infinite;
+}
+
+.spline-loading-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: #00F5A0;
+}
+
+@keyframes splineSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- Ambient Three.js Canvas Behind Grid ---------- */
+.tech-canvas {
+  position: absolute;
+  top: 0;
+  right: -5%;
+  width: 50%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.tech-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ---------- Tech Labels Grid ---------- */
+.tech-grid {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1px;
+  border: 1px solid rgba(245, 245, 240, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+  margin-top: 2rem;
+}
+
+.tech-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 1.4rem;
+  background: #0D1013;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.tech-label:hover {
+  background: #14181E;
+  transform: translateY(-2px);
+}
+
+.tech-label-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.tech-label-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(0.85rem, 1.4vw, 0.95rem);
+  font-weight: 600;
+  color: #F5F5F0;
+  letter-spacing: -0.01em;
+}
+
+.tech-label-cat {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: #8A8A8A;
+  text-transform: uppercase;
+}
+
+/* ---------- Responsive Tablet Breakpoints ---------- */
+@media (max-width: 1024px) {
+  .tech {
+    padding: 4.5rem 2.5rem;
+  }
+  .tech-header-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .tech-header-text {
+    max-width: 100%;
+  }
+  .tech-spline-container {
+    height: 380px;
+  }
+}
+
+/* ---------- Responsive Mobile Breakpoints ---------- */
+@media (max-width: 767px) {
+  .tech {
+    padding: 3.5rem 1.25rem !important;
+  }
+  .tech-header-wrapper {
+    margin-bottom: 2rem !important;
+  }
+  .tech-header-content {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+  .tech-tag {
+    margin-bottom: 0.65rem !important;
+    font-size: 0.65rem !important;
+    letter-spacing: 0.22em !important;
+  }
+  .tech-heading {
+    font-size: clamp(2.2rem, 8.5vw, 3.2rem) !important;
+    line-height: 1.05 !important;
+    margin-bottom: 0.75rem !important;
+    letter-spacing: -0.02em !important;
+  }
+  .tech-sub {
+    font-size: 0.88rem !important;
+    line-height: 1.55 !important;
+  }
+  .tech-spline-container {
+    height: 280px !important;
+  }
+  .tech-canvas {
+    display: none !important;
+  }
+  .tech-grid {
+    max-width: 100% !important;
+    margin-top: 1.5rem !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1px !important;
+  }
+  .tech-label {
+    padding: 1.1rem !important;
+  }
+}

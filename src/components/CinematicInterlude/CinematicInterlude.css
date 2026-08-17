@@ -1,0 +1,113 @@
+.ci-root {
+  min-height: 80vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 6rem 4rem;
+  background: #040406;
+  border-top: 1px solid rgba(245, 245, 240, 0.05);
+  border-bottom: 1px solid rgba(245, 245, 240, 0.05);
+}
+
+/* Canvas background */
+.ci-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.85;
+}
+.ci-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Background kinetic text */
+.ci-bg-text-wrap {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.ci-bg-text {
+  font-size: clamp(4rem, 14vw, 15rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: rgba(245, 245, 240, 0.02);
+  line-height: 1;
+  user-select: none;
+  will-change: transform;
+}
+
+/* Content */
+.ci-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.ci-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: #00D2FF;
+  text-transform: uppercase;
+}
+
+.ci-title {
+  font-size: var(--text-display);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 0.92;
+  color: #F5F5F0;
+}
+
+.ci-wrap {
+  overflow: hidden;
+  line-height: 0.92;
+}
+
+.ci-word {
+  display: block;
+  will-change: transform;
+}
+
+.ci-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  color: #8A8A8A;
+  max-width: 450px;
+  line-height: 1.7;
+}
+
+/* Ambient glow */
+.ci-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(176, 38, 255, 0.08) 0%, rgba(0, 210, 255, 0.04) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@media (max-width: 767px) {
+  .ci-root {
+    padding: 5rem 1.5rem;
+    min-height: auto;
+  }
+}
