@@ -24,18 +24,24 @@ function buildFrameUrls(isMobile: boolean): string[] {
   return urls
 }
 
-/** Cover-fit draw — centres the image and fills the canvas without distortion */
+/** Cover-fit draw — aligns image with headroom so top navigation never collides with animation */
 function drawCover(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
   cw: number,
   ch: number,
 ) {
+  // Headroom offset so the robot's head and floating parts stay below the top navbar
+  const navHeadroom = Math.min(80, Math.round(ch * 0.065))
+
   const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight)
   const sw    = img.naturalWidth  * scale
   const sh    = img.naturalHeight * scale
   const sx    = (cw - sw) / 2
-  const sy    = (ch - sh) / 2
+  const sy    = (ch - sh) / 2 + navHeadroom
+
+  ctx.fillStyle = '#050505'
+  ctx.fillRect(0, 0, cw, ch)
   ctx.drawImage(img, sx, sy, sw, sh)
 }
 
