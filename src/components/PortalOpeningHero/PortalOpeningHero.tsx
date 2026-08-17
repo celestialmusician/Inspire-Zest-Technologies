@@ -51,8 +51,6 @@ export default function PortalOpeningHero() {
   const hintRef       = useRef<HTMLButtonElement>(null)
   const ctasRef       = useRef<HTMLDivElement>(null)
   const spotlightRef  = useRef<HTMLDivElement>(null)
-  const hudRef        = useRef<HTMLDivElement>(null)
-  const hudValRef     = useRef<HTMLSpanElement>(null)
 
   // Runtime state kept in refs to avoid any React re-renders during scroll
   const framesRef      = useRef<HTMLImageElement[]>([])
@@ -236,12 +234,6 @@ export default function PortalOpeningHero() {
         onUpdate: () => {
           const idx = Math.min(frameCount - 1, Math.max(0, Math.round(frameTracker.frame)))
           drawFrame(idx)
-
-          // Direct DOM update — ZERO React re-renders while scrolling!
-          if (hudValRef.current) {
-            const displayFrame = isMobile ? Math.min(TOTAL_FRAMES, (idx + 1) * 2) : idx + 1
-            hudValRef.current.textContent = `${pad(displayFrame)} // ${pad(TOTAL_FRAMES)}`
-          }
         },
       },
       0
@@ -394,14 +386,7 @@ export default function PortalOpeningHero() {
           </div>
         </div>
 
-        {/* ── Layer 6: Cyber HUD Frame Tracker ── */}
-        <div ref={hudRef} className="portal-op-hud" aria-hidden="true">
-          <div className="portal-op-hud-dot" />
-          <span className="portal-op-hud-label">CINEMATIC FRAME</span>
-          <span ref={hudValRef} className="portal-op-hud-val">001 // 240</span>
-        </div>
-
-        {/* ── Layer 7: Clickable Interactive Scroll hint ── */}
+        {/* ── Layer 6: Clickable Interactive Scroll hint ── */}
         <button
           ref={hintRef}
           className="portal-op-hint"

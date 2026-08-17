@@ -249,64 +249,7 @@
 }
 
 /* ════════════════════════════════════════════════
-   Layer 6 — Interactive Cyber HUD Frame Tracker
-════════════════════════════════════════════════ */
-.portal-op-hud {
-  position: absolute;
-  top: 6.5rem;
-  right: 4rem;
-  z-index: 7;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.4rem 0.9rem;
-  background: rgba(5, 5, 5, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 245, 160, 0.2);
-  border-radius: 2rem;
-  pointer-events: none;
-  animation: hudFadeIn 1s ease 0.5s both;
-}
-
-@keyframes hudFadeIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.portal-op-hud-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #00F5A0;
-  box-shadow: 0 0 10px #00F5A0;
-  animation: hudPulse 1.8s ease-in-out infinite alternate;
-}
-
-@keyframes hudPulse {
-  0% { transform: scale(0.8); opacity: 0.6; }
-  100% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 14px #00F5A0; }
-}
-
-.portal-op-hud-label {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 0.55rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  color: rgba(245, 245, 240, 0.6);
-  text-transform: uppercase;
-}
-
-.portal-op-hud-val {
-  font-family: 'Courier New', monospace;
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: #00F5A0;
-  letter-spacing: 0.1em;
-}
-
-/* ════════════════════════════════════════════════
-   Layer 7 — Clickable Interactive Scroll hint
+   Layer 6 — Clickable Interactive Scroll hint
 ════════════════════════════════════════════════ */
 .portal-op-hint {
   position: absolute;
@@ -390,11 +333,6 @@
     gap: 1rem;
   }
 
-  .portal-op-hud {
-    top: 5.5rem;
-    right: 2.5rem;
-  }
-
   .portal-op-btn-primary,
   .portal-op-btn-secondary {
     padding: 0.85rem 1.6rem;
@@ -411,20 +349,6 @@
 
   .portal-op-spotlight {
     display: none;
-  }
-
-  .portal-op-hud {
-    top: 4.8rem;
-    right: 1.25rem;
-    padding: 0.25rem 0.6rem;
-  }
-
-  .portal-op-hud-label {
-    display: none;
-  }
-
-  .portal-op-hud-val {
-    font-size: 0.58rem;
   }
 
   .portal-op-veil {
@@ -515,11 +439,6 @@
     font-size: clamp(1.65rem, 7.8vw, 2.2rem);
   }
 
-  .portal-op-hud {
-    top: 4.5rem;
-    right: 1rem;
-  }
-
   .portal-op-btn-primary,
   .portal-op-btn-secondary {
     font-size: 0.62rem;
@@ -559,9 +478,5 @@
 
   .portal-op-hint {
     bottom: 0.75rem;
-  }
-
-  .portal-op-hud {
-    top: 3.8rem;
   }
 }
