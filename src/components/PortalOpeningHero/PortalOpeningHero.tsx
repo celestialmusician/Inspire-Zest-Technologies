@@ -252,12 +252,13 @@ export default function PortalOpeningHero() {
       wmLeftRef.current,
       {
         scale: 1.0,
-        letterSpacing: '0.06em',
+        letterSpacing: '0.04em',
         color: '#FFFFFF',
+        transformOrigin: 'left center',
         textShadow: '0 4px 30px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8)',
       },
       {
-        scale:         isMobile ? 1.03 : 1.08,
+        scale:         isMobile ? 1.02 : 1.05,
         letterSpacing: '-0.01em',
         color:         '#00F5A0',
         textShadow:    '0 4px 30px rgba(0,0,0,0.98), 0 0 40px rgba(0,245,160,0.85), 0 0 15px rgba(0,245,160,0.5)',
@@ -268,13 +269,14 @@ export default function PortalOpeningHero() {
       wmRightRef.current,
       {
         scale: 1.0,
-        letterSpacing: '0.06em',
+        letterSpacing: '0.04em',
         color: '#FFFFFF',
+        transformOrigin: 'left center',
         webkitTextStroke: '2px #FFFFFF',
         textShadow: '0 4px 30px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8)',
       },
       {
-        scale:           isMobile ? 1.03 : 1.08,
+        scale:           isMobile ? 1.02 : 1.05,
         letterSpacing:   '-0.01em',
         color:           '#00F0FF',
         webkitTextStroke: '1px #00F0FF',
