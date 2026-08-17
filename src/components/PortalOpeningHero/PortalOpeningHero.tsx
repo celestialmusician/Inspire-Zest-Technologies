@@ -299,12 +299,20 @@ export default function PortalOpeningHero() {
       0,
     )
 
-    // ── 5. CTAs reveal smoothly near the end of the sequence ──────────────
+    // ── 5. CTAs animate in tandem with the wordmark ───────────────────────
     tl.fromTo(
       ctasRef.current,
-      { opacity: 0, y: 20, scale: 0.95 },
-      { opacity: 1, y: 0, scale: 1, ease: 'power3.out' },
-      0.65,
+      {
+        scale: 1.0,
+        opacity: 1,
+        transformOrigin: 'left center',
+      },
+      {
+        scale: isMobile ? 1.02 : 1.05,
+        opacity: 1,
+        ease: 'power2.inOut',
+      },
+      0,
     )
 
     return () => {
