@@ -15,14 +15,17 @@ export function useLenis() {
   const lenisRef = useRef<Lenis | null>(null)
 
   useEffect(() => {
+    const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+
     const lenis = new Lenis({
-      duration: 1.35,
+      duration: isTouch ? 1.0 : 1.35,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 0.95,
-      touchMultiplier: 1.8,
+      touchMultiplier: 1.2,
+      syncTouch: true,
       infinite: false,
     })
 

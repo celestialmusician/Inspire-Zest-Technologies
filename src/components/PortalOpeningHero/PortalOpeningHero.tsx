@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useState } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { getLenis } from '@/hooks/useLenis'
@@ -17,7 +17,7 @@ const pad = (n: number) => String(n).padStart(3, '0')
 function buildFrameUrls(isMobile: boolean): string[] {
   const urls: string[] = []
   for (let i = 1; i <= TOTAL_FRAMES; i++) {
-    // On mobile skip every other frame to halve memory usage
+    // On mobile skip every other frame to halve memory usage and decode overhead
     if (isMobile && i % 2 === 0) continue
     urls.push(`${FRAME_BASE}${pad(i)}.png`)
   }
@@ -48,22 +48,22 @@ export default function PortalOpeningHero() {
   const wmLeftRef     = useRef<HTMLSpanElement>(null)
   const wmRightRef    = useRef<HTMLSpanElement>(null)
   const overlayRef    = useRef<HTMLDivElement>(null)
-  const hintRef       = useRef<HTMLDivElement>(null)
+  const hintRef       = useRef<HTMLButtonElement>(null)
   const ctasRef       = useRef<HTMLDivElement>(null)
   const spotlightRef  = useRef<HTMLDivElement>(null)
   const hudRef        = useRef<HTMLDivElement>(null)
+  const hudValRef     = useRef<HTMLSpanElement>(null)
 
-  // Runtime state kept in refs to avoid unnecessary re-renders
+  // Runtime state kept in refs to avoid any React re-renders during scroll
   const framesRef      = useRef<HTMLImageElement[]>([])
   const loadedRef      = useRef<boolean[]>([])
   const currentIdxRef  = useRef(-1)
   const isMobileRef    = useRef(false)
+  const rafIdRef       = useRef<number | null>(null)
+  const nextFrameRef   = useRef<number | null>(null)
 
-  // Interactive HUD indicator (frame number & progress)
-  const [hudText, setHudText] = useState('001 // 240')
-
-  // ── Draw a single frame ─────────────────────────────────────────────────
-  const drawFrame = useCallback((frameIdx: number, force = false) => {
+  // ── Draw a single frame with RAF batching ─────────────────────────────────
+  const performDraw = useCallback((frameIdx: number) => {
     const canvas = canvasRef.current
     if (!canvas) return
     const ctx = canvas.getContext('2d')
@@ -72,20 +72,35 @@ export default function PortalOpeningHero() {
     const img = framesRef.current[frameIdx]
     if (!img || !loadedRef.current[frameIdx]) return
 
-    // Skip repaint if same frame (unless forced after resize)
-    if (!force && currentIdxRef.current === frameIdx) return
-    currentIdxRef.current = frameIdx
-
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     drawCover(ctx, img, canvas.width, canvas.height)
   }, [])
 
-  // ── Resize canvas to match pixel-perfect display size ──────────────────
+  const drawFrame = useCallback((frameIdx: number, force = false) => {
+    if (!force && currentIdxRef.current === frameIdx) return
+    currentIdxRef.current = frameIdx
+    nextFrameRef.current = frameIdx
+
+    if (rafIdRef.current === null) {
+      rafIdRef.current = requestAnimationFrame(() => {
+        if (nextFrameRef.current !== null) {
+          performDraw(nextFrameRef.current)
+        }
+        rafIdRef.current = null
+      })
+    }
+  }, [performDraw])
+
+  // ── Resize canvas to match pixel-perfect display size (capped for mobile GPU performance) ──
   const resizeCanvas = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    const dpr = window.devicePixelRatio || 1
+    isMobileRef.current = window.innerWidth < 768
+    // On high-DPI mobile phones (DPR 3+), cap DPR to 1.5 to save massive fill-rate & maintain 120Hz
+    const maxDpr = isMobileRef.current ? 1.5 : 2
+    const dpr    = Math.min(window.devicePixelRatio || 1, maxDpr)
+
     canvas.width  = Math.round(canvas.offsetWidth  * dpr)
     canvas.height = Math.round(canvas.offsetHeight * dpr)
 
@@ -97,7 +112,7 @@ export default function PortalOpeningHero() {
     }
   }, [drawFrame])
 
-  // ── Preload all frames progressively ──────────────────────────────────
+  // ── Preload all frames progressively with async decoding ────────────────
   useEffect(() => {
     isMobileRef.current = window.innerWidth < 768
     const urls   = buildFrameUrls(isMobileRef.current)
@@ -112,7 +127,7 @@ export default function PortalOpeningHero() {
     first.onload = () => {
       loaded[0] = true
       images[0] = first
-      drawFrame(0)
+      drawFrame(0, true)
     }
     first.src = urls[0]
 
@@ -123,8 +138,18 @@ export default function PortalOpeningHero() {
       img.onload = () => {
         loaded[idx] = true
         images[idx] = img
+        // If the browser supports async decode, decode in background thread
+        if ('decode' in img) {
+          img.decode().catch(() => {})
+        }
       }
       img.src = urls[i]
+    }
+
+    return () => {
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current)
+      }
     }
   }, [drawFrame])
 
@@ -136,7 +161,7 @@ export default function PortalOpeningHero() {
     return () => ro.disconnect()
   }, [resizeCanvas])
 
-  // ── Interactive Mouse Parallax & 3D Tilt ───────────────────────────────
+  // ── Interactive Mouse Parallax & 3D Tilt (Desktop only) ────────────────
   useEffect(() => {
     const stage = stickyRef.current
     if (!stage || window.innerWidth < 768) return
@@ -151,16 +176,14 @@ export default function PortalOpeningHero() {
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = stage.getBoundingClientRect()
-      const xNorm = (e.clientX - rect.left) / rect.width - 0.5   // -0.5 to 0.5
+      const xNorm = (e.clientX - rect.left) / rect.width - 0.5
       const yNorm = (e.clientY - rect.top) / rect.height - 0.5
 
-      // 3D Tilt on wordmark
       xTiltTo(xNorm * 16)
       yTiltTo(-yNorm * 14)
       xMoveTo(xNorm * 22)
       yMoveTo(yNorm * 18)
 
-      // Interactive ambient spotlight follower
       spotXTo(e.clientX)
       spotYTo(e.clientY)
     }
@@ -197,7 +220,8 @@ export default function PortalOpeningHero() {
         trigger:       container,
         start:         'top top',
         end:           'bottom bottom',
-        scrub:         1.2,              // Smooth inertial scrub
+        // Tighter scrub on mobile (0.35s) so it follows touch directly; smooth 1.1s on desktop wheel
+        scrub:         isMobile ? 0.35 : 1.1,
         pin:           stickyRef.current,
         anticipatePin: 1,
       },
@@ -213,9 +237,11 @@ export default function PortalOpeningHero() {
           const idx = Math.min(frameCount - 1, Math.max(0, Math.round(frameTracker.frame)))
           drawFrame(idx)
 
-          // Update interactive HUD counter
-          const displayFrame = isMobile ? Math.min(TOTAL_FRAMES, (idx + 1) * 2) : idx + 1
-          setHudText(`${pad(displayFrame)} // ${pad(TOTAL_FRAMES)}`)
+          // Direct DOM update — ZERO React re-renders while scrolling!
+          if (hudValRef.current) {
+            const displayFrame = isMobile ? Math.min(TOTAL_FRAMES, (idx + 1) * 2) : idx + 1
+            hudValRef.current.textContent = `${pad(displayFrame)} // ${pad(TOTAL_FRAMES)}`
+          }
         },
       },
       0
@@ -231,7 +257,7 @@ export default function PortalOpeningHero() {
         textShadow: '0 4px 30px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8)',
       },
       {
-        scale:         isMobile ? 1.04 : 1.08,
+        scale:         isMobile ? 1.03 : 1.08,
         letterSpacing: '-0.01em',
         color:         '#00F5A0',
         textShadow:    '0 4px 30px rgba(0,0,0,0.98), 0 0 40px rgba(0,245,160,0.85), 0 0 15px rgba(0,245,160,0.5)',
@@ -248,7 +274,7 @@ export default function PortalOpeningHero() {
         textShadow: '0 4px 30px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8)',
       },
       {
-        scale:           isMobile ? 1.04 : 1.08,
+        scale:           isMobile ? 1.03 : 1.08,
         letterSpacing:   '-0.01em',
         color:           '#00F0FF',
         webkitTextStroke: '1px #00F0FF',
@@ -326,14 +352,14 @@ export default function PortalOpeningHero() {
           aria-hidden="true"
         />
 
-        {/* ── Layer 2: Interactive Mouse Spotlight ── */}
+        {/* ── Layer 2: Interactive Mouse Spotlight (Desktop only) ── */}
         <div ref={spotlightRef} className="portal-op-spotlight" aria-hidden="true" />
 
         {/* ── Layer 3: Edge vignette + duotone overlay ── */}
         <div className="portal-op-veil" aria-hidden="true" />
         <div ref={overlayRef} className="portal-op-duotone" aria-hidden="true" />
 
-        {/* ── Layer 4: Unified Content Box (Wordmark + CTAs placed in natural flow) with 3D Parallax ── */}
+        {/* ── Layer 4: Unified Content Box (Wordmark + CTAs) with 3D Parallax ── */}
         <div ref={wmWrapRef} className="portal-op-content" aria-label="InspireZest">
           <div className="portal-op-wordmark">
             <span ref={wmLeftRef} className="portal-op-wm-span portal-op-wm-span--left">
@@ -344,7 +370,7 @@ export default function PortalOpeningHero() {
             </span>
           </div>
 
-          {/* ── Layer 5: CTAs (Placed cleanly below ZEST with guaranteed spacing) ── */}
+          {/* ── Layer 5: CTAs (Naturally below wordmark) ── */}
           <div ref={ctasRef} className="portal-op-ctas" aria-label="Call to action">
             <button
               className="portal-op-btn-primary"
@@ -366,11 +392,11 @@ export default function PortalOpeningHero() {
           </div>
         </div>
 
-        {/* ── Layer 6: Interactive Cyber HUD Frame Tracker ── */}
+        {/* ── Layer 6: Cyber HUD Frame Tracker ── */}
         <div ref={hudRef} className="portal-op-hud" aria-hidden="true">
           <div className="portal-op-hud-dot" />
           <span className="portal-op-hud-label">CINEMATIC FRAME</span>
-          <span className="portal-op-hud-val">{hudText}</span>
+          <span ref={hudValRef} className="portal-op-hud-val">001 // 240</span>
         </div>
 
         {/* ── Layer 7: Clickable Interactive Scroll hint ── */}
