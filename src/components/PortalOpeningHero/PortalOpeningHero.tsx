@@ -1,6 +1,7 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { getLenis } from '@/hooks/useLenis'
 import './PortalOpeningHero.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -23,12 +24,6 @@ function buildFrameUrls(isMobile: boolean): string[] {
   return urls
 }
 
-/** Map a 0-based scrub index (from GSAP) to a frame 1–240 index */
-function scrubToFrameIndex(scrub: number, totalFrames: number): number {
-  const idx = Math.round(scrub * (totalFrames - 1))
-  return Math.max(0, Math.min(totalFrames - 1, idx))
-}
-
 /** Cover-fit draw — centres the image and fills the canvas without distortion */
 function drawCover(
   ctx: CanvasRenderingContext2D,
@@ -49,22 +44,25 @@ export default function PortalOpeningHero() {
   const containerRef  = useRef<HTMLDivElement>(null)
   const stickyRef     = useRef<HTMLDivElement>(null)
   const canvasRef     = useRef<HTMLCanvasElement>(null)
+  const wmWrapRef     = useRef<HTMLDivElement>(null)
   const wmLeftRef     = useRef<HTMLSpanElement>(null)
   const wmRightRef    = useRef<HTMLSpanElement>(null)
   const overlayRef    = useRef<HTMLDivElement>(null)
   const hintRef       = useRef<HTMLDivElement>(null)
   const ctasRef       = useRef<HTMLDivElement>(null)
+  const spotlightRef  = useRef<HTMLDivElement>(null)
+  const hudRef        = useRef<HTMLDivElement>(null)
 
-  // Runtime state kept in refs to avoid re-renders
+  // Runtime state kept in refs to avoid unnecessary re-renders
   const framesRef      = useRef<HTMLImageElement[]>([])
   const loadedRef      = useRef<boolean[]>([])
   const currentIdxRef  = useRef(-1)
   const isMobileRef    = useRef(false)
 
+  // Interactive HUD indicator (frame number & progress)
+  const [hudText, setHudText] = useState('001 // 240')
+
   // ── Draw a single frame ─────────────────────────────────────────────────
-  // NOTE: canvas.width / canvas.height are always physical pixels (= CSS px * DPR).
-  // We do NOT call ctx.scale() anywhere — all drawing uses physical pixel coords
-  // so drawCover receives consistent values and the image is always centred.
   const drawFrame = useCallback((frameIdx: number, force = false) => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -83,9 +81,6 @@ export default function PortalOpeningHero() {
   }, [])
 
   // ── Resize canvas to match pixel-perfect display size ──────────────────
-  // Only set canvas.width / canvas.height — no ctx.scale() call.
-  // ctx.scale() is additive across calls and would corrupt the coordinate
-  // system after the first resize (doubling, then tripling, etc.).
   const resizeCanvas = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -97,12 +92,12 @@ export default function PortalOpeningHero() {
     // Redraw whatever frame is currently shown so the canvas isn't blank
     const idx = currentIdxRef.current
     if (idx >= 0) {
-      currentIdxRef.current = -1          // clear cache so drawFrame actually runs
+      currentIdxRef.current = -1
       drawFrame(idx, true)
     }
   }, [drawFrame])
 
-  // ── Preload all frames ──────────────────────────────────────────────────
+  // ── Preload all frames progressively ──────────────────────────────────
   useEffect(() => {
     isMobileRef.current = window.innerWidth < 768
     const urls   = buildFrameUrls(isMobileRef.current)
@@ -141,7 +136,52 @@ export default function PortalOpeningHero() {
     return () => ro.disconnect()
   }, [resizeCanvas])
 
-  // ── GSAP scroll-driven animation ────────────────────────────────────────
+  // ── Interactive Mouse Parallax & 3D Tilt ───────────────────────────────
+  useEffect(() => {
+    const stage = stickyRef.current
+    if (!stage || window.innerWidth < 768) return
+
+    const xTiltTo = gsap.quickTo(wmWrapRef.current, 'rotationY', { duration: 0.6, ease: 'power2.out' })
+    const yTiltTo = gsap.quickTo(wmWrapRef.current, 'rotationX', { duration: 0.6, ease: 'power2.out' })
+    const xMoveTo = gsap.quickTo(wmWrapRef.current, 'x', { duration: 0.8, ease: 'power2.out' })
+    const yMoveTo = gsap.quickTo(wmWrapRef.current, 'y', { duration: 0.8, ease: 'power2.out' })
+
+    const spotXTo = gsap.quickTo(spotlightRef.current, 'x', { duration: 0.35, ease: 'power1.out' })
+    const spotYTo = gsap.quickTo(spotlightRef.current, 'y', { duration: 0.35, ease: 'power1.out' })
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = stage.getBoundingClientRect()
+      const xNorm = (e.clientX - rect.left) / rect.width - 0.5   // -0.5 to 0.5
+      const yNorm = (e.clientY - rect.top) / rect.height - 0.5
+
+      // 3D Tilt on wordmark
+      xTiltTo(xNorm * 16)
+      yTiltTo(-yNorm * 14)
+      xMoveTo(xNorm * 22)
+      yMoveTo(yNorm * 18)
+
+      // Interactive ambient spotlight follower
+      spotXTo(e.clientX)
+      spotYTo(e.clientY)
+    }
+
+    const handleMouseLeave = () => {
+      xTiltTo(0)
+      yTiltTo(0)
+      xMoveTo(0)
+      yMoveTo(0)
+    }
+
+    stage.addEventListener('mousemove', handleMouseMove)
+    stage.addEventListener('mouseleave', handleMouseLeave)
+
+    return () => {
+      stage.removeEventListener('mousemove', handleMouseMove)
+      stage.removeEventListener('mouseleave', handleMouseLeave)
+    }
+  }, [])
+
+  // ── GSAP Scroll-driven animation with buttery interpolated scrubbing ─────
   useEffect(() => {
     const container = containerRef.current
     if (!container) return
@@ -149,36 +189,47 @@ export default function PortalOpeningHero() {
     const isMobile    = window.innerWidth < 768
     const frameCount  = isMobile ? Math.ceil(TOTAL_FRAMES / 2) : TOTAL_FRAMES
 
-    // Proxy object for GSAP to tween
-    const proxy = { progress: 0 }
+    // Tween target object for buttery frame interpolation across RAF
+    const frameTracker = { frame: 0 }
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger:       container,
         start:         'top top',
         end:           'bottom bottom',
-        scrub:         1,
+        scrub:         1.2,              // Smooth inertial scrub
         pin:           stickyRef.current,
         anticipatePin: 1,
-        onUpdate: (self) => {
-          const p        = self.progress
-          const frameIdx = scrubToFrameIndex(p, frameCount)
-          drawFrame(frameIdx)
-          // Keep proxy in sync for any tweens below
-          proxy.progress = p
-        },
       },
     })
 
-    // ── Wordmark: tighten tracking + glow as portal reveals ─────────────
+    // ── 1. Smooth Frame Interpolation ────────────────────────────────────
+    tl.to(
+      frameTracker,
+      {
+        frame: frameCount - 1,
+        ease:  'none',
+        onUpdate: () => {
+          const idx = Math.min(frameCount - 1, Math.max(0, Math.round(frameTracker.frame)))
+          drawFrame(idx)
+
+          // Update interactive HUD counter
+          const displayFrame = isMobile ? Math.min(TOTAL_FRAMES, (idx + 1) * 2) : idx + 1
+          setHudText(`${pad(displayFrame)} // ${pad(TOTAL_FRAMES)}`)
+        },
+      },
+      0
+    )
+
+    // ── 2. Wordmark: tighten tracking + signature glow as sequence unfolds ─
     tl.fromTo(
       wmLeftRef.current,
       { scale: 1.0, letterSpacing: '0.06em', color: '#FFFFFF' },
       {
-        scale:         isMobile ? 1.06 : 1.1,
+        scale:         isMobile ? 1.05 : 1.1,
         letterSpacing: '-0.01em',
         color:         '#00F5A0',
-        textShadow:    '0 0 40px rgba(0,245,160,0.9)',
+        textShadow:    '0 0 45px rgba(0,245,160,0.95), 0 0 20px rgba(0,245,160,0.7)',
         ease:          'power2.inOut',
       },
       0,
@@ -186,35 +237,35 @@ export default function PortalOpeningHero() {
       wmRightRef.current,
       { scale: 1.0, letterSpacing: '0.06em', webkitTextStroke: '2.5px #FFFFFF' },
       {
-        scale:           isMobile ? 1.06 : 1.1,
+        scale:           isMobile ? 1.05 : 1.1,
         letterSpacing:   '-0.01em',
         webkitTextStroke: '2.5px #00F0FF',
-        textShadow:      '0 0 40px rgba(0,240,255,0.9)',
+        textShadow:      '0 0 45px rgba(0,240,255,0.95), 0 0 20px rgba(0,240,255,0.7)',
         ease:            'power2.inOut',
       },
       0,
     )
 
-    // ── Vignette overlay darkens slightly ────────────────────────────────
+    // ── 3. Duotone tint fades in gently ──────────────────────────────────
     tl.fromTo(
       overlayRef.current,
       { opacity: 0 },
-      { opacity: 0.45, ease: 'power1.inOut' },
+      { opacity: 0.4, ease: 'power1.inOut' },
       0,
     )
 
-    // ── Scroll hint fades out as animation starts ─────────────────────────
+    // ── 4. Scroll hint fades out as user begins scrolling ─────────────────
     tl.to(
       hintRef.current,
-      { opacity: 0, y: 18, ease: 'power1.out' },
+      { opacity: 0, y: 16, ease: 'power1.out' },
       0,
     )
 
-    // ── CTAs fade in near the end of the sequence ─────────────────────────
+    // ── 5. CTAs reveal smoothly near the end of the sequence ──────────────
     tl.fromTo(
       ctasRef.current,
-      { opacity: 0, y: 24 },
-      { opacity: 1, y: 0, ease: 'power3.out' },
+      { opacity: 0, y: 28, scale: 0.96 },
+      { opacity: 1, y: 0, scale: 1, ease: 'power3.out' },
       0.72,
     )
 
@@ -224,7 +275,19 @@ export default function PortalOpeningHero() {
     }
   }, [drawFrame])
 
-  // ── CTAs ─────────────────────────────────────────────────────────────────
+  // ── Scroll to next section helper ────────────────────────────────────────
+  const scrollToNext = () => {
+    const lenis = getLenis()
+    const container = containerRef.current
+    if (!container) return
+    const targetY = container.offsetTop + container.offsetHeight
+    if (lenis) {
+      lenis.scrollTo(targetY, { duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) })
+    } else {
+      window.scrollTo({ top: targetY, behavior: 'smooth' })
+    }
+  }
+
   const scrollToWork = () => {
     const el = document.getElementById('projects')
     if (el) el.scrollIntoView({ behavior: 'smooth' })
@@ -251,12 +314,15 @@ export default function PortalOpeningHero() {
           aria-hidden="true"
         />
 
-        {/* ── Layer 2: Edge vignette + duotone overlay ── */}
+        {/* ── Layer 2: Interactive Mouse Spotlight ── */}
+        <div ref={spotlightRef} className="portal-op-spotlight" aria-hidden="true" />
+
+        {/* ── Layer 3: Edge vignette + duotone overlay ── */}
         <div className="portal-op-veil" aria-hidden="true" />
         <div ref={overlayRef} className="portal-op-duotone" aria-hidden="true" />
 
-        {/* ── Layer 3: Wordmark ── */}
-        <div className="portal-op-wordmark" aria-label="InspireZest">
+        {/* ── Layer 4: Wordmark with 3D Parallax ── */}
+        <div ref={wmWrapRef} className="portal-op-wordmark" aria-label="InspireZest">
           <span ref={wmLeftRef} className="portal-op-wm-span portal-op-wm-span--left">
             INSPIRE
           </span>
@@ -265,7 +331,7 @@ export default function PortalOpeningHero() {
           </span>
         </div>
 
-        {/* ── Layer 4: CTAs (appear late in animation) ── */}
+        {/* ── Layer 5: CTAs (Interactive hover & reveal) ── */}
         <div ref={ctasRef} className="portal-op-ctas" aria-label="Call to action">
           <button
             className="portal-op-btn-primary"
@@ -286,12 +352,24 @@ export default function PortalOpeningHero() {
           </button>
         </div>
 
-        {/* ── Layer 5: Scroll hint ── */}
-        <div ref={hintRef} className="portal-op-hint" aria-hidden="true">
-          <span className="portal-op-line" />
-          <span className="portal-op-text">SCROLL TO REVEAL ↴</span>
-          <span className="portal-op-line" />
+        {/* ── Layer 6: Interactive Cyber HUD Frame Tracker ── */}
+        <div ref={hudRef} className="portal-op-hud" aria-hidden="true">
+          <div className="portal-op-hud-dot" />
+          <span className="portal-op-hud-label">CINEMATIC FRAME</span>
+          <span className="portal-op-hud-val">{hudText}</span>
         </div>
+
+        {/* ── Layer 7: Clickable Interactive Scroll hint ── */}
+        <button
+          ref={hintRef}
+          className="portal-op-hint"
+          onClick={scrollToNext}
+          aria-label="Scroll to explore"
+        >
+          <span className="portal-op-line" />
+          <span className="portal-op-text">SCROLL OR CLICK TO EXPLORE ↴</span>
+          <span className="portal-op-line" />
+        </button>
       </div>
     </section>
   )

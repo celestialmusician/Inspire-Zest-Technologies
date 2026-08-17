@@ -4,12 +4,12 @@
 
 /* ── Scroll container (gives GSAP scroll room) ── */
 .portal-op-container {
-  height: 300vh;
+  height: 350vh;
   position: relative;
   background: #050505;
 }
 
-/* ── Sticky stage — pinned for the whole scroll ── */
+/* ── Sticky stage — pinned for the whole scroll with 3D perspective ── */
 .portal-op-stage {
   height: 100vh;
   width: 100%;
@@ -20,6 +20,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  perspective: 1200px;
 }
 
 /* ════════════════════════════════════════════════
@@ -36,14 +37,38 @@
 }
 
 /* ════════════════════════════════════════════════
-   Layer 2 — Vignette & duotone overlay
+   Layer 2 — Interactive Cursor Spotlight
+════════════════════════════════════════════════ */
+.portal-op-spotlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 600px;
+  height: 600px;
+  margin-left: -300px;
+  margin-top: -300px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(0, 245, 160, 0.12) 0%,
+    rgba(0, 240, 255, 0.06) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+/* ════════════════════════════════════════════════
+   Layer 3 — Vignette & duotone overlay
 ════════════════════════════════════════════════ */
 
 /* Radial vignette & top/bottom fades: darkens edges for depth and guarantees navbar readability */
 .portal-op-veil {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 3;
   background:
     /* Top fade — ensures navigation links remain crisp & legible over bright animation parts */
     linear-gradient(to bottom,
@@ -67,15 +92,15 @@
   pointer-events: none;
 }
 
-/* Duotone tint — starts at 0, tweened to 0.45 by GSAP */
+/* Duotone tint — starts at 0, tweened to 0.4 by GSAP */
 .portal-op-duotone {
   position: absolute;
   inset: 0;
-  z-index: 3;
+  z-index: 4;
   background: linear-gradient(
     135deg,
-    rgba(0, 245, 160, 0.28) 0%,
-    rgba(0, 240, 255, 0.28) 100%
+    rgba(0, 245, 160, 0.24) 0%,
+    rgba(0, 240, 255, 0.24) 100%
   );
   mix-blend-mode: overlay;
   opacity: 0;
@@ -84,19 +109,21 @@
 }
 
 /* ════════════════════════════════════════════════
-   Layer 3 — Wordmark
+   Layer 4 — Wordmark (with 3D perspective tracking)
 ════════════════════════════════════════════════ */
 .portal-op-wordmark {
   position: absolute;
   left: 4rem;
   top: 50%;
   transform: translateY(-60%);
-  z-index: 5;
+  z-index: 6;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   pointer-events: none;
   line-height: 0.82;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .portal-op-wm-span {
@@ -124,19 +151,18 @@
 }
 
 /* ════════════════════════════════════════════════
-   Layer 4 — CTAs
+   Layer 5 — CTAs
 ════════════════════════════════════════════════ */
 .portal-op-ctas {
   position: absolute;
   bottom: 7rem;
   left: 4rem;
-  z-index: 6;
+  z-index: 7;
   display: flex;
   gap: 1.25rem;
   align-items: center;
   flex-wrap: wrap;
   justify-content: flex-start;
-  /* Starts invisible — GSAP fades in at 72% progress */
   opacity: 0;
   will-change: opacity, transform;
 }
@@ -155,8 +181,9 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: color 0.2s;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, color 0.2s;
   white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 .portal-op-btn-primary::before {
   content: '';
@@ -167,50 +194,124 @@
   transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .portal-op-btn-primary:hover::before { transform: translateX(0); }
-.portal-op-btn-primary:hover { color: #050505; }
+.portal-op-btn-primary:hover {
+  color: #050505;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(0, 245, 160, 0.4);
+}
 .portal-op-btn-arrow {
   position: relative;
   z-index: 1;
   transition: transform 0.2s;
 }
 .portal-op-btn-primary span { position: relative; z-index: 1; }
-.portal-op-btn-primary:hover .portal-op-btn-arrow { transform: translateX(4px); }
+.portal-op-btn-primary:hover .portal-op-btn-arrow { transform: translateX(5px); }
 
 .portal-op-btn-secondary {
   font-family: 'Inter', sans-serif;
   font-size: clamp(0.65rem, 1.2vw, 0.75rem);
   letter-spacing: 0.15em;
-  color: rgba(245, 245, 240, 0.75);
-  background: none;
-  border: 1px solid rgba(245, 245, 240, 0.3);
+  color: rgba(245, 245, 240, 0.8);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(245, 245, 240, 0.25);
   padding: 1rem 2rem;
   text-transform: uppercase;
   cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s, border-color 0.25s, background-color 0.25s;
   white-space: nowrap;
 }
 .portal-op-btn-secondary:hover {
-  color: #F5F5F0;
-  border-color: rgba(245, 245, 240, 0.6);
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #00F5A0;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 245, 160, 0.25);
 }
 
 /* ════════════════════════════════════════════════
-   Layer 5 — Scroll hint
+   Layer 6 — Interactive Cyber HUD Frame Tracker
+════════════════════════════════════════════════ */
+.portal-op-hud {
+  position: absolute;
+  top: 6.5rem;
+  right: 4rem;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0.9rem;
+  background: rgba(5, 5, 5, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 245, 160, 0.2);
+  border-radius: 2rem;
+  pointer-events: none;
+  animation: hudFadeIn 1s ease 0.5s both;
+}
+
+@keyframes hudFadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.portal-op-hud-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00F5A0;
+  box-shadow: 0 0 10px #00F5A0;
+  animation: hudPulse 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes hudPulse {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 14px #00F5A0; }
+}
+
+.portal-op-hud-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: rgba(245, 245, 240, 0.6);
+  text-transform: uppercase;
+}
+
+.portal-op-hud-val {
+  font-family: 'Courier New', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #00F5A0;
+  letter-spacing: 0.1em;
+}
+
+/* ════════════════════════════════════════════════
+   Layer 7 — Clickable Interactive Scroll hint
 ════════════════════════════════════════════════ */
 .portal-op-hint {
   position: absolute;
-  bottom: 2.25rem;
+  bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 7;
   display: flex;
   align-items: center;
   gap: 1rem;
-  pointer-events: none;
+  background: none;
+  border: none;
+  cursor: pointer;
   width: 90%;
-  max-width: 500px;
+  max-width: 520px;
   justify-content: center;
+  padding: 0.5rem;
   will-change: transform, opacity;
+  transition: transform 0.25s ease;
+}
+
+.portal-op-hint:hover {
+  transform: translateX(-50%) translateY(3px);
 }
 
 .portal-op-line {
@@ -220,6 +321,16 @@
     90deg,
     transparent,
     rgba(0, 245, 160, 0.5),
+    transparent
+  );
+  transition: background 0.3s;
+}
+
+.portal-op-hint:hover .portal-op-line {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 245, 160, 0.9),
     transparent
   );
 }
@@ -259,6 +370,11 @@
     gap: 1rem;
   }
 
+  .portal-op-hud {
+    top: 5.5rem;
+    right: 2.5rem;
+  }
+
   .portal-op-btn-primary,
   .portal-op-btn-secondary {
     padding: 0.9rem 1.75rem;
@@ -269,12 +385,28 @@
    Mobile — up to 767px
 ════════════════════════════════════════════════ */
 @media (max-width: 767px) {
-  /* Shorter scroll container since we halve the frames */
   .portal-op-container {
-    height: 250vh;
+    height: 260vh;
   }
 
-  /* Tighter vignette on mobile so text stays legible */
+  .portal-op-spotlight {
+    display: none; /* Disable cursor spotlight on touch devices */
+  }
+
+  .portal-op-hud {
+    top: 4.8rem;
+    right: 1.25rem;
+    padding: 0.25rem 0.6rem;
+  }
+
+  .portal-op-hud-label {
+    display: none; /* Keep just the dot and frame number on mobile */
+  }
+
+  .portal-op-hud-val {
+    font-size: 0.58rem;
+  }
+
   .portal-op-veil {
     background: radial-gradient(
       ellipse 110% 100% at 20% 50%,
@@ -283,7 +415,6 @@
     );
   }
 
-  /* ── Wordmark ── */
   .portal-op-wordmark {
     left: 1.25rem;
     top: 50%;
@@ -293,18 +424,17 @@
   .portal-op-wm-span {
     font-size: clamp(3rem, 15.5vw, 4.8rem);
     letter-spacing: 0.03em;
-    white-space: normal;        /* allow wrap if viewport is very narrow */
+    white-space: normal;
   }
 
   .portal-op-wm-span--right {
     -webkit-text-stroke: 1.5px #FFFFFF;
   }
 
-  /* ── CTAs — stack vertically on very small screens ── */
   .portal-op-ctas {
     left: 1.25rem;
-    right: 1.25rem;             /* keeps buttons from bleeding off edge */
-    bottom: 5rem;
+    right: 1.25rem;
+    bottom: 4.8rem;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
@@ -312,22 +442,21 @@
 
   .portal-op-btn-primary,
   .portal-op-btn-secondary {
-    width: 100%;                /* full width tap targets on mobile */
+    width: 100%;
     justify-content: center;
     padding: 0.9rem 1.25rem;
     font-size: 0.68rem;
     letter-spacing: 0.12em;
   }
 
-  /* ── Scroll hint — tighter on mobile ── */
   .portal-op-hint {
-    bottom: 1.5rem;
-    width: 85%;
+    bottom: 1.35rem;
+    width: 90%;
   }
 
   .portal-op-text {
-    font-size: 0.58rem;
-    letter-spacing: 0.18em;
+    font-size: 0.56rem;
+    letter-spacing: 0.16em;
   }
 }
 
@@ -347,7 +476,12 @@
   .portal-op-ctas {
     left: 1rem;
     right: 1rem;
-    bottom: 4.5rem;
+    bottom: 4.2rem;
+  }
+
+  .portal-op-hud {
+    top: 4.5rem;
+    right: 1rem;
   }
 
   .portal-op-btn-primary,
@@ -371,8 +505,8 @@
   }
 
   .portal-op-ctas {
-    bottom: 2.5rem;
-    flex-direction: row;        /* side-by-side in landscape */
+    bottom: 2.2rem;
+    flex-direction: row;
     gap: 0.875rem;
     right: auto;
   }
@@ -385,6 +519,10 @@
   }
 
   .portal-op-hint {
-    bottom: 1rem;
+    bottom: 0.75rem;
+  }
+
+  .portal-op-hud {
+    top: 3.8rem;
   }
 }
