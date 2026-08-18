@@ -19,7 +19,7 @@ function buildFrameUrls(isMobile: boolean): string[] {
   for (let i = 1; i <= TOTAL_FRAMES; i++) {
     // On mobile skip every other frame to halve memory usage and decode overhead
     if (isMobile && i % 2 === 0) continue
-    urls.push(`${FRAME_BASE}${pad(i)}.png`)
+    urls.push(`${FRAME_BASE}${pad(i)}.webp`)
   }
   return urls
 }
@@ -31,8 +31,12 @@ function drawCover(
   cw: number,
   ch: number,
 ) {
+  if (cw === 0 || ch === 0 || !img.naturalWidth || !img.naturalHeight) return
+  ctx.imageSmoothingEnabled = true
+  ctx.imageSmoothingQuality = 'high'
+
   // Headroom offset so the robot's head and floating parts stay below the top navbar
-  const navHeadroom = Math.min(80, Math.round(ch * 0.065))
+  const navHeadroom = Math.min(60, Math.round(ch * 0.05))
 
   const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight)
   const sw    = img.naturalWidth  * scale
@@ -61,20 +65,48 @@ export default function PortalOpeningHero() {
   // Runtime state kept in refs to avoid any React re-renders during scroll
   const framesRef      = useRef<HTMLImageElement[]>([])
   const loadedRef      = useRef<boolean[]>([])
-  const currentIdxRef  = useRef(-1)
+  const currentIdxRef  = useRef(0)
   const isMobileRef    = useRef(false)
   const rafIdRef       = useRef<number | null>(null)
   const nextFrameRef   = useRef<number | null>(null)
 
-  // ── Draw a single frame with RAF batching ─────────────────────────────────
+  // ── Draw a single frame with nearest-loaded fallback & high quality rendering ─
   const performDraw = useCallback((frameIdx: number) => {
     const canvas = canvasRef.current
     if (!canvas) return
-    const ctx = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true })
     if (!ctx) return
 
-    const img = framesRef.current[frameIdx]
-    if (!img || !loadedRef.current[frameIdx]) return
+    const total = framesRef.current.length
+    if (total === 0) return
+
+    const clamped = Math.max(0, Math.min(total - 1, frameIdx))
+    let targetIdx = clamped
+
+    // If target frame is not loaded yet, find nearest loaded frame so canvas is NEVER blank
+    if (!loadedRef.current[targetIdx]) {
+      let found = -1
+      for (let offset = 1; offset < total; offset++) {
+        if (targetIdx - offset >= 0 && loadedRef.current[targetIdx - offset]) {
+          found = targetIdx - offset
+          break
+        }
+        if (targetIdx + offset < total && loadedRef.current[targetIdx + offset]) {
+          found = targetIdx + offset
+          break
+        }
+      }
+      if (found >= 0) {
+        targetIdx = found
+      } else if (loadedRef.current[0]) {
+        targetIdx = 0
+      } else {
+        return
+      }
+    }
+
+    const img = framesRef.current[targetIdx]
+    if (!img || !img.complete || img.naturalWidth === 0) return
 
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     drawCover(ctx, img, canvas.width, canvas.height)
@@ -95,28 +127,28 @@ export default function PortalOpeningHero() {
     }
   }, [performDraw])
 
-  // ── Resize canvas to match pixel-perfect display size (capped for mobile GPU performance) ──
+  // ── Resize canvas to match pixel-perfect display size ─────────────────────
   const resizeCanvas = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
     isMobileRef.current = window.innerWidth < 768
-    // On high-DPI mobile phones (DPR 3+), cap DPR to 1.5 to save massive fill-rate & maintain 120Hz
     const maxDpr = isMobileRef.current ? 1.5 : 2
     const dpr    = Math.min(window.devicePixelRatio || 1, maxDpr)
 
-    canvas.width  = Math.round(canvas.offsetWidth  * dpr)
-    canvas.height = Math.round(canvas.offsetHeight * dpr)
+    const w = canvas.offsetWidth || window.innerWidth
+    const h = canvas.offsetHeight || window.innerHeight
 
-    // Redraw whatever frame is currently shown so the canvas isn't blank
-    const idx = currentIdxRef.current
-    if (idx >= 0) {
-      currentIdxRef.current = -1
-      drawFrame(idx, true)
+    if (w > 0 && h > 0) {
+      canvas.width  = Math.round(w * dpr)
+      canvas.height = Math.round(h * dpr)
+
+      // Redraw immediately on resize
+      performDraw(currentIdxRef.current)
     }
-  }, [drawFrame])
+  }, [performDraw])
 
-  // ── Preload all frames progressively with async decoding ────────────────
+  // ── Preload all frames progressively with priority & background decode ────
   useEffect(() => {
     isMobileRef.current = window.innerWidth < 768
     const urls   = buildFrameUrls(isMobileRef.current)
@@ -126,8 +158,9 @@ export default function PortalOpeningHero() {
     framesRef.current = images
     loadedRef.current = loaded
 
-    // Load frame 0 first so something is visible immediately
+    // Preload frame 0 immediately with priority
     const first = new Image()
+    first.decoding = 'async'
     first.onload = () => {
       loaded[0] = true
       images[0] = first
@@ -135,20 +168,39 @@ export default function PortalOpeningHero() {
     }
     first.src = urls[0]
 
-    // Then load the rest progressively
-    for (let i = 1; i < urls.length; i++) {
-      const img = new Image()
-      const idx = i
-      img.onload = () => {
-        loaded[idx] = true
-        images[idx] = img
-        // If the browser supports async decode, decode in background thread
-        if ('decode' in img) {
-          img.decode().catch(() => {})
-        }
-      }
-      img.src = urls[i]
+    // If frame 0 is already in cache
+    if (first.complete && first.naturalWidth > 0) {
+      loaded[0] = true
+      images[0] = first
+      drawFrame(0, true)
     }
+
+    // Load subsequent frames in progressive priority batches
+    const loadBatch = (start: number, end: number, delayMs = 0) => {
+      setTimeout(() => {
+        for (let i = start; i < end && i < urls.length; i++) {
+          const img = new Image()
+          const idx = i
+          img.decoding = 'async'
+          img.onload = () => {
+            loaded[idx] = true
+            images[idx] = img
+            // If current view is waiting for this or nearby frame, redraw
+            if (Math.abs(currentIdxRef.current - idx) <= 2) {
+              drawFrame(currentIdxRef.current, true)
+            }
+          }
+          img.src = urls[i]
+        }
+      }, delayMs)
+    }
+
+    // Immediate first 30 frames
+    loadBatch(1, 30, 0)
+    // Next 60 frames after 100ms
+    loadBatch(30, 90, 100)
+    // Remaining frames after 250ms
+    loadBatch(90, urls.length, 250)
 
     return () => {
       if (rafIdRef.current !== null) {
