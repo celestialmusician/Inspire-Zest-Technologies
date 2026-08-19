@@ -280,18 +280,27 @@
     object-position: center center;
   }
   .prisma-hero-card {
-    align-items: flex-start;
+    display: flex;
+    align-items: center; /* Vertically centered */
+    justify-content: flex-start; /* Left-aligned */
   }
 
   .prisma-hero-content-wrapper {
-    padding: 5rem 1.25rem 1.8rem 1.25rem;
+    padding: 5rem 1.35rem 2rem 1.35rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     transform: translateY(0);
-    align-items: flex-start;
   }
   .prisma-hero-stack {
-    gap: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 1.15rem;
     max-width: 100%;
   }
+
   .prisma-hero-title-group {
     margin-bottom: 1.45rem;
   }
