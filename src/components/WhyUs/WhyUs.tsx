@@ -52,8 +52,6 @@ export default function WhyUs() {
       aria-label="Why InspireZest"
     >
       <div className="why-container">
-        <span className="why-tag" aria-hidden="true">11 — WHY INSPIREZEST</span>
-
         <div className="why-heading" aria-label="One partner. Multiple digital solutions.">
           <div className="why-wrap"><span className="why-heading-line font-display">ONE PARTNER.</span></div>
           <div className="why-wrap why-wrap--dim">

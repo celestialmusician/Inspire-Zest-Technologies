@@ -131,10 +131,6 @@ export default function TechnologyNetwork() {
       <div className="tech-marquee-container">
         {/* Section Header */}
         <div className="tech-header-block">
-          <div className="tech-tag tech-header-anim" aria-hidden="true">
-            <Sparkles size={13} className="text-cyan-400" />
-            <TextScramble text="05 — ARCHITECTURAL STRENGTH" speed={25} />
-          </div>
           <h2 className="tech-heading font-display tech-header-anim">
             BUILT ON <span className="tech-title-gradient">PROVEN TECHNOLOGY</span>
           </h2>

@@ -148,10 +148,6 @@ export default function Growth() {
       <div className="stats-container">
         {/* Section Header */}
         <div className="stats-header">
-          <div className="stats-tag stats-header-anim" aria-hidden="true">
-            <Sparkles size={13} className="text-cyan-400" />
-            <span>02 — PROVEN TRACK RECORD</span>
-          </div>
           <h2 className="stats-title font-display stats-header-anim">
             SCALE POWERED BY <span className="stats-title-gradient">PRECISION</span>
           </h2>

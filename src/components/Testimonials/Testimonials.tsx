@@ -96,10 +96,6 @@ export default function Testimonials() {
       <div className="tst-container">
         {/* Section Header */}
         <div className="tst-header">
-          <div className="tst-tag tst-header-anim" aria-hidden="true">
-            <Sparkles size={13} className="text-cyan-400" />
-            <span>06 — SOCIAL PROOF & TESTIMONIALS</span>
-          </div>
           <h2 className="tst-title font-display tst-header-anim">
             TRUSTED BY <span className="tst-title-gradient">CATEGORY LEADERS</span>
           </h2>

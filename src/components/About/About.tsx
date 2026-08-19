@@ -57,11 +57,6 @@ export default function About() {
   return (
     <section ref={sectionRef} id="about" className="about-section" aria-label="About InspireZest">
       <div className="about-container">
-        <div className="about-tag" aria-hidden="true">
-          <Sparkles size={13} className="text-cyan-400" />
-          <span>06 — FOUNDATION</span>
-        </div>
-
         <h2 className="about-headline font-display">
           <div className="about-wrap">
             <span className="about-line text-titanium">BORN TO ARCHITECT</span>

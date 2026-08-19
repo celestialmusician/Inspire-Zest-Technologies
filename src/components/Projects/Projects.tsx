@@ -66,10 +66,6 @@ export default function Projects() {
       <div ref={trackRef} className="apple-proj-track">
         {/* Intro Slide */}
         <div className="apple-proj-intro">
-          <div className="apple-proj-tag" aria-hidden="true">
-            <Sparkles size={13} className="text-cyan-400" />
-            <span>04 — FLAGSHIP BUILDS</span>
-          </div>
           <h2 className="apple-proj-heading font-display">
             PORTFOLIO <br />
             <span className="apple-title-gradient">SHOWCASE</span>

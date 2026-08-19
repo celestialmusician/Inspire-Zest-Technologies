@@ -104,10 +104,6 @@ export default function Process() {
     >
       <div className="cinematic-proc-container">
         <div className="cinematic-proc-header">
-          <div className="cinematic-proc-tag" aria-hidden="true">
-            <Sparkles size={13} className="text-cyan-400" />
-            <span>07 — EXECUTION ROADMAP</span>
-          </div>
           <h2 className="cinematic-proc-title font-display">
             HOW WE BUILD <span className="text-titanium">THE IMPOSSIBLE</span>
           </h2>

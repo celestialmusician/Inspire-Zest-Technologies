@@ -64,12 +64,6 @@ export default function Intro() {
       aria-label="Who We Are"
     >
       <div ref={containerRef} className="cinematic-intro-container">
-        {/* Section Tag */}
-        <div className="cinematic-intro-tag" aria-hidden="true">
-          <Sparkles size={13} className="text-cyan-400" />
-          <span>03 — MANIFESTO</span>
-        </div>
-
         {/* Cinematic Headline */}
         <h2 className="cinematic-intro-heading font-display">
           <div className="cinematic-line-clip">

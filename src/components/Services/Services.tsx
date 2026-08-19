@@ -116,10 +116,6 @@ export default function Services() {
       <div className="apple-services-container">
         {/* Section Header */}
         <div className="apple-services-header">
-          <div className="apple-services-tag apple-srv-header-item" aria-hidden="true">
-            <Sparkles size={13} className="text-cyan-400" />
-            <TextScramble text="03 — CORE PILLARS" speed={25} />
-          </div>
           <h2 className="apple-services-title font-display apple-srv-header-item">
             ENGINEERING WITHOUT <span className="apple-title-gradient">COMPROMISE</span>
           </h2>

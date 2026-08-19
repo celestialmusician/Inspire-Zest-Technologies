@@ -81,10 +81,6 @@ export default function FAQ() {
       <div className="faq-container">
         {/* Header */}
         <div className="faq-header">
-          <span className="faq-tag" aria-hidden="true">
-            <HelpCircle size={13} className="faq-tag-icon" />
-            09 — FREQUENTLY ASKED QUESTIONS
-          </span>
           <h2 className="faq-heading font-display">
             CLEAR ANSWERS. <span className="faq-heading-highlight">ZERO GUESSWORK.</span>
           </h2>

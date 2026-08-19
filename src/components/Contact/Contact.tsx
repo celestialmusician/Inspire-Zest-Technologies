@@ -122,11 +122,6 @@ export default function Contact() {
       <div className="contact-container">
         {/* Left Column: Global Offices & Contact Info */}
         <div className="contact-col contact-col--left">
-          <div className="contact-tag" aria-hidden="true">
-            <Sparkles size={13} className="text-cyan-400" />
-            <span>08 — GET IN TOUCH</span>
-          </div>
-
           <h2 className="contact-heading font-display">
             START A <br />
             <span className="contact-title-gradient">PROJECT</span>

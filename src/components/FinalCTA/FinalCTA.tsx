@@ -96,12 +96,6 @@ export default function FinalCTA({ onContact }: Props) {
       aria-label="Start a project with Inspire Zest"
     >
       <div className="fcta-container">
-        {/* Tag */}
-        <div className="fcta-tag fcta-tag-anim" aria-hidden="true">
-          <Sparkles size={13} className="text-cyan-400" />
-          <span>07 — INITIATE COLLABORATION</span>
-        </div>
-
         {/* Big Kinetic Headline */}
         <div className="fcta-headline" aria-label="Let's build something great together.">
           <div className="fcta-overflow-wrap">

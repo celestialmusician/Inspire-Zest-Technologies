@@ -82,12 +82,6 @@ export default function PortalOpeningHero() {
           { scale: 1.15, opacity: 0 },
           { scale: 1.04, opacity: 0.7, duration: 1.4, ease: 'power2.out' }
         )
-        .fromTo(
-          badgeRef.current,
-          { opacity: 0, y: -20, scale: 0.95 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.8 },
-          '-=1.0'
-        )
         // Split-Text Kinetic Typography Animation
         .fromTo(
           '.hero-split-word',
@@ -101,7 +95,7 @@ export default function PortalOpeningHero() {
             duration: 1.2,
             ease: 'power4.out',
           },
-          '-=0.7'
+          '-=0.9'
         )
         .fromTo(
           subtitleRef.current,
@@ -211,14 +205,6 @@ export default function PortalOpeningHero() {
 
         {/* Layer 3: Main Apple Keynote Content Box */}
         <div ref={contentRef} className="apple-hero-content">
-          {/* Top Titanium Pill with Text Scramble / Decryption */}
-          <div ref={badgeRef} className="apple-pill-badge" data-cursor="explore">
-            <span className="apple-badge-dot" aria-hidden="true" />
-            <TextScramble text="INSPIRE ZEST TECHNOLOGIES" speed={25} />
-            <span className="apple-badge-sep">/</span>
-            <TextScramble text="PRO ARCHITECTURE" speed={25} className="apple-badge-dim" />
-          </div>
-
           {/* Kinetic 3D Split-Text Headline */}
           <h1 ref={titleRef} className="apple-hero-title font-display">
             {titleWords.map((word, i) => (

@@ -127,11 +127,6 @@ export default function TechParallaxShowcase() {
       {/* Floating Keynote Typography & Glass Indicators */}
       <div className="tech-parallax-content">
         <div ref={textGroupRef} className="tech-parallax-text-box">
-          <div className="tech-parallax-pill parallax-reveal" aria-hidden="true">
-            <Sparkles size={14} className="text-cyan-400" />
-            <TextScramble text="02 — SILICON-GRADE PERFORMANCE" speed={25} />
-          </div>
-
           <h2 className="tech-parallax-title font-display parallax-reveal">
             ENGINEERED AT THE <br />
             <span className="tech-parallax-gradient">SPEED OF LIGHT</span>
