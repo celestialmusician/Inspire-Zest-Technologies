@@ -1,11 +1,11 @@
 /* ═════════════════════════════════════════════════════════════════
-   APPLE PRO KEYNOTE HERO — 3D TECH FRAME & TITANIUM TYPOGRAPHY
+   APPLE PRO KEYNOTE HERO — FULLSCREEN 4K TECH IMAGE & TITANIUM TYPO
 ═════════════════════════════════════════════════════════════════ */
 
 .apple-hero-container {
   position: relative;
   width: 100%;
-  height: 240vh;
+  height: 200vh;
   background: #000000;
   z-index: 10;
 }
@@ -22,17 +22,37 @@
   justify-content: center;
   perspective: 1200px;
   perspective-origin: center center;
-  background: radial-gradient(circle at 50% 30%, #0c0d14 0%, #000000 70%);
+  background: #000000;
 }
 
-/* ── Minimal Ambient Canvas ── */
-.apple-hero-canvas {
+/* ── Layer 1: Fullscreen Tech Photo Background ── */
+.apple-hero-bg-wrapper {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  display: block;
   z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.apple-hero-bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.7;
+  will-change: transform, opacity;
+  transform-origin: center center;
+}
+
+/* Dark Cinematic Vignette & Radial Mesh */
+.apple-hero-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.88) 75%, #000000 100%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, transparent 25%, transparent 70%, #000000 100%);
   pointer-events: none;
 }
 
@@ -41,11 +61,11 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 600px;
-  height: 600px;
-  margin-top: -300px;
-  margin-left: -300px;
-  background: radial-gradient(circle, rgba(41, 151, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 40%, transparent 70%);
+  width: 700px;
+  height: 700px;
+  margin-top: -350px;
+  margin-left: -350px;
+  background: radial-gradient(circle, rgba(41, 151, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 40%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
   z-index: 2;
@@ -56,7 +76,7 @@
 .apple-hero-content {
   position: relative;
   z-index: 10;
-  max-width: 980px;
+  max-width: 1060px;
   width: 90%;
   margin: 0 auto;
   text-align: center;
@@ -64,7 +84,7 @@
   flex-direction: column;
   align-items: center;
   will-change: transform, opacity;
-  padding-top: 1rem;
+  padding-top: 3.5rem; /* Breathing room under navbar */
 }
 
 /* ── Pill Badge ── */
@@ -74,9 +94,10 @@
   gap: 0.6rem;
   padding: 0.45rem 1.1rem;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(16px);
+  background: rgba(22, 22, 26, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
   font-family: 'Inter', sans-serif;
   font-size: 0.72rem;
   font-weight: 600;
@@ -84,12 +105,13 @@
   color: #F5F5F7;
   text-transform: uppercase;
   margin-bottom: 1.8rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
 }
 
 .apple-pill-badge:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(30, 30, 36, 0.9);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .apple-badge-dot {
@@ -108,14 +130,15 @@
   color: #86868B;
 }
 
-/* ── Title ── */
+/* ── Headline ── */
 .apple-hero-title {
-  font-size: clamp(2.4rem, 5.2vw, 4.8rem);
+  font-size: clamp(2.6rem, 5.8vw, 5.4rem);
   font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
   margin: 0;
-  max-width: 940px;
+  max-width: 980px;
+  text-shadow: 0 4px 40px rgba(0, 0, 0, 0.9);
 }
 
 .apple-word-clip {
@@ -136,29 +159,30 @@
 }
 
 .apple-title-accent {
-  background: linear-gradient(135deg, #2997FF 0%, #7000FF 50%, #00F5D4 100%);
+  background: linear-gradient(135deg, #2997FF 0%, #BF5AF2 50%, #00F5D4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 25px rgba(41, 151, 255, 0.35));
+  filter: drop-shadow(0 0 35px rgba(41, 151, 255, 0.45));
 }
 
 /* ── Subtitle ── */
 .apple-hero-subtext {
   font-family: 'Inter', sans-serif;
-  font-size: clamp(0.98rem, 1.35vw, 1.15rem);
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
   line-height: 1.6;
-  color: #86868B;
-  max-width: 680px;
-  margin-top: 1.2rem;
+  color: #A1A1A6;
+  max-width: 720px;
+  margin-top: 1.4rem;
   letter-spacing: -0.01em;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
 }
 
 /* ── CTAs ── */
 .apple-hero-cta-group {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
-  margin-top: 2rem;
+  gap: 1.25rem;
+  margin-top: 2.2rem;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -167,153 +191,82 @@
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.85rem 1.8rem;
+  padding: 0.9rem 2rem;
   background: #FFFFFF;
   color: #000000;
   font-family: 'Inter', sans-serif;
-  font-size: 0.84rem;
+  font-size: 0.85rem;
   font-weight: 600;
   border-radius: 9999px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 25px rgba(255, 255, 255, 0.25);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .apple-btn-white:hover {
   transform: scale(1.04);
-  box-shadow: 0 6px 30px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 6px 35px rgba(255, 255, 255, 0.45);
 }
 
 .apple-btn-glass {
   display: inline-flex;
   align-items: center;
-  padding: 0.85rem 1.8rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.9rem 2rem;
+  background: rgba(22, 22, 26, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   color: #F5F5F7;
   font-family: 'Inter', sans-serif;
-  font-size: 0.84rem;
+  font-size: 0.85rem;
   font-weight: 600;
   border-radius: 9999px;
   cursor: pointer;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .apple-btn-glass:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(35, 35, 42, 0.8);
+  border-color: rgba(255, 255, 255, 0.35);
   transform: scale(1.02);
 }
 
-/* ── 3D Tech Hardware Frame ── */
-.apple-hero-tech-frame {
-  position: relative;
-  z-index: 10;
-  width: 90%;
-  max-width: 940px;
-  margin-top: 2.5rem;
-  transform-style: preserve-3d;
-  will-change: transform, opacity;
-}
-
-.apple-frame-glass-bezel {
-  background: rgba(18, 18, 22, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(41, 151, 255, 0.1);
-  backdrop-filter: blur(24px);
-}
-
-.apple-frame-header {
+/* ── Quick Highlight Tray ── */
+.apple-hero-quick-tray {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1.25rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.apple-frame-dots {
-  display: flex;
-  gap: 6px;
-}
-
-.apple-frame-dots span {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.apple-frame-dots span:nth-child(1) { background: #FF5F56; }
-.apple-frame-dots span:nth-child(2) { background: #FFBD2E; }
-.apple-frame-dots span:nth-child(3) { background: #27C93F; }
-
-.apple-frame-title {
-  font-family: 'Space Grotesk', monospace;
-  font-size: 0.72rem;
-  color: #86868B;
-  letter-spacing: 0.04em;
-}
-
-.apple-frame-chip {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: #2997FF;
-  letter-spacing: 0.08em;
-  background: rgba(41, 151, 255, 0.08);
-  border: 1px solid rgba(41, 151, 255, 0.2);
-  padding: 0.2rem 0.6rem;
+  gap: 1.25rem;
+  margin-top: 2.8rem;
+  padding: 0.55rem 1.4rem;
   border-radius: 9999px;
+  background: rgba(22, 22, 26, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
 }
 
-.apple-frame-image-wrapper {
-  position: relative;
-  width: 100%;
-  height: 380px;
-  overflow: hidden;
-}
-
-.apple-frame-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.apple-frame-overlay-glass {
-  position: absolute;
-  bottom: 1.25rem;
-  left: 1.25rem;
-  z-index: 2;
-}
-
-.apple-frame-floating-pill {
-  display: inline-flex;
+.apple-tray-item {
+  display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: rgba(0, 0, 0, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 9999px;
-  backdrop-filter: blur(16px);
   font-family: 'Inter', sans-serif;
   font-size: 0.75rem;
   font-weight: 500;
-  color: #F5F5F7;
+  color: #CBD5E1;
+}
+
+.apple-tray-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
 }
 
 /* ── Scroll Prompt ── */
 .apple-scroll-prompt {
   position: absolute;
-  bottom: 1.5rem;
+  bottom: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -345,10 +298,19 @@
 
 @media (max-width: 767px) {
   .apple-hero-container {
-    height: 180vh;
+    height: 160vh;
   }
-  .apple-frame-image-wrapper {
-    height: 220px;
+  .apple-hero-content {
+    padding-top: 5rem;
+  }
+  .apple-hero-quick-tray {
+    flex-direction: column;
+    border-radius: 18px;
+    gap: 0.5rem;
+    padding: 0.8rem 1.2rem;
+  }
+  .apple-tray-dot {
+    display: none;
   }
   .apple-hero-cta-group {
     flex-direction: column;

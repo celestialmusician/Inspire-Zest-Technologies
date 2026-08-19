@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { getLenis } from '@/hooks/useLenis'
-import { ArrowUpRight, Cpu, Sparkles, ChevronDown } from 'lucide-react'
+import { ArrowUpRight, Sparkles, ChevronDown } from 'lucide-react'
 import './PortalOpeningHero.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -10,126 +10,47 @@ gsap.registerPlugin(ScrollTrigger)
 export default function PortalOpeningHero() {
   const containerRef = useRef<HTMLDivElement>(null)
   const stickyRef    = useRef<HTMLDivElement>(null)
-  const canvasRef    = useRef<HTMLCanvasElement>(null)
+  const bgImgRef     = useRef<HTMLImageElement>(null)
   const contentRef   = useRef<HTMLDivElement>(null)
-  const techFrameRef = useRef<HTMLDivElement>(null)
   const badgeRef     = useRef<HTMLDivElement>(null)
   const titleRef     = useRef<HTMLHeadingElement>(null)
   const subtitleRef  = useRef<HTMLParagraphElement>(null)
   const ctasRef      = useRef<HTMLDivElement>(null)
   const spotlightRef = useRef<HTMLDivElement>(null)
+  const statsBarRef  = useRef<HTMLDivElement>(null)
 
-  // ── 1. Minimal Ambient Canvas Tech Starfield ──────────────────────────────
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d', { alpha: true })
-    if (!ctx) return
-
-    let animationFrameId: number
-    let width = (canvas.width = window.innerWidth)
-    let height = (canvas.height = window.innerHeight)
-
-    const isMobile = window.innerWidth < 768
-    const numParticles = isMobile ? 30 : 60
-
-    interface Star {
-      x: number
-      y: number
-      radius: number
-      alpha: number
-      speed: number
-    }
-
-    const stars: Star[] = []
-    for (let i = 0; i < numParticles; i++) {
-      stars.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        radius: Math.random() * 1.5 + 0.5,
-        alpha: Math.random() * 0.5 + 0.1,
-        speed: Math.random() * 0.2 + 0.05,
-      })
-    }
-
-    const handleResize = () => {
-      if (!canvas) return
-      width = canvas.width = window.innerWidth
-      height = canvas.height = window.innerHeight
-    }
-
-    window.addEventListener('resize', handleResize)
-
-    const render = () => {
-      ctx.clearRect(0, 0, width, height)
-
-      // Draw subtle specular grid
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.015)'
-      ctx.lineWidth = 1
-      const gridSize = 80
-      for (let x = 0; x < width; x += gridSize) {
-        ctx.beginPath()
-        ctx.moveTo(x, 0)
-        ctx.lineTo(x, height)
-        ctx.stroke()
-      }
-      for (let y = 0; y < height; y += gridSize) {
-        ctx.beginPath()
-        ctx.moveTo(0, y)
-        ctx.lineTo(width, y)
-        ctx.stroke()
-      }
-
-      // Draw subtle particles
-      for (let i = 0; i < stars.length; i++) {
-        const s = stars[i]
-        s.y -= s.speed
-        if (s.y < 0) s.y = height
-
-        ctx.beginPath()
-        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2)
-        ctx.fillStyle = '#FFFFFF'
-        ctx.globalAlpha = s.alpha
-        ctx.fill()
-      }
-
-      ctx.globalAlpha = 1.0
-      animationFrameId = requestAnimationFrame(render)
-    }
-
-    render()
-
-    return () => {
-      cancelAnimationFrame(animationFrameId)
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
-
-  // ── 2. Interactive 3D Card Tilt & Specular Reflection ─────────────────────
+  // ── 1. Interactive Mouse Spotlight & Ambient Tilt ─────────────────────────
   useEffect(() => {
     const stage = stickyRef.current
-    const frame = techFrameRef.current
-    if (!stage || !frame || window.innerWidth < 1024) return
+    const content = contentRef.current
+    const bgImg = bgImgRef.current
+    if (!stage || !content || window.innerWidth < 1024) return
 
-    const tiltXTo = gsap.quickTo(frame, 'rotationX', { duration: 0.6, ease: 'power2.out' })
-    const tiltYTo = gsap.quickTo(frame, 'rotationY', { duration: 0.6, ease: 'power2.out' })
     const spotXTo = gsap.quickTo(spotlightRef.current, 'x', { duration: 0.4, ease: 'power2.out' })
     const spotYTo = gsap.quickTo(spotlightRef.current, 'y', { duration: 0.4, ease: 'power2.out' })
+    const tiltXTo = gsap.quickTo(content, 'rotationX', { duration: 0.6, ease: 'power2.out' })
+    const tiltYTo = gsap.quickTo(content, 'rotationY', { duration: 0.6, ease: 'power2.out' })
+    const bgMoveXTo = gsap.quickTo(bgImg, 'x', { duration: 0.8, ease: 'power2.out' })
+    const bgMoveYTo = gsap.quickTo(bgImg, 'y', { duration: 0.8, ease: 'power2.out' })
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = stage.getBoundingClientRect()
       const xNorm = (e.clientX - rect.left) / rect.width - 0.5
       const yNorm = (e.clientY - rect.top) / rect.height - 0.5
 
-      tiltXTo(-yNorm * 10)
-      tiltYTo(xNorm * 12)
       spotXTo(e.clientX)
       spotYTo(e.clientY)
+      tiltXTo(-yNorm * 8)
+      tiltYTo(xNorm * 10)
+      bgMoveXTo(-xNorm * 25)
+      bgMoveYTo(-yNorm * 25)
     }
 
     const handleMouseLeave = () => {
       tiltXTo(0)
       tiltYTo(0)
+      bgMoveXTo(0)
+      bgMoveYTo(0)
     }
 
     stage.addEventListener('mousemove', handleMouseMove)
@@ -141,30 +62,36 @@ export default function PortalOpeningHero() {
     }
   }, [])
 
-  // ── 3. GSAP Timeline & Apple ScrollTrigger Scrub ──────────────────────────
+  // ── 2. GSAP Entrance and Fullscreen Background Zoom Scrub ─────────────────
   useEffect(() => {
     const container = containerRef.current
     const content = contentRef.current
-    const frame = techFrameRef.current
+    const bgImg = bgImgRef.current
     if (!container || !content) return
 
     const isMobile = window.innerWidth < 768
 
     const ctx = gsap.context(() => {
-      // Entrance Timeline on Load
+      // 1. Entrance Timeline on Load
       const loadTl = gsap.timeline({ defaults: { ease: 'power3.out' } })
 
       loadTl
         .fromTo(
+          bgImg,
+          { scale: 1.12, opacity: 0 },
+          { scale: 1.04, opacity: 0.7, duration: 1.4, ease: 'power2.out' }
+        )
+        .fromTo(
           badgeRef.current,
           { opacity: 0, y: -20, scale: 0.95 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.8, delay: 0.2 }
+          { opacity: 1, y: 0, scale: 1, duration: 0.8 },
+          '-=1.0'
         )
         .fromTo(
           '.hero-split-word',
           { yPercent: 120, opacity: 0 },
           { yPercent: 0, opacity: 1, stagger: 0.05, duration: 1.1, ease: 'power4.out' },
-          '-=0.5'
+          '-=0.7'
         )
         .fromTo(
           subtitleRef.current,
@@ -179,13 +106,13 @@ export default function PortalOpeningHero() {
           '-=0.5'
         )
         .fromTo(
-          frame,
-          { opacity: 0, y: 60, scale: 0.92 },
-          { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'power3.out' },
-          '-=0.6'
+          statsBarRef.current,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.8 },
+          '-=0.4'
         )
 
-      // Pinned Apple-style Zoom Scrub on Scroll
+      // 2. Pinned Fullscreen Background Parallax & Zoom Scrub on Scroll
       const scrubTl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
@@ -198,22 +125,24 @@ export default function PortalOpeningHero() {
       })
 
       scrubTl
+        // Fullscreen background zooms smoothly and dims slightly into next section
         .to(
-          content,
+          bgImg,
           {
-            y: -80,
-            opacity: 0,
-            scale: 0.92,
-            ease: 'power1.in',
+            scale: isMobile ? 1.25 : 1.35,
+            opacity: 0.25,
+            ease: 'none',
           },
           0
         )
+        // Typography and CTAs zoom outward and fade smoothly
         .to(
-          frame,
+          content,
           {
-            scale: isMobile ? 1.4 : 1.8,
-            z: 300,
+            scale: isMobile ? 1.3 : 1.5,
+            z: 200,
             opacity: 0,
+            y: -50,
             ease: 'power1.in',
           },
           0
@@ -255,8 +184,19 @@ export default function PortalOpeningHero() {
       aria-label="Inspire Zest Technologies — Keynote Hero"
     >
       <div ref={stickyRef} className="apple-hero-stage">
-        {/* Layer 1: Minimalist Starfield & Grid */}
-        <canvas ref={canvasRef} className="apple-hero-canvas" aria-hidden="true" />
+        {/* Layer 1: Fullscreen High-Resolution Tech Photo Background */}
+        <div className="apple-hero-bg-wrapper" aria-hidden="true">
+          <img
+            ref={bgImgRef}
+            src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2400&auto=format&fit=crop"
+            alt="Cybernetic Tech Matrix Background"
+            className="apple-hero-bg-image"
+            loading="eager"
+            decoding="async"
+          />
+          {/* Cinematic Dark Vignette & Mesh Gradient Overlay */}
+          <div className="apple-hero-bg-overlay" />
+        </div>
 
         {/* Layer 2: Interactive Specular Spotlight */}
         <div ref={spotlightRef} className="apple-hero-spotlight" aria-hidden="true" />
@@ -314,40 +254,20 @@ export default function PortalOpeningHero() {
               <span>Start a Project</span>
             </button>
           </div>
-        </div>
 
-        {/* Layer 4: 3D Floating Keynote Tech Visual */}
-        <div ref={techFrameRef} className="apple-hero-tech-frame">
-          <div className="apple-frame-glass-bezel">
-            {/* Top Bar of Device Frame */}
-            <div className="apple-frame-header">
-              <div className="apple-frame-dots">
-                <span />
-                <span />
-                <span />
-              </div>
-              <span className="apple-frame-title">inspirezest-core.engine // v4.2.0</span>
-              <div className="apple-frame-chip">
-                <Cpu size={13} className="text-cyan-400" />
-                <span>AI OPTIMIZED</span>
-              </div>
+          {/* Quick Highlight Floating Tray */}
+          <div ref={statsBarRef} className="apple-hero-quick-tray">
+            <div className="apple-tray-item">
+              <Sparkles size={14} className="text-cyan-400" />
+              <span>Award-Winning Motion</span>
             </div>
-
-            {/* High-Resolution Tech Showcase Image */}
-            <div className="apple-frame-image-wrapper">
-              <img
-                src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1400&auto=format&fit=crop"
-                alt="Inspire Zest Core Tech Visualization"
-                className="apple-frame-img"
-                loading="eager"
-                decoding="async"
-              />
-              <div className="apple-frame-overlay-glass" aria-hidden="true">
-                <div className="apple-frame-floating-pill">
-                  <Sparkles size={14} className="text-cyan-400" />
-                  <span>Sub-0.4s Latency · Enterprise Scalability</span>
-                </div>
-              </div>
+            <div className="apple-tray-dot" />
+            <div className="apple-tray-item">
+              <span>99.8% System Uptime</span>
+            </div>
+            <div className="apple-tray-dot" />
+            <div className="apple-tray-item">
+              <span>India & UAE Hubs</span>
             </div>
           </div>
         </div>
