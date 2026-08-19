@@ -2,15 +2,19 @@ import { useRef, useMemo, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useWebGLCapability } from '@/hooks/useWebGLCapability'
 import { useIsTouch, usePrefersReducedMotion } from '@/hooks/useMediaQuery'
 import './GlobalBackground.css'
 
-// GLSL Shader for global interactive background particles
+gsap.registerPlugin(ScrollTrigger)
+
+// GLSL Shader for global interactive background particles with Scroll Warp
 const vertexShader = `
   attribute float aSize;
   attribute float aAlpha;
   uniform float uTime;
+  uniform float uScrollSpeed;
   uniform vec2 uMouse;
   varying float vAlpha;
   varying vec3 vPos;
@@ -18,11 +22,11 @@ const vertexShader = `
   void main() {
     vec3 pos = position;
 
-    // Slow ambient float
-    pos.x += sin(uTime * 0.2 + pos.z) * 0.08;
-    pos.y += cos(uTime * 0.15 + pos.x) * 0.08;
+    // Continuous ambient drift + Scroll acceleration
+    pos.z += sin(uTime * 0.3 + pos.x) * 0.1;
+    pos.y += cos(uTime * 0.2 + pos.z) * 0.1;
 
-    // Interactive mouse repulsion/pull in 3D
+    // 3D Mouse interaction
     vec2 m = uMouse * 4.0;
     float dist = distance(pos.xy, m);
     if (dist < 1.8) {
@@ -33,7 +37,10 @@ const vertexShader = `
     }
 
     vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
-    gl_PointSize = aSize * (30.0 / -mvPos.z);
+    
+    // Warp particle size during scroll
+    float warpSize = aSize * (32.0 / -mvPos.z) * (1.0 + uScrollSpeed * 0.08);
+    gl_PointSize = clamp(warpSize, 1.0, 60.0);
     gl_Position = projectionMatrix * mvPos;
 
     vAlpha = aAlpha;
@@ -51,18 +58,19 @@ const fragmentShader = `
 
     float alpha = smoothstep(0.5, 0.0, dist) * vAlpha;
 
-    // Soft gradient shift: Electric Emerald (#00F5A0) to Neon Cyan (#00F0FF)
-    vec3 emerald = vec3(0.0, 0.96, 0.62);
-    vec3 cyan    = vec3(0.0, 0.94, 1.0);
-    vec3 col     = mix(emerald, cyan, sin(vPos.x * 1.5 + vPos.y) * 0.5 + 0.5);
+    // Apple Pro Neon Cyan (#00F0FF) to Titanium Silver / Violet (#BF5AF2)
+    vec3 cyan   = vec3(0.0, 0.94, 1.0);
+    vec3 violet = vec3(0.75, 0.35, 0.95);
+    vec3 col    = mix(cyan, violet, sin(vPos.x * 1.5 + vPos.z) * 0.5 + 0.5);
 
-    gl_FragColor = vec4(col, alpha * 0.45);
+    gl_FragColor = vec4(col, alpha * 0.5);
   }
 `
 
 function BackgroundParticles({ count }: { count: number }) {
   const pointsRef = useRef<THREE.Points>(null)
   const matRef    = useRef<THREE.ShaderMaterial>(null)
+  const scrollVelRef = useRef(0)
 
   const { positions, sizes, alphas } = useMemo(() => {
     const pos = new Float32Array(count * 3)
@@ -70,11 +78,11 @@ function BackgroundParticles({ count }: { count: number }) {
     const al  = new Float32Array(count)
 
     for (let i = 0; i < count; i++) {
-      pos[i * 3]     = (Math.random() - 0.5) * 12
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 8
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 6
+      pos[i * 3]     = (Math.random() - 0.5) * 14
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 10
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 8
 
-      sz[i] = Math.random() * 1.5 + 0.5
+      sz[i] = Math.random() * 1.6 + 0.6
       al[i] = Math.random() * 0.6 + 0.2
     }
 
@@ -89,26 +97,49 @@ function BackgroundParticles({ count }: { count: number }) {
     return geo
   }, [positions, sizes, alphas])
 
-  const shaderMat = useMemo(() => new THREE.ShaderMaterial({
-    vertexShader,
-    fragmentShader,
-    uniforms: {
-      uTime:  { value: 0 },
-      uMouse: { value: new THREE.Vector2(0, 0) },
-    },
-    transparent: true,
-    depthWrite: false,
-    blending: THREE.AdditiveBlending,
-  }), [])
+  const shaderMat = useMemo(
+    () =>
+      new THREE.ShaderMaterial({
+        vertexShader,
+        fragmentShader,
+        uniforms: {
+          uTime: { value: 0 },
+          uScrollSpeed: { value: 0 },
+          uMouse: { value: new THREE.Vector2(0, 0) },
+        },
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      }),
+    []
+  )
+
+  useEffect(() => {
+    let lastY = window.scrollY
+    const onScroll = () => {
+      const currentY = window.scrollY
+      const delta = Math.abs(currentY - lastY)
+      lastY = currentY
+      scrollVelRef.current = Math.min(delta * 0.08, 8.0)
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useFrame((state, delta) => {
     if (matRef.current) {
-      matRef.current.uniforms.uTime.value += delta
+      matRef.current.uniforms.uTime.value += delta * (1.0 + scrollVelRef.current * 0.2)
+      matRef.current.uniforms.uScrollSpeed.value = scrollVelRef.current
       matRef.current.uniforms.uMouse.value.set(state.mouse.x, state.mouse.y)
     }
     if (pointsRef.current) {
-      pointsRef.current.rotation.y = state.clock.elapsedTime * 0.02
+      pointsRef.current.rotation.y += delta * 0.02 * (1.0 + scrollVelRef.current * 0.15)
+      pointsRef.current.rotation.x += delta * 0.01
     }
+
+    // Decay scroll velocity smoothly
+    scrollVelRef.current += (0 - scrollVelRef.current) * 0.06
   })
 
   return (
@@ -149,7 +180,7 @@ export default function GlobalBackground() {
 
   return (
     <div className="gb-root" aria-hidden="true">
-      {/* Three.js interactive WebGL particle field */}
+      {/* Three.js interactive WebGL particle field with scroll warp */}
       {supportsWebGL && !reduced && (
         <div className="gb-canvas">
           <Canvas camera={{ position: [0, 0, 5], fov: 60 }} dpr={[1, 1.5]}>
