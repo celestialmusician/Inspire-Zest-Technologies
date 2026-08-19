@@ -1,18 +1,18 @@
 /* ═════════════════════════════════════════════════════════════════
-   APPLE PRO ABOUT SECTION (LIGHT & DARK DYNAMIC)
+   APPLE PRO ABOUT SECTION (UNIFIED SPACING & CONTAINER)
 ═════════════════════════════════════════════════════════════════ */
 
 .about-section {
   position: relative;
   width: 100%;
-  padding: 8rem 2rem;
-  background: var(--bg);
+  padding: var(--section-py) var(--container-px);
+  background: transparent;
   overflow: hidden;
   z-index: 20;
 }
 
 .about-container {
-  max-width: 1280px;
+  max-width: var(--container-max);
   margin: 0 auto;
 }
 
@@ -21,7 +21,7 @@
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.03em;
-  margin-bottom: 4rem;
+  margin-bottom: var(--section-header-mb);
   color: var(--primary);
 }
 
@@ -39,7 +39,7 @@
 .about-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  gap: var(--grid-gap);
 }
 
 .about-card {
@@ -97,6 +97,6 @@
     gap: 1.5rem;
   }
   .about-section {
-    padding: 5rem 1.25rem;
+    padding: 4.5rem var(--container-px);
   }
 }

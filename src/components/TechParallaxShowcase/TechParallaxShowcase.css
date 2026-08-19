@@ -1,17 +1,17 @@
 /* ═════════════════════════════════════════════════════════════════
-   APPLE PRO PARALLAX TECH SHOWCASE SECTION (LIGHT & DARK DYNAMIC)
+   APPLE PRO PARALLAX TECH SHOWCASE SECTION (UNIFIED SPACING)
 ═════════════════════════════════════════════════════════════════ */
 
 .tech-parallax-section {
   position: relative;
   width: 100%;
-  min-height: 85vh;
-  background: var(--bg);
+  min-height: 80vh;
+  background: transparent;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6rem 2rem;
+  padding: var(--section-py) var(--container-px);
   z-index: 12;
 }
 
@@ -46,8 +46,8 @@
 .tech-parallax-content {
   position: relative;
   z-index: 5;
-  max-width: 1140px;
-  width: 90%;
+  max-width: var(--container-max);
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -60,7 +60,7 @@
   flex-direction: column;
   align-items: center;
   max-width: 860px;
-  margin-bottom: 3.5rem;
+  margin-bottom: var(--section-header-mb);
 }
 
 /* ── Headline ── */
@@ -94,18 +94,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  gap: var(--grid-gap);
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .tech-parallax-chip {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.9rem 1.6rem;
+  padding: 1rem 1.8rem;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 24px;
   backdrop-filter: saturate(180%) blur(24px);
   -webkit-backdrop-filter: saturate(180%) blur(24px);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
@@ -118,9 +119,9 @@
 }
 
 .tech-chip-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
   background: rgba(41, 151, 255, 0.08);
   border: 1px solid var(--border);
   display: flex;
@@ -135,7 +136,7 @@
 }
 
 .tech-chip-val {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--primary);
   line-height: 1.2;
@@ -143,14 +144,14 @@
 
 .tech-chip-label {
   font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: var(--secondary);
   letter-spacing: 0.02em;
 }
 
 @media (max-width: 767px) {
   .tech-parallax-section {
-    padding: 5rem 1.25rem;
+    padding: 4.5rem var(--container-px);
     min-height: auto;
   }
   .tech-parallax-chips-row {

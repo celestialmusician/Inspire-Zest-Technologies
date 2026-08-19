@@ -1,18 +1,18 @@
 /* ═════════════════════════════════════════════════════════════════
-   STATS COUNTER SECTION — APPLE PRO FROSTED GLASS KPI CARDS
+   STATS COUNTER SECTION (UNIFIED SPACING & CONTAINER)
 ═════════════════════════════════════════════════════════════════ */
 
 .stats-section {
   position: relative;
   width: 100%;
-  padding: 8rem 2rem;
-  background: var(--bg);
+  padding: var(--section-py) var(--container-px);
+  background: transparent;
   overflow: hidden;
   z-index: 15;
 }
 
 .stats-container {
-  max-width: 1280px;
+  max-width: var(--container-max);
   margin: 0 auto;
 }
 
@@ -20,7 +20,7 @@
 .stats-header {
   text-align: center;
   max-width: 820px;
-  margin: 0 auto 5rem;
+  margin: 0 auto var(--section-header-mb);
 }
 
 .stats-title {
@@ -29,7 +29,7 @@
   line-height: 1.15;
   letter-spacing: -0.03em;
   color: var(--primary);
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
 }
 
 .stats-title-gradient {
@@ -49,7 +49,7 @@
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.8rem;
+  gap: var(--grid-gap);
 }
 
 /* ── Individual Card ── */
@@ -145,7 +145,7 @@
 
 @media (max-width: 640px) {
   .stats-section {
-    padding: 5rem 1.25rem;
+    padding: 4.5rem var(--container-px);
   }
   .stats-grid {
     grid-template-columns: 1fr;

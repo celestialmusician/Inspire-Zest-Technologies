@@ -1,22 +1,22 @@
 /* ═════════════════════════════════════════════════════════════════
-   CONTACT SECTION (LIGHT & DARK DYNAMIC)
+   CONTACT SECTION (UNIFIED SPACING & CONTAINER)
 ═════════════════════════════════════════════════════════════════ */
 
 .contact-section {
   position: relative;
   width: 100%;
-  padding: 8rem 2rem 10rem;
-  background: var(--bg);
+  padding: var(--section-py) var(--container-px) clamp(6rem, 9vw, 9rem);
+  background: transparent;
   overflow: hidden;
   z-index: 20;
 }
 
 .contact-container {
-  max-width: 1280px;
+  max-width: var(--container-max);
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1.35fr;
-  gap: 5rem;
+  gap: var(--grid-gap);
 }
 
 /* ── Left Column ── */
@@ -32,7 +32,7 @@
   line-height: 1.05;
   letter-spacing: -0.035em;
   color: var(--primary);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 }
 
 .contact-title-gradient {
@@ -46,7 +46,7 @@
   font-size: 1.05rem;
   line-height: 1.65;
   color: var(--secondary);
-  margin-bottom: 3.5rem;
+  margin-bottom: 3rem;
 }
 
 /* Global Hubs Card */
@@ -58,7 +58,7 @@
   padding: 2.5rem;
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .contact-card-subhead {
@@ -243,10 +243,10 @@
 @media (max-width: 1024px) {
   .contact-container {
     grid-template-columns: 1fr;
-    gap: 3.5rem;
+    gap: 3rem;
   }
   .contact-section {
-    padding: 5rem 1.25rem 6rem;
+    padding: 4.5rem var(--container-px) 5rem;
   }
   .contact-form {
     padding: 2.2rem 1.5rem;

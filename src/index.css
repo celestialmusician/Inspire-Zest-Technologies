@@ -35,13 +35,20 @@
   --font-display:       'Space Grotesk', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
   --font-body:          'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
 
-  /* fluid type scale */
+  /* unified fluid type scale */
   --text-hero:          clamp(2.8rem, 6.8vw, 7.5rem);
   --text-display:       clamp(2.2rem, 5vw, 5.5rem);
   --text-heading:       clamp(1.6rem, 3.6vw, 3.2rem);
   --text-sub:           clamp(0.98rem, 1.8vw, 1.25rem);
   --text-body:          clamp(0.9rem, 1.5vw, 1.05rem);
   --text-label:         clamp(0.68rem, 1vw, 0.8rem);
+
+  /* unified layout spacing scale */
+  --container-max:      1280px;
+  --container-px:       clamp(1.25rem, 3.5vw, 2.5rem);
+  --section-py:         clamp(5rem, 7.5vw, 7.5rem);
+  --section-header-mb:  clamp(3rem, 4.5vw, 4.5rem);
+  --grid-gap:           clamp(1.25rem, 2vw, 1.8rem);
 
   /* easing */
   --ease-apple:         cubic-bezier(0.16, 1, 0.3, 1);
@@ -161,7 +168,7 @@ body {
   position: relative;
   width: 100%;
   overflow: hidden;
-  background-color: var(--bg);
+  background-color: transparent;
 }
 
 /* ── FOCUS VISIBLE ─────────────────────────────────────────── */
