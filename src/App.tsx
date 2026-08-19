@@ -21,7 +21,6 @@ import FinalCTA from '@/components/FinalCTA'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 import FloatingWhatsApp from '@/components/FloatingWhatsApp'
-import CinematicScrollDirector from '@/components/CinematicScrollDirector'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './index.css'
 
@@ -67,7 +66,6 @@ export default function App() {
         }}
       >
         <Navigation />
-        <CinematicScrollDirector />
         <FloatingWhatsApp />
 
         <main id="main-content" tabIndex={-1}>

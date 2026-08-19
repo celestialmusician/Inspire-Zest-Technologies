@@ -84,8 +84,7 @@ export default function Services() {
 
         gsap.to(card, {
           scale: isMobile ? 0.95 : 0.92,
-          opacity: 0.35,
-          filter: 'blur(4px)',
+          opacity: 0.45,
           yPercent: -4 * index,
           ease: 'none',
           scrollTrigger: {
