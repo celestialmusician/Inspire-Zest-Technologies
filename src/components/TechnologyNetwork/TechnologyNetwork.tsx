@@ -80,8 +80,8 @@ export default function TechnologyNetwork() {
           const scrollVel = self.getVelocity()
           if (scrollVel !== 0) {
             direction = scrollVel > 0 ? 1 : -1
-            // Accelerate velocity ticker proportionally up to 6x
-            velocity = Math.min(Math.abs(scrollVel) * 0.005 + 1.0, 7.0)
+            // Accelerate velocity ticker smoothly up to 3.5x
+            velocity = Math.min(Math.abs(scrollVel) * 0.002 + 1.0, 3.5)
           }
         },
       })

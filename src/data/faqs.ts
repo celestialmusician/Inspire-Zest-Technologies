@@ -11,41 +11,41 @@ export const FAQS: FAQItem[] = [
     category: 'SERVICES & CAPABILITIES',
     question: 'What digital solutions and services does InspireZest provide?',
     answer:
-      'We design and engineer enterprise-grade web applications, interactive 3D digital experiences, mobile applications, scalable cloud backends, custom ERP/CRM software, and AI-driven automation workflows built for fast-growth companies.',
+      'InspireZest Technologies offers a comprehensive suite of services including Web Development, Mobile App Development, Software Development, ERP Development, E-Commerce Development, Digital Marketing, Branding, SEO, Google Ads, Logo Designing, and AI Integrations — all tailored to meet the evolving needs of businesses in the digital era.',
+  },
+  {
+    id: 'location',
+    category: 'ABOUT US',
+    question: 'Where is InspireZest Technologies located?',
+    answer:
+      'We operate from two offices: our India office at 2nd Floor, Velayudha Mansion, SN College Junction, Kollam, Kerala, India – 691001, and our UAE office at M26, Mussafah, Abu Dhabi, United Arab Emirates. You can reach us at +91 9037374266 or info@inspirezesttechnologies.com.',
   },
   {
     id: 'timeline',
     category: 'TIMELINE & DELIVERY',
     question: 'How long does a typical project take from concept to launch?',
     answer:
-      'High-impact corporate websites and MVPs typically launch within 2 to 4 weeks. Complex digital platforms, custom mobile apps, and enterprise systems generally range between 6 to 12 weeks with weekly milestone deliverables and staging deployments.',
+      'High-impact corporate websites and MVPs typically launch within 2 to 4 weeks. Complex digital platforms, custom mobile apps, and enterprise ERP systems generally range between 6 to 12 weeks. We use agile methodology with weekly milestones to ensure on-time delivery without compromising quality.',
   },
   {
     id: 'tech-stack',
     category: 'TECH STACK & ARCHITECTURE',
     question: 'What technologies and frameworks do you build with?',
     answer:
-      'We architect with modern, proven technologies including React, Next.js, TypeScript, Node.js, Python, Three.js/WebGL for interactive 3D, Tailwind CSS, PostgreSQL, and cloud-native infrastructure deployed on AWS and Google Cloud.',
+      'Our web development team is proficient in front-end technologies like HTML, CSS, and JavaScript, and robust back-end solutions using Django and Flask. For mobile, we develop native iOS, Android, and cross-platform Flutter apps. We also leverage modern AI/ML frameworks for our AI integration services.',
   },
   {
     id: 'process',
     category: 'PROCESS & COLLABORATION',
     question: 'How do you ensure transparency during development?',
     answer:
-      'You get direct access to dedicated project leads, live staging environments, weekly sprint demo recordings, and real-time collaboration channels via Slack and Notion with zero communication lag.',
-  },
-  {
-    id: 'maintenance',
-    category: 'SUPPORT & SCALING',
-    question: 'Do you offer ongoing support, maintenance, and cloud optimization after launch?',
-    answer:
-      'Yes. We provide comprehensive SLA-backed maintenance packages covering 24/7 uptime monitoring, security audits, database backups, performance tuning, and ongoing feature expansion.',
+      'Open and transparent communication is the foundation of our collaborations. We keep our clients informed at every stage of the development process through dedicated project leads, live staging environments, and regular updates, ensuring a smooth and collaborative experience.',
   },
   {
     id: 'pricing',
     category: 'GETTING STARTED',
-    question: 'How do we get started and receive a project proposal?',
+    question: 'How do we get started with InspireZest Technologies?',
     answer:
-      'Reach out via our contact form or book an exploratory call. We analyze your requirements and deliver a detailed technical roadmap, scope breakdown, and transparent timeline estimate within 48 hours.',
+      'Simply reach out via our contact form, email us at info@inspirezesttechnologies.com, or call us at +91 9037374266. Our team will review your requirements and deliver a detailed technical roadmap, scope breakdown, and transparent timeline estimate within 48 hours.',
   },
 ]

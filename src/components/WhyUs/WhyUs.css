@@ -47,6 +47,11 @@
   margin-bottom: 3.5rem;
 }
 
+/* ── 6-Card 3-Column Grid ── */
+.why-grid--six {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .why-card {
   position: relative;
   background: var(--bg-card);

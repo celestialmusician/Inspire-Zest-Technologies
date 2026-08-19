@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
-import ThemeSwitch from '@/components/ThemeSwitch'
 import './MobileMenu.css'
 
 interface Link {
@@ -97,13 +96,10 @@ export default function MobileMenu({ open, links, onClose, onNavigate }: Props) 
       </nav>
 
       <div className="mm-footer">
-        <div className="mm-theme-row">
-          <span className="mm-theme-label">THEME:</span>
-          <ThemeSwitch />
-        </div>
         <p>Kollam · Kerala · India</p>
         <p className="mm-footer-copy">Copyright © {new Date().getFullYear()} All rights reserved | InspireZest Technologies Pvt Ltd</p>
       </div>
     </div>
   )
 }
+

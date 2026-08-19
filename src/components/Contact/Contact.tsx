@@ -9,13 +9,16 @@ import './Contact.css'
 gsap.registerPlugin(ScrollTrigger)
 
 const SERVICE_OPTIONS = [
-  'Web Development & WebGL',
-  'Mobile App Development (iOS/Android)',
-  'AI & Enterprise Software',
-  'ERP & Business Automation',
-  'Custom E-Commerce Platform',
-  'Branding & Digital Marketing',
-  'Other Custom Project',
+  'Web Development',
+  'Mobile App Development',
+  'AI Integrations',
+  'ERP Development',
+  'E-Commerce Development',
+  'Digital Marketing',
+  'Branding & Logo Design',
+  'SEO & Google Ads',
+  'Software Development',
+  'Other / Custom Project',
 ]
 
 type FormState = 'idle' | 'loading' | 'success' | 'error'
@@ -134,21 +137,21 @@ export default function Contact() {
 
           {/* Global Offices Highlight */}
           <div className="contact-offices-card">
-            <span className="contact-card-subhead">GLOBAL HUBS</span>
+            <span className="contact-card-subhead">GLOBAL OFFICES</span>
 
             <div className="office-item">
               <div className="office-dot" aria-hidden="true" />
               <div>
-                <strong className="office-title">India Innovation Lab</strong>
-                <p className="office-addr">Kollam, Kerala, India</p>
+                <strong className="office-title">India Office</strong>
+                <p className="office-addr">2nd Floor, Velayudha Mansion,<br />SN College Junction, Kollam,<br />Kerala, India – 691001</p>
               </div>
             </div>
 
             <div className="office-item">
               <div className="office-dot office-dot--uae" aria-hidden="true" />
               <div>
-                <strong className="office-title">UAE Regional Office</strong>
-                <p className="office-addr">Abu Dhabi, United Arab Emirates</p>
+                <strong className="office-title">UAE Office</strong>
+                <p className="office-addr">M26, Mussafah,<br />Abu Dhabi, United Arab Emirates</p>
               </div>
             </div>
           </div>
@@ -158,6 +161,10 @@ export default function Contact() {
             <div className="channel-item">
               <Clock size={16} className="text-cyan-400" aria-hidden="true" />
               <span>Response time: Under 24 hours</span>
+            </div>
+            <div className="channel-item">
+              <Phone size={16} className="text-cyan-400" aria-hidden="true" />
+              <a href="tel:+919037374266">+91 9037374266</a>
             </div>
             <div className="channel-item">
               <Mail size={16} className="text-cyan-400" aria-hidden="true" />

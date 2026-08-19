@@ -149,17 +149,37 @@
   color: var(--secondary);
 }
 
-.footer-legal-links a {
-  color: var(--secondary);
-  text-decoration: none;
+.footer-back-to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  padding: 0.45rem 1rem;
+  color: var(--primary);
   font-family: var(--font-body);
-  font-weight: 500;
-  transition: color 0.2s ease;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
-.footer-legal-links a:hover {
-  color: var(--primary);
+.footer-back-to-top:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  color: #FFFFFF;
 }
+
+.footer-top-arrow {
+  transition: transform 0.2s ease;
+}
+
+.footer-back-to-top:hover .footer-top-arrow {
+  transform: translateY(-2px);
+}
+
 
 .footer-watermark {
   position: absolute;

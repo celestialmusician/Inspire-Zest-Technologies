@@ -11,6 +11,98 @@
   background-color: var(--bg);
 }
 
+/* ── 0. Diagonal Marquee Carousel ── */
+.gb-marquee-wrap {
+  position: absolute;
+  inset: -60% -40%;          /* oversized so rotation never reveals edges */
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.gb-marquee-skew {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transform: rotate(-18deg) translateY(-5%);
+  transform-origin: center center;
+  opacity: 0.13;             /* very subtle — sits behind everything */
+  filter: blur(0.3px);
+}
+
+[data-theme="light"] .gb-marquee-skew {
+  opacity: 0.08;
+}
+
+.gb-marquee-row {
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+.gb-marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: max-content;
+  /* forward direction */
+  animation: marquee-fwd 32s linear infinite;
+  will-change: transform;
+}
+
+.gb-marquee-row--rev .gb-marquee-track {
+  animation-name: marquee-rev;
+  animation-duration: 28s;
+}
+
+/* vary speeds per row */
+.gb-marquee-row:nth-child(1)  .gb-marquee-track { animation-duration: 34s; }
+.gb-marquee-row:nth-child(2)  .gb-marquee-track { animation-duration: 26s; }
+.gb-marquee-row:nth-child(3)  .gb-marquee-track { animation-duration: 38s; }
+.gb-marquee-row:nth-child(4)  .gb-marquee-track { animation-duration: 30s; }
+.gb-marquee-row:nth-child(5)  .gb-marquee-track { animation-duration: 36s; }
+.gb-marquee-row:nth-child(6)  .gb-marquee-track { animation-duration: 24s; }
+.gb-marquee-row:nth-child(7)  .gb-marquee-track { animation-duration: 40s; }
+.gb-marquee-row:nth-child(8)  .gb-marquee-track { animation-duration: 28s; }
+
+@keyframes marquee-fwd {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }  /* shift by 1/3 since track = items×3 */
+}
+
+@keyframes marquee-rev {
+  0%   { transform: translateX(-33.333%); }
+  100% { transform: translateX(0); }
+}
+
+.gb-marquee-pill {
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--primary);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 14px;
+  background: var(--bg-card);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.gb-marquee-sep {
+  flex-shrink: 0;
+  font-size: 0.55rem;
+  color: var(--accent-cyan);
+  opacity: 0.7;
+  letter-spacing: 0;
+}
+
 /* ── 1. WebGL Canvas Particle Layer ── */
 .gb-canvas {
   position: absolute;

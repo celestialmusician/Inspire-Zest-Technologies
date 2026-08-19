@@ -1,26 +1,30 @@
 import { useRef, useEffect } from 'react'
 import { MapPin, Globe } from 'lucide-react'
+import { getLenis } from '@/hooks/useLenis'
 import './Footer.css'
 
 const NAV_COLS = [
   {
-    label: 'Core Services',
+    label: 'Our Services',
     links: [
-      { name: 'Web Development & 3D', href: '#services' },
-      { name: 'Mobile App Engineering', href: '#services' },
-      { name: 'AI & Enterprise Software', href: '#services' },
-      { name: 'ERP & Business Systems', href: '#services' },
-      { name: 'E-Commerce Solutions', href: '#services' },
-      { name: 'Branding & Growth Marketing', href: '#services' },
+      { name: 'Web Development', href: '#services' },
+      { name: 'Mobile App Development', href: '#services' },
+      { name: 'AI Integrations', href: '#services' },
+      { name: 'ERP Development', href: '#services' },
+      { name: 'E-Commerce Development', href: '#services' },
+      { name: 'Digital Marketing & Branding', href: '#services' },
+      { name: 'SEO & Google Ads', href: '#services' },
+      { name: 'Logo Designing', href: '#services' },
     ],
   },
   {
     label: 'Navigation',
     links: [
-      { name: 'Featured Work', href: '#projects' },
-      { name: 'Architecture & Tech', href: '#technology' },
+      { name: 'About Us', href: '#about' },
+      { name: 'Our Work', href: '#projects' },
+      { name: 'Why Choose Us', href: '#why-us' },
       { name: 'Client Testimonials', href: '#testimonials' },
-      { name: 'Contact & Inquiries', href: '#contact' },
+      { name: 'Contact Us', href: '#contact' },
     ],
   },
 ]
@@ -51,6 +55,16 @@ export default function Footer() {
     return () => card.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
+  const scrollToTop = (e: React.MouseEvent) => {
+    e.preventDefault()
+    const lenis = getLenis()
+    if (lenis) {
+      lenis.scrollTo(0, { duration: 1.5 })
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
+
   return (
     <footer className="footer-award" aria-label="Site footer">
       <div ref={cardRef} className="footer-glass-card">
@@ -63,12 +77,13 @@ export default function Footer() {
           <div className="footer-brand-block">
             <span className="footer-logo font-display">INSPIREZEST</span>
             <p className="footer-tagline font-display">
-              ARCHITECTING THE FUTURE <br />
-              OF DIGITAL EXPERIENCES.
+              BEST ECOMMERCE &amp; WEB DEVELOPMENT <br />
+              COMPANY IN KOLLAM, KERALA.
             </p>
             <p className="footer-subtext">
-              Transforming bold business ideas into scalable software platforms, converting brands,
-              and category-leading products.
+              Innovative and cutting-edge software solutions tailored to meet the evolving needs of
+              businesses in the digital era. We dedicate ourselves for your success with all our
+              resources.
             </p>
           </div>
 
@@ -93,11 +108,11 @@ export default function Footer() {
               <div className="footer-office-loc">
                 <div className="footer-loc-item">
                   <MapPin size={14} className="text-cyan-400" />
-                  <span>Kollam, Kerala, India</span>
+                  <span>2nd Floor, Velayudha Mansion, SN College Junction, Kollam, Kerala, India – 691001</span>
                 </div>
                 <div className="footer-loc-item">
                   <Globe size={14} className="text-purple-400" />
-                  <span>Abu Dhabi, UAE</span>
+                  <span>M26, Mussafah, Abu Dhabi, UAE</span>
                 </div>
               </div>
 
@@ -128,7 +143,16 @@ export default function Footer() {
             © {new Date().getFullYear()} Inspire Zest Technologies Pvt Ltd. All rights reserved.
           </div>
           <div className="footer-legal-links">
-            <a href="#portal-opening">Back to Top ↑</a>
+            <button
+              type="button"
+              onClick={scrollToTop}
+              className="footer-back-to-top"
+              aria-label="Scroll back to top"
+              data-cursor="pointer"
+            >
+              <span>Back to Top</span>
+              <span className="footer-top-arrow" aria-hidden="true">↑</span>
+            </button>
           </div>
         </div>
 
@@ -140,3 +164,4 @@ export default function Footer() {
     </footer>
   )
 }
+

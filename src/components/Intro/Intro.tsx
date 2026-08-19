@@ -1,7 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Sparkles, ArrowRight } from 'lucide-react'
 import './Intro.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -67,14 +66,14 @@ export default function Intro() {
         {/* Cinematic Headline */}
         <h2 className="cinematic-intro-heading font-display">
           <div className="cinematic-line-clip">
-            <span className="cinematic-intro-line text-titanium">WE DON'T JUST</span>
+            <span className="cinematic-intro-line text-titanium">WE HELP TEAMS</span>
           </div>
           <div className="cinematic-line-clip">
-            <span className="cinematic-intro-line text-titanium">BUILD SOFTWARE.</span>
+            <span className="cinematic-intro-line text-titanium">BUILD THE BUSINESS</span>
           </div>
           <div className="cinematic-line-clip">
             <span className="cinematic-intro-line cinematic-accent-text">
-              WE ENGINEER WHAT'S NEXT.
+              OF THEIR DREAMS.
             </span>
           </div>
         </h2>
@@ -83,21 +82,23 @@ export default function Intro() {
         <div className="cinematic-intro-grid">
           <div className="cinematic-intro-card">
             <div className="cinematic-card-glow" />
-            <h3 className="cinematic-card-title font-display">Strategic Architecture</h3>
+            <h3 className="cinematic-card-title font-display">Premier Software Company</h3>
             <p className="cinematic-card-body">
-              InspireZest Technologies operates at the intersection of high-octane engineering and
-              cinematic visual craft. Based in Kollam, Kerala and Abu Dhabi, UAE, we build digital
-              ecosystems for market category leaders.
+              InspireZest Technologies Pvt. Ltd. is your gateway to innovative and cutting-edge
+              software solutions. As a premier software development company based in Kollam, Kerala,
+              we take pride in being recognized as the best software company in the region, serving
+              clients across India and the Middle East.
             </p>
           </div>
 
           <div className="cinematic-intro-card">
             <div className="cinematic-card-glow cinematic-card-glow--purple" />
-            <h3 className="cinematic-card-title font-display">Measurable Impact</h3>
+            <h3 className="cinematic-card-title font-display">Excellence & Innovation</h3>
             <p className="cinematic-card-body">
-              Every system we deploy is optimized for extreme throughput, sub-second latency, and
-              high conversion rates. No templates, no compromises — pure tailor-made digital
-              excellence.
+              Our unwavering commitment to excellence, innovation, and customer satisfaction has
+              positioned us as a trusted partner for businesses seeking reliable and impactful
+              software solutions. We dedicate ourselves to your success with all our resources,
+              crafting solutions with utmost perfection.
             </p>
           </div>
         </div>

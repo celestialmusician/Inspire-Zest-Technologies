@@ -1,17 +1,17 @@
 /* ═════════════════════════════════════════════════════════════════
-   APPLE PRO PARALLAX TECH SHOWCASE SECTION (UNIFIED SPACING)
+   APPLE PRO PARALLAX TECH SHOWCASE SECTION (CLEAN & MINIMAL)
 ═════════════════════════════════════════════════════════════════ */
 
 .tech-parallax-section {
   position: relative;
   width: 100%;
-  min-height: 80vh;
+  min-height: 70vh;
   background: transparent;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--section-py) var(--container-px);
+  padding: clamp(5rem, 8vw, 8rem) var(--container-px);
   z-index: 12;
 }
 
@@ -31,6 +31,7 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  opacity: 1;
   will-change: transform;
 }
 
@@ -41,6 +42,7 @@
   background: var(--vignette);
   pointer-events: none;
 }
+
 
 /* ── Content Box ── */
 .tech-parallax-content {
@@ -60,15 +62,32 @@
   flex-direction: column;
   align-items: center;
   max-width: 860px;
-  margin-bottom: var(--section-header-mb);
+}
+
+.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1.1rem;
+  border-radius: 9999px;
+  background: rgba(0, 245, 212, 0.08);
+  border: 1px solid rgba(0, 245, 212, 0.25);
+  color: var(--accent-cyan);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1.4rem;
+  backdrop-filter: blur(8px);
 }
 
 /* ── Headline ── */
 .tech-parallax-title {
-  font-size: clamp(2.4rem, 4.8vw, 4.4rem);
-  font-weight: 700;
+  font-size: clamp(2.4rem, 5.2vw, 4.5rem);
+  font-weight: 800;
   line-height: 1.1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
   color: var(--primary);
   margin-bottom: 1.2rem;
 }
@@ -83,70 +102,10 @@
 /* ── Description ── */
 .tech-parallax-desc {
   font-family: var(--font-body);
-  font-size: clamp(0.98rem, 1.35vw, 1.12rem);
-  line-height: 1.65;
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  line-height: 1.7;
   color: var(--secondary);
-  max-width: 680px;
-}
-
-/* ── Metric Chips Row ── */
-.tech-parallax-chips-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--grid-gap);
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.tech-parallax-chip {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.8rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  backdrop-filter: saturate(180%) blur(24px);
-  -webkit-backdrop-filter: saturate(180%) blur(24px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, border-color 0.3s ease;
-}
-
-.tech-parallax-chip:hover {
-  transform: translateY(-4px);
-  border-color: var(--border-hover);
-}
-
-.tech-chip-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  background: rgba(41, 151, 255, 0.08);
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.tech-chip-info {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-}
-
-.tech-chip-val {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--primary);
-  line-height: 1.2;
-}
-
-.tech-chip-label {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  color: var(--secondary);
-  letter-spacing: 0.02em;
+  max-width: 720px;
 }
 
 @media (max-width: 767px) {
@@ -154,11 +113,7 @@
     padding: 4.5rem var(--container-px);
     min-height: auto;
   }
-  .tech-parallax-chips-row {
-    flex-direction: column;
-    width: 100%;
-  }
-  .tech-parallax-chip {
-    width: 100%;
-  }
 }
+
+
+

@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGsap } from '@/hooks/useGsap'
-import { Compass, Palette, Cpu, TrendingUp } from 'lucide-react'
+import { Shield, Lightbulb, Heart, MessageCircle, CheckCircle, Clock } from 'lucide-react'
 import './WhyUs.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -10,31 +10,45 @@ gsap.registerPlugin(ScrollTrigger)
 const PILLARS = [
   {
     num: '01',
-    title: 'Strategy',
-    desc: 'Market architecture, high-growth roadmaps, and technical feasibility audits built for enterprise scale.',
-    icon: Compass,
+    title: 'Expertise',
+    desc: 'Our team comprises skilled professionals with expertise in diverse technologies, ensuring we deliver top-notch solutions across various domains.',
+    icon: Shield,
     color: '#00F5D4',
   },
   {
     num: '02',
-    title: 'Design',
-    desc: 'World-class human-computer interaction, Cupertino-grade aesthetics, and conversion-engineered interfaces.',
-    icon: Palette,
+    title: 'Innovation',
+    desc: 'We embrace innovation, staying abreast of the latest trends and technologies to provide forward-thinking solutions that give your business a competitive edge.',
+    icon: Lightbulb,
     color: '#BF5AF2',
   },
   {
     num: '03',
-    title: 'Technology',
-    desc: 'Fullstack cloud-native web apps, edge architecture, sub-second latency, and rock-solid zero-downtime APIs.',
-    icon: Cpu,
+    title: 'Customer-Centric',
+    desc: 'Customer satisfaction is at the core of our values. We work closely with clients, understanding their unique requirements to deliver tailored solutions that meet and exceed expectations.',
+    icon: Heart,
     color: '#2997FF',
   },
   {
     num: '04',
-    title: 'Growth',
-    desc: 'Automated conversion funnels, data telemetry, organic SEO dominancy, and sustained user retention.',
-    icon: TrendingUp,
+    title: 'Transparent Communication',
+    desc: 'Open and transparent communication is the foundation of successful collaborations. We keep our clients informed at every stage of the development process.',
+    icon: MessageCircle,
+    color: '#FF9F0A',
+  },
+  {
+    num: '05',
+    title: 'Quality Assurance',
+    desc: 'Our commitment to quality is unwavering. Rigorous testing and quality assurance processes are embedded in our development lifecycle to ensure reliable, bug-free solutions.',
+    icon: CheckCircle,
     color: '#30D158',
+  },
+  {
+    num: '06',
+    title: 'Timely Delivery',
+    desc: 'We understand the importance of deadlines. Our agile development methodology allows us to deliver projects on time without compromising on quality.',
+    icon: Clock,
+    color: '#FF375F',
   },
 ]
 
@@ -68,7 +82,7 @@ export default function WhyUs() {
           opacity: 1,
           y: 0,
           scale: 1,
-          stagger: 0.12,
+          stagger: 0.1,
           duration: 0.85,
           ease: 'power3.out',
           scrollTrigger: {
@@ -102,20 +116,20 @@ export default function WhyUs() {
   return (
     <section ref={sectionRef} id="why-us" className="why scene" aria-label="Why InspireZest">
       <div className="why-container">
-        <div className="why-heading" aria-label="One partner. Multiple digital solutions.">
+        <div className="why-heading" aria-label="Why Choose InspireZest Technologies?">
           <div className="why-wrap">
-            <span className="why-heading-line font-display">ONE PARTNER.</span>
+            <span className="why-heading-line font-display">WHY CHOOSE</span>
           </div>
           <div className="why-wrap why-wrap--dim">
-            <span className="why-heading-line font-display">MULTIPLE DIGITAL</span>
+            <span className="why-heading-line font-display">INSPIREZEST</span>
           </div>
           <div className="why-wrap why-wrap--dim">
-            <span className="why-heading-line font-display">SOLUTIONS.</span>
+            <span className="why-heading-line font-display">TECHNOLOGIES?</span>
           </div>
         </div>
 
-        {/* 4 Pillars Glass Card Grid */}
-        <div className="why-grid" role="list" aria-label="Our core pillars">
+        {/* 6 Pillars Glass Card Grid */}
+        <div className="why-grid why-grid--six" role="list" aria-label="Why choose us">
           {PILLARS.map((p) => {
             const Icon = p.icon
             return (
@@ -139,9 +153,11 @@ export default function WhyUs() {
         {/* Summary Statement Card */}
         <div className="why-body-card">
           <p className="why-body font-display">
-            From a single conversation to a complete digital transformation — <strong>InspireZest</strong>{' '}
-            brings strategy, design, technology, and growth into one cohesive partnership. No handoffs.
-            No gaps. One team, one goal.
+            Welcome to <strong>InspireZest Technologies Pvt. Ltd.</strong>, your gateway to
+            innovative and cutting-edge software solutions. As a premier software development company
+            based in Kollam, we take pride in offering a comprehensive suite of services tailored to
+            meet the evolving needs of businesses in the digital era. Experience the difference with
+            InspireZest and elevate your business to new heights.
           </p>
         </div>
       </div>

@@ -9,6 +9,46 @@ import './GlobalBackground.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
+// ── Diagonal Marquee items ──────────────────────────────────────────────────
+const MARQUEE_ROWS: string[][] = [
+  ['Web Development', '⬡', 'Mobile Apps', '◈', 'UI / UX Design', '⬡', 'Cloud Solutions', '◈', 'AI & Machine Learning', '⬡', 'Cybersecurity', '◈'],
+  ['Digital Marketing', '⬡', 'E-Commerce', '◈', 'DevOps', '⬡', 'Data Analytics', '◈', 'API Integration', '⬡', 'SaaS Products', '◈'],
+  ['React', '⬡', 'Node.js', '◈', 'Next.js', '⬡', 'TypeScript', '◈', 'Python', '⬡', 'AWS', '◈', 'Docker', '⬡', 'GraphQL', '◈'],
+  ['Inspire Zest', '⬡', 'Innovation', '◈', 'Strategy', '⬡', 'Growth', '◈', 'Design Systems', '⬡', 'Performance', '◈'],
+  ['SEO Optimisation', '⬡', 'Branding', '◈', 'Content Strategy', '⬡', 'IoT Solutions', '⬡', 'Blockchain', '◈', 'AR / VR', '⬡'],
+  ['Flutter', '⬡', 'Swift', '◈', 'Kotlin', '⬡', 'Figma', '◈', 'Tailwind', '⬡', 'PostgreSQL', '◈', 'Redis', '⬡'],
+  ['Web Development', '⬡', 'Mobile Apps', '◈', 'UI / UX Design', '⬡', 'Cloud Solutions', '◈', 'AI & Machine Learning', '⬡', 'Cybersecurity', '◈'],
+  ['Digital Marketing', '⬡', 'E-Commerce', '◈', 'DevOps', '⬡', 'Data Analytics', '◈', 'API Integration', '⬡', 'SaaS Products', '◈'],
+]
+
+function DiagonalMarquee() {
+  return (
+    <div className="gb-marquee-wrap" aria-hidden="true">
+      <div className="gb-marquee-skew">
+        {MARQUEE_ROWS.map((items, rowIdx) => {
+          const reversed = rowIdx % 2 === 1
+          // Duplicate items for seamless infinite loop
+          const track = [...items, ...items, ...items]
+          return (
+            <div key={rowIdx} className={`gb-marquee-row ${reversed ? 'gb-marquee-row--rev' : ''}`}>
+              <div className="gb-marquee-track">
+                {track.map((label, i) => (
+                  <span
+                    key={i}
+                    className={label === '⬡' || label === '◈' ? 'gb-marquee-sep' : 'gb-marquee-pill'}
+                  >
+                    {label}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 // GLSL Shader for interactive quantum particles with top-to-bottom motion
 const vertexShader = `
   attribute float aSize;
@@ -23,18 +63,15 @@ const vertexShader = `
   void main() {
     vec3 pos = position;
 
-    // Continuous downward ambient waterfall flow + scroll offset
     float fallOffset = mod(uTime * aSpeed * 0.4 + uScrollProgress * 6.0, 16.0);
     pos.y = pos.y - fallOffset;
     if (pos.y < -8.0) {
       pos.y += 16.0;
     }
 
-    // Subtle horizontal wave
     pos.x += sin(uTime * 0.4 + pos.y * 0.5) * 0.15;
     pos.z += cos(uTime * 0.3 + pos.x * 0.5) * 0.15;
 
-    // 3D Mouse repulsion
     vec2 m = uMouse * 4.0;
     float dist = distance(pos.xy, m);
     if (dist < 2.0) {
@@ -63,7 +100,6 @@ const fragmentShader = `
 
     float alpha = smoothstep(0.5, 0.0, dist) * vAlpha;
 
-    // Glowing Neon Cyan (#00F0FF) to Ultra Violet (#BF5AF2) & Emerald (#30D158)
     vec3 cyan    = vec3(0.0, 0.94, 1.0);
     vec3 violet  = vec3(0.75, 0.35, 0.95);
     vec3 emerald = vec3(0.18, 0.82, 0.34);
@@ -90,7 +126,6 @@ function BackgroundParticles({ count }: { count: number }) {
       pos[i * 3]     = (Math.random() - 0.5) * 16
       pos[i * 3 + 1] = (Math.random() - 0.5) * 16
       pos[i * 3 + 2] = (Math.random() - 0.5) * 10
-
       sz[i] = Math.random() * 1.8 + 0.6
       al[i] = Math.random() * 0.7 + 0.3
       sp[i] = Math.random() * 1.5 + 0.5
@@ -128,11 +163,8 @@ function BackgroundParticles({ count }: { count: number }) {
   useEffect(() => {
     const onScroll = () => {
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight
-      if (maxScroll > 0) {
-        scrollRef.current = window.scrollY / maxScroll
-      }
+      if (maxScroll > 0) scrollRef.current = window.scrollY / maxScroll
     }
-
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -170,52 +202,22 @@ export default function GlobalBackground() {
     if (reduced) return
 
     const ctx = gsap.context(() => {
-      // 1. GSAP ScrollTrigger-driven background light orb choreography from top to bottom
       gsap.to(orbCyanRef.current, {
-        y: '120vh',
-        x: '30vw',
-        scale: 1.3,
-        ease: 'none',
-        scrollTrigger: {
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 1.5,
-        },
+        y: '120vh', x: '30vw', scale: 1.3, ease: 'none',
+        scrollTrigger: { start: 'top top', end: 'bottom bottom', scrub: 1.5 },
       })
-
       gsap.to(orbPurpleRef.current, {
-        y: '-80vh',
-        x: '-25vw',
-        scale: 1.4,
-        ease: 'none',
-        scrollTrigger: {
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 2,
-        },
+        y: '-80vh', x: '-25vw', scale: 1.4, ease: 'none',
+        scrollTrigger: { start: 'top top', end: 'bottom bottom', scrub: 2 },
       })
-
       gsap.to(orbBlueRef.current, {
-        y: '60vh',
-        scale: 1.2,
-        ease: 'none',
-        scrollTrigger: {
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 1.8,
-        },
+        y: '60vh', scale: 1.2, ease: 'none',
+        scrollTrigger: { start: 'top top', end: 'bottom bottom', scrub: 1.8 },
       })
-
-      // 2. Animated Infinite Cybernetic Grid Scroll Scrub
       if (gridTrackRef.current) {
         gsap.to(gridTrackRef.current, {
-          backgroundPositionY: '800px',
-          ease: 'none',
-          scrollTrigger: {
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: true,
-          },
+          backgroundPositionY: '800px', ease: 'none',
+          scrollTrigger: { start: 'top top', end: 'bottom bottom', scrub: true },
         })
       }
     })
@@ -223,7 +225,6 @@ export default function GlobalBackground() {
     return () => ctx.revert()
   }, [reduced])
 
-  // Mouse parallax on orbs
   useEffect(() => {
     if (isTouch || reduced) return
 
@@ -247,6 +248,10 @@ export default function GlobalBackground() {
 
   return (
     <div className="gb-root" aria-hidden="true">
+
+      {/* 0. Diagonal Marquee Carousel — base background layer */}
+      {!reduced && <DiagonalMarquee />}
+
       {/* 1. Three.js interactive 3D WebGL particle rainfall */}
       {supportsWebGL && !reduced && (
         <div className="gb-canvas">

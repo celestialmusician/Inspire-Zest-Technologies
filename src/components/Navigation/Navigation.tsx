@@ -3,17 +3,17 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { getLenis } from '@/hooks/useLenis'
 import MobileMenu from '@/components/MobileMenu'
-import ThemeSwitch from '@/components/ThemeSwitch'
 import './Navigation.css'
+
 
 gsap.registerPlugin(ScrollTrigger)
 
 const NAV_LINKS = [
-  { label: 'Services',  href: '#services' },
-  { label: 'Solutions', href: '#technology' },
-  { label: 'Work',      href: '#projects' },
-  { label: 'About',     href: '#about' },
-  { label: 'Insights',  href: '#process' },
+  { label: 'Services', href: '#services' },
+  { label: 'Portfolio', href: '#projects' },
+  { label: 'About', href: '#about' },
+  { label: 'Why Us', href: '#why-us' },
+  { label: 'Contact', href: '#contact' },
 ]
 
 export default function Navigation() {
@@ -60,6 +60,8 @@ export default function Navigation() {
           INSPIREZEST
         </button>
 
+
+
         {/* Desktop links */}
         <ul className="nav-links" role="list">
           {NAV_LINKS.map((l) => (
@@ -78,9 +80,6 @@ export default function Navigation() {
         {/* Right Nav Group */}
         <div className="nav-right">
           <div className="nav-actions">
-            {/* Theme Mode Switcher */}
-            <ThemeSwitch />
-
             {/* CTA */}
             <button
               className="nav-cta"
@@ -94,6 +93,7 @@ export default function Navigation() {
           </div>
 
           {/* Mobile hamburger */}
+
           <button
             className={`nav-hamburger ${menuOpen ? 'nav-hamburger--open' : ''}`}
             onClick={() => setMenuOpen(!menuOpen)}

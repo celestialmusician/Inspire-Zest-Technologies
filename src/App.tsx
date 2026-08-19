@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { useLenis } from '@/hooks/useLenis'
-import { ThemeProvider } from '@/context/ThemeContext'
 import CustomCursor from '@/components/CustomCursor'
 import GlobalBackground from '@/components/GlobalBackground'
 import Navigation from '@/components/Navigation'
 import LoadingScreen from '@/components/LoadingScreen'
-import PortalOpeningHero from '@/components/PortalOpeningHero'
+import PrismaHero from '@/components/PrismaHero'
 import TechParallaxShowcase from '@/components/TechParallaxShowcase'
 import Growth from '@/components/Growth'
 import Intro from '@/components/Intro'
@@ -21,6 +20,7 @@ import FinalCTA from '@/components/FinalCTA'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 import FloatingWhatsApp from '@/components/FloatingWhatsApp'
+import ScrollToTop from '@/components/ScrollToTop/ScrollToTop'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './index.css'
 
@@ -43,7 +43,7 @@ export default function App() {
   }
 
   return (
-    <ThemeProvider>
+    <>
       {/* Site-wide interactive background canvas */}
       <GlobalBackground />
 
@@ -67,10 +67,12 @@ export default function App() {
       >
         <Navigation />
         <FloatingWhatsApp />
+        <ScrollToTop />
+
 
         <main id="main-content" tabIndex={-1}>
           <div id="hero">
-            <PortalOpeningHero />
+            <PrismaHero />
           </div>
           <TechParallaxShowcase />
           <Growth />
@@ -89,6 +91,7 @@ export default function App() {
 
         <Footer />
       </div>
-    </ThemeProvider>
+    </>
   )
 }
+

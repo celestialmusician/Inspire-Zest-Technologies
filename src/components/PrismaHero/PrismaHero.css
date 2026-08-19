@@ -1,0 +1,314 @@
+/* ═════════════════════════════════════════════════════════════════
+   PRISMA HERO SECTION (LEFT-CENTRE PREMIUM KEYNOTE LAYOUT)
+═════════════════════════════════════════════════════════════════ */
+
+.prisma-hero-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 650px;
+  padding: 0;
+  margin: 0;
+  background: #000000;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.prisma-hero-card {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.prisma-hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+}
+
+/* ── Left-Centre Content Wrapper (Shifted 2-3 steps left & 1-2 steps down) ── */
+.prisma-hero-content-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1400px;
+  padding: 6.8rem clamp(1.5rem, 4vw, 4.5rem) 2.5rem clamp(1.2rem, 3.2vw, 3.5rem);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  transform: translateY(28px);
+}
+
+.prisma-hero-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  max-width: 880px;
+  gap: 1.4rem;
+}
+
+
+/* ── 1. Studio Badge (Subtle Brand Cyan-Ice Tint) ── */
+.prisma-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: 9999px;
+  background: rgba(56, 189, 248, 0.06);
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #BAE6FD;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── 2. Display Headline with Cursor Spotlight Reveal ── */
+.prisma-hero-title-group {
+  position: relative;
+  margin-bottom: clamp(1.6rem, 3.2vw, 2.8rem);
+  cursor: default;
+  --mouse-x: -500px;
+  --mouse-y: -500px;
+}
+
+.prisma-hero-title {
+  display: inline-flex;
+  align-items: baseline;
+  font-size: clamp(3.6rem, 9.5vw, 9rem);
+  font-weight: 600;
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  
+  /* Radial spotlight: letters only turn cyan/luminous directly under the cursor field (150px radius) */
+  background-image: radial-gradient(
+    150px circle at var(--mouse-x) var(--mouse-y),
+    #00F5D4 0%,
+    #38BDF8 40%,
+    #BAE6FD 60%,
+    #E1E0CC 85%
+  );
+  background-color: #E1E0CC;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 6px 35px rgba(0, 0, 0, 0.9);
+}
+
+.prisma-zest-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.prisma-hero-asterisk {
+  position: absolute;
+  top: 0.22em;
+  right: -0.32em;
+  font-size: 0.35em;
+  color: #38BDF8;
+  -webkit-text-fill-color: #38BDF8;
+  line-height: 1;
+  text-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
+  transition: all 0.3s ease;
+}
+
+.prisma-hero-technologies {
+  position: absolute;
+  top: 92%;
+  left: 0.05em;
+  font-size: clamp(1.35rem, 3.2vw, 3.2rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  
+  /* Synchronized radial spotlight under cursor for Technologies */
+  background-image: radial-gradient(
+    130px circle at var(--mouse-x) var(--mouse-y),
+    #00F5D4 0%,
+    #38BDF8 45%,
+    #BAE6FD 65%,
+    #E1E0CC 85%
+  );
+  background-color: #E1E0CC;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.9));
+}
+
+
+
+
+
+
+
+/* ── 3. Description Copy ── */
+.prisma-hero-description {
+  font-family: var(--font-body);
+  font-size: clamp(0.98rem, 1.35vw, 1.15rem);
+  font-weight: 400;
+  line-height: 1.65;
+  color: rgba(225, 224, 204, 0.88);
+  margin: 0;
+  max-width: 620px;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.9);
+}
+
+/* ── 4. Action Buttons ── */
+.prisma-hero-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 0.5rem;
+}
+
+.prisma-hero-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  height: 48px;
+  padding: 0 0.45rem 0 1.6rem;
+  border-radius: 9999px;
+  background: #E1E0CC;
+  color: #000000;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.55);
+}
+
+.prisma-hero-btn-primary:hover {
+  background: #FFFFFF;
+  gap: 1.15rem;
+  box-shadow: 0 12px 35px rgba(225, 224, 204, 0.4);
+  transform: translateY(-2px);
+}
+
+.prisma-hero-btn-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #000000;
+  transition: transform 0.3s ease;
+}
+
+.prisma-hero-btn-primary:hover .prisma-hero-btn-arrow {
+  transform: scale(1.08);
+}
+
+.prisma-hero-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 1.65rem;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #E1E0CC;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.prisma-hero-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+/* ── Tablet & Mobile Responsive ── */
+@media (max-width: 1024px) {
+  .prisma-hero-content-wrapper {
+    padding: 6rem var(--container-px) 2rem var(--container-px);
+    transform: translateY(12px);
+  }
+  .prisma-hero-title {
+    font-size: clamp(2.8rem, 9vw, 5.5rem);
+  }
+  .prisma-hero-technologies {
+    font-size: clamp(1.2rem, 3.5vw, 2.2rem);
+  }
+  .prisma-hero-description {
+    max-width: 100%;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .prisma-hero-section {
+    min-height: 580px;
+  }
+  .prisma-hero-content-wrapper {
+    padding: 5.2rem 1.25rem 2rem 1.25rem;
+    transform: translateY(0);
+  }
+  .prisma-hero-stack {
+    gap: 1.15rem;
+  }
+  .prisma-hero-title-group {
+    margin-bottom: 1.4rem;
+  }
+  .prisma-hero-title {
+    font-size: clamp(2.4rem, 12vw, 3.8rem);
+  }
+  .prisma-hero-technologies {
+    font-size: clamp(1.05rem, 5.2vw, 1.6rem);
+  }
+  .prisma-hero-description {
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+  .prisma-hero-btn-group {
+    gap: 0.75rem;
+    width: 100%;
+  }
+  .prisma-hero-btn-primary,
+  .prisma-hero-btn-secondary {
+    height: 44px;
+    font-size: 0.86rem;
+  }
+}
+
+
+
+
+
+

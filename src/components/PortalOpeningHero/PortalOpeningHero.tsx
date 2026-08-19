@@ -169,7 +169,7 @@ export default function PortalOpeningHero() {
     }
   }
 
-  const titleWords = 'Strategic Digital Marketing & Web Solutions'.split(' ')
+  const titleWords = 'Strategic Digital Marketing & Web Development Company'.split(' ')
 
   return (
     <section
@@ -217,8 +217,8 @@ export default function PortalOpeningHero() {
 
           {/* Subtext */}
           <p ref={subtitleRef} className="apple-hero-subtext">
-            We architect award-winning web platforms, high-converting mobile apps, and enterprise AI
-            systems engineered for category leaders worldwide.
+            We dedicate ourselves for your success with all our resources. Your gateway to innovative
+            and cutting-edge software solutions in Kollam, Kerala & Abu Dhabi, UAE.
           </p>
 
           {/* Apple-style CTAs */}

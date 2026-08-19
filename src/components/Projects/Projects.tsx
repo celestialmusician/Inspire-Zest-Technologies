@@ -21,7 +21,7 @@ export default function Projects() {
 
     const ctx = gsap.context(() => {
       if (!isMobile) {
-        const getScrollDistance = () => track.scrollWidth - window.innerWidth
+        const getScrollDistance = () => Math.max(0, track.scrollWidth - window.innerWidth)
 
         gsap.to(track, {
           x: () => -getScrollDistance(),
@@ -30,11 +30,13 @@ export default function Projects() {
             trigger: section,
             start: 'top top',
             end: () => `+=${getScrollDistance()}`,
-            scrub: 0.6,
+            scrub: true,
             pin: true,
-            anticipatePin: 0,
+            anticipatePin: 1,
             pinSpacing: true,
             invalidateOnRefresh: true,
+            fastScrollEnd: true,
+            preventOverlaps: true,
             onUpdate: (self) => {
               if (progressBarRef.current) {
                 progressBarRef.current.style.transform = `scaleX(${self.progress})`

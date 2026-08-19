@@ -1,5 +1,5 @@
 /* ═════════════════════════════════════════════════════════════════
-   APPLE PRO ABOUT SECTION (UNIFIED SPACING & CONTAINER)
+   ABOUT SECTION (CLEAN APPLE PRO MINIMAL DESIGN)
 ═════════════════════════════════════════════════════════════════ */
 
 .about-section {
@@ -17,12 +17,12 @@
 }
 
 .about-headline {
-  font-size: clamp(2.4rem, 5vw, 4.5rem);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  margin-bottom: var(--section-header-mb);
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
   color: var(--primary);
+  margin-bottom: var(--section-header-mb);
 }
 
 .about-wrap {
@@ -33,6 +33,12 @@
 .about-line {
   display: block;
   will-change: transform, opacity;
+}
+
+.about-title-highlight {
+  background: var(--titanium-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* ── 3-Card Grid ── */
@@ -46,12 +52,14 @@
   position: relative;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 28px;
-  padding: 3rem 2.2rem;
-  backdrop-filter: saturate(180%) blur(24px);
-  -webkit-backdrop-filter: saturate(180%) blur(24px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
-  transition: transform 0.4s ease, border-color 0.4s ease;
+  border-radius: 24px;
+  padding: 2.8rem 2.2rem;
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.12);
+  transition: transform 0.35s var(--ease-apple), border-color 0.35s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .about-card:hover {
@@ -63,12 +71,12 @@
   width: 48px;
   height: 48px;
   border-radius: 14px;
-  background: rgba(41, 151, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.8rem;
 }
 
 .about-card-title {
@@ -91,6 +99,7 @@
   font-weight: 600;
 }
 
+/* ── Responsive ── */
 @media (max-width: 1024px) {
   .about-grid {
     grid-template-columns: 1fr;
@@ -100,3 +109,5 @@
     padding: 4.5rem var(--container-px);
   }
 }
+
+
