@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "start": "vite preview --host",
     "lint": "oxlint",
     "preview": "vite preview"
   },
+
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "@react-three/drei": "^10.7.8",
