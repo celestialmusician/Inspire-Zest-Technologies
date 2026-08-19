@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { services } from '@/data/services'
+import TextScramble from '@/components/TextScramble'
 import {
   Code,
   Smartphone,
@@ -55,10 +56,30 @@ export default function Services() {
         }
       )
 
-      // 2. Apple Stacked Keynote Cards Scrub Animation
+      // 2. Apple Stacked Keynote Cards Scrub Animation with Masked Reveal
       const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[]
 
       cards.forEach((card, index) => {
+        // Masked Reveal on image bezel
+        const bezel = card.querySelector('.apple-img-bezel')
+        if (bezel) {
+          gsap.fromTo(
+            bezel,
+            { clipPath: 'inset(15% 0% 15% 0% round 24px)', opacity: 0.7 },
+            {
+              clipPath: 'inset(0% 0% 0% 0% round 24px)',
+              opacity: 1,
+              duration: 0.8,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 75%',
+                toggleActions: 'play none none reverse',
+              },
+            }
+          )
+        }
+
         if (index === cards.length - 1) return // Last card doesn't stack away
 
         gsap.to(card, {
@@ -97,7 +118,7 @@ export default function Services() {
         <div className="apple-services-header">
           <div className="apple-services-tag apple-srv-header-item" aria-hidden="true">
             <Sparkles size={13} className="text-cyan-400" />
-            <span>03 — CORE PILLARS</span>
+            <TextScramble text="03 — CORE PILLARS" speed={25} />
           </div>
           <h2 className="apple-services-title font-display apple-srv-header-item">
             ENGINEERING WITHOUT <span className="apple-title-gradient">COMPROMISE</span>
@@ -132,7 +153,7 @@ export default function Services() {
                     <span className="apple-card-index font-display">{svc.number}</span>
                     <div className="apple-card-pill">
                       <Icon size={16} style={{ color: svc.accentColor }} />
-                      <span>{svc.title}</span>
+                      <TextScramble text={svc.title} speed={25} />
                     </div>
                   </div>
 
@@ -164,7 +185,7 @@ export default function Services() {
                   </button>
                 </div>
 
-                {/* Right Side: Full-Bleed 4K Tech Imagery Showcase */}
+                {/* Right Side: Full-Bleed 4K Tech Imagery Showcase with Masked Reveal */}
                 <div className="apple-card-right">
                   <div className="apple-img-bezel">
                     <img
@@ -179,7 +200,7 @@ export default function Services() {
                           className="apple-status-dot"
                           style={{ background: svc.accentColor }}
                         />
-                        <span>PRODUCTION READY</span>
+                        <TextScramble text="PRODUCTION READY" speed={30} />
                       </div>
                     </div>
                   </div>

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { getLenis } from '@/hooks/useLenis'
+import TextScramble from '@/components/TextScramble'
 import { ArrowUpRight, Sparkles, ChevronDown } from 'lucide-react'
 import './PortalOpeningHero.css'
 
@@ -19,7 +20,7 @@ export default function PortalOpeningHero() {
   const spotlightRef = useRef<HTMLDivElement>(null)
   const statsBarRef  = useRef<HTMLDivElement>(null)
 
-  // ── 1. Interactive Mouse Spotlight & Ambient Tilt ─────────────────────────
+  // ── 1. Interactive Mouse Spotlight & Kinetic Camera Parallax ──────────────
   useEffect(() => {
     const stage = stickyRef.current
     const content = contentRef.current
@@ -62,7 +63,7 @@ export default function PortalOpeningHero() {
     }
   }, [])
 
-  // ── 2. GSAP Entrance and Fullscreen Background Zoom Scrub ─────────────────
+  // ── 2. GSAP Split-Text Kinetic Typography & Scrub ─────────────────────────
   useEffect(() => {
     const container = containerRef.current
     const content = contentRef.current
@@ -72,13 +73,13 @@ export default function PortalOpeningHero() {
     const isMobile = window.innerWidth < 768
 
     const ctx = gsap.context(() => {
-      // 1. Entrance Timeline on Load
+      // 1. Kinetic Entrance Timeline on Load
       const loadTl = gsap.timeline({ defaults: { ease: 'power3.out' } })
 
       loadTl
         .fromTo(
           bgImg,
-          { scale: 1.12, opacity: 0 },
+          { scale: 1.15, opacity: 0 },
           { scale: 1.04, opacity: 0.7, duration: 1.4, ease: 'power2.out' }
         )
         .fromTo(
@@ -87,10 +88,19 @@ export default function PortalOpeningHero() {
           { opacity: 1, y: 0, scale: 1, duration: 0.8 },
           '-=1.0'
         )
+        // Split-Text Kinetic Typography Animation
         .fromTo(
           '.hero-split-word',
-          { yPercent: 120, opacity: 0 },
-          { yPercent: 0, opacity: 1, stagger: 0.05, duration: 1.1, ease: 'power4.out' },
+          { yPercent: 130, rotateX: -45, opacity: 0, filter: 'blur(8px)' },
+          {
+            yPercent: 0,
+            rotateX: 0,
+            opacity: 1,
+            filter: 'blur(0px)',
+            stagger: 0.06,
+            duration: 1.2,
+            ease: 'power4.out',
+          },
           '-=0.7'
         )
         .fromTo(
@@ -112,7 +122,7 @@ export default function PortalOpeningHero() {
           '-=0.4'
         )
 
-      // 2. Pinned Fullscreen Background Parallax & Zoom Scrub on Scroll
+      // 2. Pinned Fullscreen Parallax & Zoom Scrub on Scroll
       const scrubTl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
@@ -125,7 +135,6 @@ export default function PortalOpeningHero() {
       })
 
       scrubTl
-        // Fullscreen background zooms smoothly and dims slightly into next section
         .to(
           bgImg,
           {
@@ -135,7 +144,6 @@ export default function PortalOpeningHero() {
           },
           0
         )
-        // Typography and CTAs zoom outward and fade smoothly
         .to(
           content,
           {
@@ -203,15 +211,15 @@ export default function PortalOpeningHero() {
 
         {/* Layer 3: Main Apple Keynote Content Box */}
         <div ref={contentRef} className="apple-hero-content">
-          {/* Top Titanium Pill */}
+          {/* Top Titanium Pill with Text Scramble / Decryption */}
           <div ref={badgeRef} className="apple-pill-badge" data-cursor="explore">
             <span className="apple-badge-dot" aria-hidden="true" />
-            <span>INSPIRE ZEST TECHNOLOGIES</span>
+            <TextScramble text="INSPIRE ZEST TECHNOLOGIES" speed={25} />
             <span className="apple-badge-sep">/</span>
-            <span className="apple-badge-dim">PRO ARCHITECTURE</span>
+            <TextScramble text="PRO ARCHITECTURE" speed={25} className="apple-badge-dim" />
           </div>
 
-          {/* Kinetic Titanium Headline */}
+          {/* Kinetic 3D Split-Text Headline */}
           <h1 ref={titleRef} className="apple-hero-title font-display">
             {titleWords.map((word, i) => (
               <span key={i} className="apple-word-clip">
@@ -255,19 +263,19 @@ export default function PortalOpeningHero() {
             </button>
           </div>
 
-          {/* Quick Highlight Floating Tray */}
+          {/* Quick Highlight Floating Tray with Text Decryption */}
           <div ref={statsBarRef} className="apple-hero-quick-tray">
             <div className="apple-tray-item">
               <Sparkles size={14} className="text-cyan-400" />
-              <span>Award-Winning Motion</span>
+              <TextScramble text="Award-Winning Motion" speed={30} />
             </div>
             <div className="apple-tray-dot" />
             <div className="apple-tray-item">
-              <span>99.8% System Uptime</span>
+              <TextScramble text="99.8% System Uptime" speed={30} />
             </div>
             <div className="apple-tray-dot" />
             <div className="apple-tray-item">
-              <span>India & UAE Hubs</span>
+              <TextScramble text="India & UAE Hubs" speed={30} />
             </div>
           </div>
         </div>

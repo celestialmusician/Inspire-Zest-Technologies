@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import TextScramble from '@/components/TextScramble'
 import { Sparkles, Cpu, Layers } from 'lucide-react'
 import './TechnologyNetwork.css'
 
@@ -47,10 +48,10 @@ export default function TechnologyNetwork() {
     if (!section || !m1 || !m2) return
 
     const ctx = gsap.context(() => {
-      // 1. Entrance animation
+      // 1. Kinetic Header entrance
       gsap.fromTo(
         '.tech-header-anim',
-        { opacity: 0, y: 30, rotateX: -15 },
+        { opacity: 0, y: 30, rotateX: -20 },
         {
           opacity: 1,
           y: 0,
@@ -66,46 +67,53 @@ export default function TechnologyNetwork() {
         }
       )
 
-      // 2. Velocity-Responsive Marquee Scrub via ScrollTrigger
-      let lastScrollY = window.scrollY
-      let velocity = 1
+      // 2. High-Performance GSAP Marquee / Velocity Ticker
+      let velocity = 1.0
+      let direction = 1
 
-      const updateMarquee = () => {
-        const currentScrollY = window.scrollY
-        const delta = Math.abs(currentScrollY - lastScrollY)
-        lastScrollY = currentScrollY
-
-        // Boost velocity on fast scroll, smoothly decay back to base speed
-        velocity += (delta * 0.08 - velocity) * 0.1
-        velocity = Math.max(1, Math.min(velocity, 6))
-      }
-
-      window.addEventListener('scroll', updateMarquee, { passive: true })
+      // ScrollTrigger Velocity Tracking
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top bottom',
+        end: 'bottom top',
+        onUpdate: (self) => {
+          const scrollVel = self.getVelocity()
+          if (scrollVel !== 0) {
+            direction = scrollVel > 0 ? 1 : -1
+            // Accelerate velocity ticker proportionally up to 6x
+            velocity = Math.min(Math.abs(scrollVel) * 0.005 + 1.0, 7.0)
+          }
+        },
+      })
 
       // Continuous infinite ticker
       let pos1 = 0
       let pos2 = 0
 
       const ticker = gsap.ticker.add(() => {
-        pos1 -= 0.8 * velocity
-        pos2 += 0.8 * velocity
+        const speed = 0.9 * velocity * direction
+        pos1 -= speed
+        pos2 += speed
 
-        // Reset positions smoothly
+        // Infinite wrap loop
         if (m1) {
-          if (pos1 <= -m1.scrollWidth / 2) pos1 = 0
+          const width1 = m1.scrollWidth / 3
+          if (pos1 <= -width1) pos1 += width1
+          if (pos1 >= 0) pos1 -= width1
           m1.style.transform = `translate3d(${pos1}px, 0, 0)`
         }
         if (m2) {
-          if (pos2 >= 0) pos2 = -m2.scrollWidth / 2
+          const width2 = m2.scrollWidth / 3
+          if (pos2 >= 0) pos2 -= width2
+          if (pos2 <= -width2) pos2 += width2
           m2.style.transform = `translate3d(${pos2}px, 0, 0)`
         }
 
-        // Return velocity to 1
-        velocity += (1 - velocity) * 0.05
+        // Return velocity smoothly to base cruise speed (1.0)
+        velocity += (1.0 - velocity) * 0.04
       })
 
       return () => {
-        window.removeEventListener('scroll', updateMarquee)
         gsap.ticker.remove(ticker)
       }
     }, section)
@@ -125,7 +133,7 @@ export default function TechnologyNetwork() {
         <div className="tech-header-block">
           <div className="tech-tag tech-header-anim" aria-hidden="true">
             <Sparkles size={13} className="text-cyan-400" />
-            <span>05 — ARCHITECTURAL STRENGTH</span>
+            <TextScramble text="05 — ARCHITECTURAL STRENGTH" speed={25} />
           </div>
           <h2 className="tech-heading font-display tech-header-anim">
             BUILT ON <span className="tech-title-gradient">PROVEN TECHNOLOGY</span>
@@ -136,14 +144,16 @@ export default function TechnologyNetwork() {
           </p>
         </div>
 
-        {/* Marquee Row 1 (Leftward) */}
+        {/* Marquee / Velocity Ticker Row 1 (Leftward) */}
         <div className="marquee-wrapper" aria-hidden="true">
           <div ref={marquee1Ref} className="marquee-track">
             {[...TECH_ROW_1, ...TECH_ROW_1, ...TECH_ROW_1].map((tech, idx) => (
               <div key={`${tech.name}-${idx}`} className="tech-badge-card" data-cursor="explore">
                 <span className="tech-badge-icon">{tech.icon}</span>
                 <div className="tech-badge-info">
-                  <span className="tech-badge-name font-display">{tech.name}</span>
+                  <span className="tech-badge-name font-display">
+                    <TextScramble text={tech.name} triggerOnHover={true} speed={25} />
+                  </span>
                   <span className="tech-badge-cat">{tech.category}</span>
                 </div>
                 <div
@@ -156,14 +166,16 @@ export default function TechnologyNetwork() {
           </div>
         </div>
 
-        {/* Marquee Row 2 (Rightward) */}
+        {/* Marquee / Velocity Ticker Row 2 (Rightward) */}
         <div className="marquee-wrapper marquee-wrapper--reverse" aria-hidden="true">
           <div ref={marquee2Ref} className="marquee-track">
             {[...TECH_ROW_2, ...TECH_ROW_2, ...TECH_ROW_2].map((tech, idx) => (
               <div key={`${tech.name}-${idx}`} className="tech-badge-card" data-cursor="explore">
                 <span className="tech-badge-icon">{tech.icon}</span>
                 <div className="tech-badge-info">
-                  <span className="tech-badge-name font-display">{tech.name}</span>
+                  <span className="tech-badge-name font-display">
+                    <TextScramble text={tech.name} triggerOnHover={true} speed={25} />
+                  </span>
                   <span className="tech-badge-cat">{tech.category}</span>
                 </div>
                 <div
