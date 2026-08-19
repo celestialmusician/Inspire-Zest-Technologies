@@ -171,6 +171,10 @@ function ProjectCard({
           alt={project.title}
           className="apple-card-img"
           loading="lazy"
+          onError={(e) => {
+            const target = e.currentTarget
+            target.src = 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1200&auto=format&fit=crop'
+          }}
         />
         <div className="apple-card-image-vignette" aria-hidden="true" />
       </div>
