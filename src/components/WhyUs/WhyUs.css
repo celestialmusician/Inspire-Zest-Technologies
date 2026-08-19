@@ -1,12 +1,12 @@
 /* ═════════════════════════════════════════════════════════════════
-   WHY INSPIREZEST SECTION (LIGHT & DARK DYNAMIC)
+   WHY INSPIREZEST SECTION (APPLE PRO FROSTED GLASS CARDS)
 ═════════════════════════════════════════════════════════════════ */
 
 .why {
   position: relative;
   width: 100%;
-  padding: 8rem 2rem;
-  background: var(--bg);
+  padding: 8rem 2rem 10rem;
+  background: transparent;
   overflow: hidden;
   z-index: 20;
 }
@@ -39,10 +39,12 @@
   will-change: transform, opacity;
 }
 
+/* ── 4-Card Pillar Grid ── */
 .why-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.8rem;
+  margin-bottom: 3.5rem;
 }
 
 .why-card {
@@ -50,11 +52,13 @@
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 28px;
-  padding: 2.8rem 2rem;
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
-  transition: transform 0.4s ease, border-color 0.4s ease;
+  padding: 2.5rem 2rem;
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .why-card:hover {
@@ -62,24 +66,37 @@
   border-color: var(--border-hover);
 }
 
+.why-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
 .why-card-icon-wrap {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  background: rgba(41, 151, 255, 0.08);
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
   border: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 2rem;
+}
+
+.why-card-num {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--secondary);
+  opacity: 0.4;
+  letter-spacing: -0.03em;
 }
 
 .why-card-title {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: var(--primary);
-  margin-bottom: 0.8rem;
-  letter-spacing: -0.01em;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
 }
 
 .why-card-desc {
@@ -89,15 +106,42 @@
   color: var(--secondary);
 }
 
+/* ── Summary Statement Banner Card ── */
+.why-body-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 2.8rem 3.5rem;
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+}
+
+.why-body {
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+  line-height: 1.6;
+  color: var(--secondary);
+  letter-spacing: -0.01em;
+}
+
+.why-body strong {
+  color: var(--primary);
+  font-weight: 700;
+}
+
 @media (max-width: 1024px) {
   .why-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .why-body-card {
+    padding: 2rem 1.8rem;
   }
 }
 
 @media (max-width: 640px) {
   .why-grid {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
   .why {
     padding: 5rem 1.25rem;
