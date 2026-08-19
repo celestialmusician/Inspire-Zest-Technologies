@@ -20,7 +20,6 @@ import FAQ from '@/components/FAQ'
 import FinalCTA from '@/components/FinalCTA'
 import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
-import ScrollProgress from '@/components/ScrollProgress'
 import FloatingWhatsApp from '@/components/FloatingWhatsApp'
 import CinematicScrollDirector from '@/components/CinematicScrollDirector'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -68,7 +67,6 @@ export default function App() {
         }}
       >
         <Navigation />
-        <ScrollProgress />
         <CinematicScrollDirector />
         <FloatingWhatsApp />
 
