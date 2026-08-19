@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useLenis } from '@/hooks/useLenis'
-import { useGlobalScrollOrchestration } from '@/hooks/useGlobalScrollOrchestration'
 import { ThemeProvider } from '@/context/ThemeContext'
 import CustomCursor from '@/components/CustomCursor'
 import GlobalBackground from '@/components/GlobalBackground'
@@ -23,23 +22,21 @@ import Contact from '@/components/Contact'
 import Footer from '@/components/Footer'
 import ScrollProgress from '@/components/ScrollProgress'
 import FloatingWhatsApp from '@/components/FloatingWhatsApp'
+import CinematicScrollDirector from '@/components/CinematicScrollDirector'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './index.css'
 
 export default function App() {
   const [loaded, setLoaded] = useState(false)
 
-  // Initialize Lenis camera-dolly smooth scroll physics
+  // Initialize Lenis + ScrollTrigger sync
   useLenis()
-
-  // Initialize site-wide 3D perspective scroll orchestration
-  useGlobalScrollOrchestration(loaded)
 
   const handleLoad = () => {
     setLoaded(true)
     setTimeout(() => {
       ScrollTrigger.refresh()
-    }, 200)
+    }, 150)
   }
 
   const scrollToContact = () => {
@@ -72,6 +69,7 @@ export default function App() {
       >
         <Navigation />
         <ScrollProgress />
+        <CinematicScrollDirector />
         <FloatingWhatsApp />
 
         <main id="main-content" tabIndex={-1}>

@@ -1,0 +1,75 @@
+/* ═════════════════════════════════════════════════════════════════
+   CINEMATIC SCROLL DIRECTOR (LIGHT & DARK DYNAMIC)
+═════════════════════════════════════════════════════════════════ */
+
+.cinematic-director-root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 450;
+  overflow: hidden;
+}
+
+/* ── Dynamic Anamorphic Optical Flare Line ── */
+.cinematic-anamorphic-flare {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(41, 151, 255, 0.2) 20%,
+    rgba(0, 245, 212, 0.8) 50%,
+    rgba(191, 90, 242, 0.2) 80%,
+    transparent 100%
+  );
+  box-shadow: 0 0 20px rgba(0, 245, 212, 0.6), 0 0 40px rgba(41, 151, 255, 0.4);
+  transform: translateY(-50%) scaleX(0.6);
+  opacity: 0;
+  will-change: transform, opacity;
+  mix-blend-mode: screen;
+}
+
+/* ── Subtle Cinematic Anamorphic Vignette Mattes ── */
+.cinematic-matte {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 40px;
+  pointer-events: none;
+}
+
+.cinematic-matte--top {
+  top: 0;
+  background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+  opacity: 0.6;
+}
+
+.cinematic-matte--bottom {
+  bottom: 0;
+  background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
+  opacity: 0.6;
+}
+
+/* Global 3D Perspective Smoothing for all Section Wrappers */
+#hero,
+#tech-parallax-showcase,
+#growth,
+#intro,
+#services,
+#projects,
+#technology,
+#about,
+#process,
+#why-us,
+#testimonials,
+#faq,
+#final-cta,
+#contact,
+.footer-award {
+  will-change: transform, opacity, filter;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
