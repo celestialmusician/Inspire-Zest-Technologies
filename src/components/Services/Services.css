@@ -5,7 +5,7 @@
 .apple-services-section {
   position: relative;
   width: 100%;
-  padding: 6rem 2rem 14rem;
+  padding: 6rem 2rem 6rem;
   background: var(--bg);
   z-index: 20;
 }
@@ -55,6 +55,7 @@
 /* ── Apple Card ── */
 .apple-service-card {
   position: sticky;
+  top: 100px;
   width: 100%;
   min-height: 520px;
   background: var(--bg-card);

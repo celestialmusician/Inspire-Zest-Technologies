@@ -21,16 +21,19 @@ export default function Projects() {
 
     const ctx = gsap.context(() => {
       if (!isMobile) {
-        const scrollDistance = track.scrollWidth - window.innerWidth
+        const getScrollDistance = () => track.scrollWidth - window.innerWidth
 
-        const pinTl = gsap.timeline({
+        gsap.to(track, {
+          x: () => -getScrollDistance(),
+          ease: 'none',
           scrollTrigger: {
             trigger: section,
             start: 'top top',
-            end: () => `+=${scrollDistance}`,
-            scrub: 1,
+            end: () => `+=${getScrollDistance()}`,
+            scrub: 0.6,
             pin: true,
-            anticipatePin: 1,
+            anticipatePin: 0,
+            pinSpacing: true,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
               if (progressBarRef.current) {
@@ -39,15 +42,17 @@ export default function Projects() {
             },
           },
         })
-
-        pinTl.to(track, {
-          x: () => -scrollDistance,
-          ease: 'none',
-        })
       }
     }, section)
 
-    return () => ctx.revert()
+    // Ensure ScrollTrigger updates after images load
+    const handleResize = () => ScrollTrigger.refresh()
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      ctx.revert()
+    }
   }, [])
 
   return (
