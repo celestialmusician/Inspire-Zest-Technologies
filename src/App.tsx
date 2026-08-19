@@ -6,6 +6,7 @@ import GlobalBackground from '@/components/GlobalBackground'
 import Navigation from '@/components/Navigation'
 import LoadingScreen from '@/components/LoadingScreen'
 import PortalOpeningHero from '@/components/PortalOpeningHero'
+import TechParallaxShowcase from '@/components/TechParallaxShowcase'
 import Growth from '@/components/Growth'
 import Intro from '@/components/Intro'
 import Services from '@/components/Services'
@@ -73,6 +74,7 @@ export default function App() {
           <div id="hero">
             <PortalOpeningHero />
           </div>
+          <TechParallaxShowcase />
           <Growth />
           <Intro />
           <Services />

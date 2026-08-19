@@ -1,0 +1,186 @@
+/* ═════════════════════════════════════════════════════════════════
+   APPLE PRO PARALLAX TECH SHOWCASE SECTION
+═════════════════════════════════════════════════════════════════ */
+
+.tech-parallax-section {
+  position: relative;
+  width: 100%;
+  min-height: 85vh;
+  background: #000000;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem;
+  z-index: 12;
+}
+
+/* ── Parallax Window & Image ── */
+.tech-parallax-window {
+  position: absolute;
+  inset: -15% 0;
+  width: 100%;
+  height: 130%;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tech-parallax-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  will-change: transform;
+}
+
+/* Specular Vignette Overlay */
+.tech-parallax-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.9) 70%, #000000 100%),
+    linear-gradient(to bottom, #000000 0%, transparent 20%, transparent 80%, #000000 100%);
+  pointer-events: none;
+}
+
+/* ── Content Box ── */
+.tech-parallax-content {
+  position: relative;
+  z-index: 5;
+  max-width: 1140px;
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.tech-parallax-text-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 860px;
+  margin-bottom: 3.5rem;
+}
+
+/* ── Top Pill Badge ── */
+.tech-parallax-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.4rem 1rem;
+  border-radius: 9999px;
+  background: rgba(22, 22, 26, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #F5F5F7;
+  text-transform: uppercase;
+  margin-bottom: 1.6rem;
+}
+
+/* ── Headline ── */
+.tech-parallax-title {
+  font-size: clamp(2.4rem, 4.8vw, 4.4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #F5F5F7;
+  margin-bottom: 1.2rem;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+}
+
+.tech-parallax-gradient {
+  background: linear-gradient(135deg, #2997FF 0%, #BF5AF2 50%, #00F5D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 25px rgba(41, 151, 255, 0.4));
+}
+
+/* ── Description ── */
+.tech-parallax-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.98rem, 1.35vw, 1.12rem);
+  line-height: 1.65;
+  color: #A1A1A6;
+  max-width: 680px;
+}
+
+/* ── Metric Chips Row ── */
+.tech-parallax-chips-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.tech-parallax-chip {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.6rem;
+  background: rgba(22, 22, 26, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.tech-parallax-chip:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.tech-chip-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tech-chip-info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.tech-chip-val {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #F5F5F7;
+  line-height: 1.2;
+}
+
+.tech-chip-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  color: #86868B;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 767px) {
+  .tech-parallax-section {
+    padding: 5rem 1.25rem;
+    min-height: auto;
+  }
+  .tech-parallax-chips-row {
+    flex-direction: column;
+    width: 100%;
+  }
+  .tech-parallax-chip {
+    width: 100%;
+  }
+}
