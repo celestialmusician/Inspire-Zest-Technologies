@@ -1,57 +1,118 @@
-.about {
-  min-height: auto;
-  padding: 5rem 4rem;
-  background: transparent;
+/* ═════════════════════════════════════════════════════════════════
+   APPLE PRO ABOUT SECTION
+═════════════════════════════════════════════════════════════════ */
+
+.about-section {
+  position: relative;
+  width: 100%;
+  padding: 8rem 2rem;
+  background: #000000;
+  overflow: hidden;
+  z-index: 20;
 }
+
 .about-container {
-  max-width: 1440px;
+  max-width: 1280px;
   margin: 0 auto;
 }
-.about-tag-row { margin-bottom: 2rem; }
+
 .about-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-family: 'Inter', sans-serif;
-  font-size: 0.6rem;
-  letter-spacing: 0.3em;
-  color: #00D2FF;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: #2997FF;
   text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  padding: 0.35rem 0.9rem;
+  background: rgba(41, 151, 255, 0.08);
+  border: 1px solid rgba(41, 151, 255, 0.2);
+  border-radius: 9999px;
 }
-.about-headline { margin-bottom: 2.5rem; }
-.about-wrap { overflow: hidden; line-height: 0.9; }
-.about-wrap--dim .about-line { color: rgba(245,245,240,0.25); }
+
+.about-headline {
+  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 4rem;
+}
+
+.about-wrap {
+  display: block;
+  overflow: hidden;
+}
+
 .about-line {
   display: block;
-  font-size: var(--text-display);
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  color: #F5F5F0;
-  line-height: 0.9;
+  will-change: transform, opacity;
 }
-.about-divider {
-  width: 100%;
-  height: 1px;
-  background: rgba(245,245,240,0.06);
-  margin-bottom: 2.5rem;
-}
-.about-columns {
+
+/* ── 3-Card Grid ── */
+.about-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 3rem;
+  gap: 2rem;
 }
-.about-col h3.about-col-title {
+
+.about-card {
+  position: relative;
+  background: rgba(22, 22, 26, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 28px;
+  padding: 3rem 2.2rem;
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  transition: transform 0.4s ease, border-color 0.4s ease;
+}
+
+.about-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.about-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.about-card-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #F5F5F7;
+  margin-bottom: 0.8rem;
+  letter-spacing: -0.01em;
+}
+
+.about-card-desc {
   font-family: 'Inter', sans-serif;
-  font-size: 0.6rem;
-  letter-spacing: 0.2em;
-  color: #00D2FF;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: #86868B;
 }
-.about-col p {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(0.85rem, 1.5vw, 1rem);
-  color: #8A8A8A;
-  line-height: 1.75;
+
+.about-card-desc strong {
+  color: #F5F5F7;
+  font-weight: 600;
 }
-@media (max-width: 767px) {
-  .about { padding: 6rem 1.5rem; }
-  .about-columns { grid-template-columns: 1fr; gap: 2rem; }
+
+@media (max-width: 1024px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .about-section {
+    padding: 5rem 1.25rem;
+  }
 }

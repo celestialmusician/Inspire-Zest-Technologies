@@ -1,7 +1,7 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGsap } from '@/hooks/useGsap'
+import { Sparkles, Globe, Target, Cpu } from 'lucide-react'
 import './About.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -9,114 +9,103 @@ gsap.registerPlugin(ScrollTrigger)
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null)
 
-  useGsap(() => {
-    gsap.fromTo('.about-line',
-      { yPercent: 120, rotateX: -35, skewY: 2, opacity: 0 },
-      {
-        yPercent: 0,
-        rotateX: 0,
-        skewY: 0,
-        opacity: 1,
-        stagger: 0.12,
-        duration: 1.2,
-        ease: 'power4.out',
-        scrollTrigger: {
-          trigger: '.about-headline',
-          start: 'top 82%',
-          toggleActions: 'play none none reverse',
-        }
-      }
-    )
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
 
-    gsap.fromTo('.about-col',
-      { opacity: 0, y: 35, filter: 'blur(5px)' },
-      {
-        opacity: 1, y: 0, filter: 'blur(0px)',
-        stagger: 0.14,
-        duration: 0.9,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.about-columns',
-          start: 'top 82%',
-          toggleActions: 'play none none reverse',
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.about-line',
+        { yPercent: 120, rotateX: -30, opacity: 0 },
+        {
+          yPercent: 0,
+          rotateX: 0,
+          opacity: 1,
+          stagger: 0.1,
+          duration: 1.2,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: '.about-headline',
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+          },
         }
-      }
-    )
+      )
 
-    gsap.fromTo('.about-stat-card',
-      { opacity: 0, y: 30, scale: 0.9 },
-      {
-        opacity: 1, y: 0, scale: 1,
-        stagger: 0.12,
-        duration: 0.8,
-        ease: 'back.out(1.6)',
-        scrollTrigger: {
-          trigger: '.about-stats-row',
-          start: 'top 85%',
-          toggleActions: 'play none none reverse',
+      gsap.fromTo(
+        '.about-card',
+        { opacity: 0, y: 40, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          stagger: 0.12,
+          duration: 0.9,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.about-grid',
+            start: 'top 80%',
+            toggleActions: 'play none none reverse',
+          },
         }
-      }
-    )
-  }, [], sectionRef)
+      )
+    }, section)
+
+    return () => ctx.revert()
+  }, [])
 
   return (
-    <section
-      ref={sectionRef}
-      id="about"
-      className="about scene"
-      aria-label="About InspireZest"
-    >
+    <section ref={sectionRef} id="about" className="about-section" aria-label="About InspireZest">
       <div className="about-container">
-        <div className="about-tag-row">
-          <span className="about-tag" aria-hidden="true">08 — ABOUT</span>
+        <div className="about-tag" aria-hidden="true">
+          <Sparkles size={13} className="text-cyan-400" />
+          <span>06 — FOUNDATION</span>
         </div>
 
-        <div className="about-headline" role="heading" aria-level={2} aria-label="We build what comes next">
-          <div className="about-wrap"><span className="about-line font-display">WE DON'T</span></div>
-          <div className="about-wrap"><span className="about-line font-display">JUST BUILD</span></div>
-          <div className="about-wrap about-wrap--dim"><span className="about-line font-display">SOFTWARE.</span></div>
-        </div>
+        <h2 className="about-headline font-display">
+          <div className="about-wrap">
+            <span className="about-line text-titanium">BORN TO ARCHITECT</span>
+          </div>
+          <div className="about-wrap">
+            <span className="about-line text-titanium">THE DIGITAL FUTURE</span>
+          </div>
+        </h2>
 
-        <div className="about-divider" aria-hidden="true" />
-
-        <div className="about-columns">
-          <div className="about-col">
-            <h3 className="about-col-title">Our purpose</h3>
-            <p>
-              InspireZest Technologies exists to help businesses compete in a digital world.
-              We believe technology should be accessible, purposeful, and built to last.
+        <div className="about-grid">
+          <div className="about-card">
+            <div className="about-icon-wrap">
+              <Target size={22} className="text-cyan-400" />
+            </div>
+            <h3 className="about-card-title font-display">Our Purpose</h3>
+            <p className="about-card-desc">
+              We empower ambitious enterprises to dominate digital-first landscapes. Through
+              meticulous engineering, ultra-fast load times, and spatial aesthetic direction, we
+              transform complex visions into category-defining reality.
             </p>
           </div>
-          <div className="about-col">
-            <h3 className="about-col-title">Our approach</h3>
-            <p>
-              We combine technical precision with creative thinking. Every engagement starts
-              with a clear understanding of your goals, and every deliverable is measured
-              against those goals.
-            </p>
-          </div>
-          <div className="about-col">
-            <h3 className="about-col-title">Our base</h3>
-            <p>
-              Based in Kollam, Kerala, India. We work with clients across India and
-              internationally, building digital products that perform in competitive markets.
-            </p>
-          </div>
-        </div>
 
-        {/* Continuous Scroll Metric Cards */}
-        <div className="about-stats-row mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-white/10">
-          <div className="about-stat-card p-6 bg-white/[0.02] rounded-xl border border-white/10 backdrop-blur-md">
-            <span className="text-3xl md:text-4xl font-bold font-display text-gradient-brand">100%</span>
-            <span className="block mt-1 text-xs text-gray-400 uppercase tracking-widest">Client Satisfaction</span>
+          <div className="about-card">
+            <div className="about-icon-wrap">
+              <Cpu size={22} className="text-purple-400" />
+            </div>
+            <h3 className="about-card-title font-display">Our Approach</h3>
+            <p className="about-card-desc">
+              Zero shortcuts. Every line of code, motion tween, and backend service is crafted for
+              maximum resilience, security, and scalability. We treat web and app design as high art
+              backed by deep computer science.
+            </p>
           </div>
-          <div className="about-stat-card p-6 bg-white/[0.02] rounded-xl border border-white/10 backdrop-blur-md">
-            <span className="text-3xl md:text-4xl font-bold font-display text-gradient-brand">15+</span>
-            <span className="block mt-1 text-xs text-gray-400 uppercase tracking-widest">Tech Capabilities</span>
-          </div>
-          <div className="about-stat-card p-6 bg-white/[0.02] rounded-xl border border-white/10 backdrop-blur-md">
-            <span className="text-3xl md:text-4xl font-bold font-display text-gradient-brand">24/7</span>
-            <span className="block mt-1 text-xs text-gray-400 uppercase tracking-widest">Digital Operations</span>
+
+          <div className="about-card">
+            <div className="about-icon-wrap">
+              <Globe size={22} className="text-emerald-400" />
+            </div>
+            <h3 className="about-card-title font-display">Global Presence</h3>
+            <p className="about-card-desc">
+              Operating from dual tech hubs in <strong>Kollam, Kerala (India)</strong> and{' '}
+              <strong>Abu Dhabi (UAE)</strong>, serving international clientele across eCommerce,
+              hospitality, healthcare, and enterprise fintech.
+            </p>
           </div>
         </div>
       </div>

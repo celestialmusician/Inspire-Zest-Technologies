@@ -1,109 +1,151 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGsap } from '@/hooks/useGsap'
+import { Sparkles, Search, Compass, Palette, Code2, Rocket, TrendingUp } from 'lucide-react'
 import './Process.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const STEPS = [
-  { num: '01', title: 'Discover',  desc: 'Understand your goals, market, and users.' },
-  { num: '02', title: 'Define',    desc: 'Structure a clear strategy and scope.' },
-  { num: '03', title: 'Design',    desc: 'Create purposeful, user-centred experiences.' },
-  { num: '04', title: 'Develop',   desc: 'Build with precision, speed, and quality.' },
-  { num: '05', title: 'Launch',    desc: 'Deploy, test, and prepare for the real world.' },
-  { num: '06', title: 'Grow',      desc: 'Measure, refine, and expand what works.' },
+  {
+    num: '01',
+    title: 'Discovery & Strategic Audit',
+    desc: 'Deep-dive analysis of your core business architecture, target demographic, and market competitors.',
+    icon: Search,
+  },
+  {
+    num: '02',
+    title: 'Architecture & System Design',
+    desc: 'Defining technical stack specifications, database models, and high-conversion UX wireframes.',
+    icon: Compass,
+  },
+  {
+    num: '03',
+    title: 'Spatial UI / Visual Craft',
+    desc: 'World-class visual aesthetics, custom micro-interactions, and 60fps kinetic motion design.',
+    icon: Palette,
+  },
+  {
+    num: '04',
+    title: 'High-Velocity Engineering',
+    desc: 'Writing clean, modern, modular TypeScript/React and robust cloud-native backend APIs.',
+    icon: Code2,
+  },
+  {
+    num: '05',
+    title: 'Global Launch & Edge CDN',
+    desc: 'End-to-end automated testing, performance auditing, and deployment to high-availability global edge networks.',
+    icon: Rocket,
+  },
+  {
+    num: '06',
+    title: 'Continuous Scale & AI Insights',
+    desc: 'Proactive telemetry monitoring, conversion optimization, and continuous feature expansion.',
+    icon: TrendingUp,
+  },
 ]
 
 export default function Process() {
   const sectionRef = useRef<HTMLElement>(null)
+  const lineRef = useRef<HTMLDivElement>(null)
 
-  useGsap(() => {
-    // Animate the connecting line
-    gsap.fromTo('.proc-line-fill',
-      { scaleY: 0 },
-      {
-        scaleY: 1,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 60%',
-          end: 'bottom 60%',
-          scrub: 1,
-        }
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+
+    const ctx = gsap.context(() => {
+      // Animate vertical progress line
+      if (lineRef.current) {
+        gsap.fromTo(
+          lineRef.current,
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '.cinematic-proc-steps',
+              start: 'top 70%',
+              end: 'bottom 80%',
+              scrub: true,
+            },
+          }
+        )
       }
-    )
 
-    // Steps appear
-    STEPS.forEach((_, i) => {
-      const stepEl = document.querySelector(`.proc-step-${i}`)
-      if (!stepEl) return
-
-      gsap.fromTo(stepEl,
-        { opacity: 0, x: -35, rotateY: -15 },
+      // Step cards stagger reveal
+      gsap.fromTo(
+        '.cinematic-proc-card',
+        { opacity: 0, x: -30, scale: 0.96 },
         {
-          opacity: 1, x: 0, rotateY: 0,
-          duration: 0.8,
+          opacity: 1,
+          x: 0,
+          scale: 1,
+          stagger: 0.15,
+          duration: 0.9,
           ease: 'power3.out',
           scrollTrigger: {
-            trigger: stepEl,
-            start: 'top 84%',
+            trigger: '.cinematic-proc-steps',
+            start: 'top 75%',
             toggleActions: 'play none none reverse',
-          }
+          },
         }
       )
+    }, section)
 
-      gsap.fromTo(stepEl.querySelector('.proc-step-dot'),
-        { scale: 0, backgroundColor: '#00D2FF' },
-        {
-          scale: 1,
-          duration: 0.6,
-          ease: 'back.out(2)',
-          scrollTrigger: {
-            trigger: stepEl,
-            start: 'top 84%',
-            toggleActions: 'play none none reverse',
-          }
-        }
-      )
-    })
-  }, [], sectionRef)
+    return () => ctx.revert()
+  }, [])
 
   return (
     <section
       ref={sectionRef}
       id="process"
-      className="proc scene"
-      aria-label="How we work"
+      className="cinematic-proc-section"
+      aria-label="Engineering Process"
     >
-      <div className="proc-container">
-        <div className="proc-header">
-          <span className="proc-tag" aria-hidden="true">09 — HOW WE WORK</span>
-          <h2 className="proc-heading font-display">THE PROCESS</h2>
+      <div className="cinematic-proc-container">
+        <div className="cinematic-proc-header">
+          <div className="cinematic-proc-tag" aria-hidden="true">
+            <Sparkles size={13} className="text-cyan-400" />
+            <span>07 — EXECUTION ROADMAP</span>
+          </div>
+          <h2 className="cinematic-proc-title font-display">
+            HOW WE BUILD <span className="text-titanium">THE IMPOSSIBLE</span>
+          </h2>
+          <p className="cinematic-proc-sub">
+            A battle-tested 6-phase engineering lifecycle designed to minimize risk and maximize
+            market velocity.
+          </p>
         </div>
 
-        <div className="proc-layout">
-          {/* Vertical line */}
-          <div className="proc-line-track" aria-hidden="true">
-            <div className="proc-line-fill" />
+        <div className="cinematic-proc-layout">
+          {/* Vertical Glowing Progress Line */}
+          <div className="cinematic-proc-track" aria-hidden="true">
+            <div ref={lineRef} className="cinematic-proc-line-fill" />
           </div>
 
-          {/* Steps */}
-          <div className="proc-steps">
-            {STEPS.map((s, i) => (
-              <div
-                key={s.num}
-                className={`proc-step proc-step-${i}`}
-                aria-label={`Step ${s.num}: ${s.title}`}
-              >
-                <div className="proc-step-dot" aria-hidden="true" />
-                <div className="proc-step-body">
-                  <span className="proc-step-num" aria-hidden="true">{s.num}</span>
-                  <h3 className="proc-step-title">{s.title}</h3>
-                  <p className="proc-step-desc">{s.desc}</p>
+          {/* Steps List */}
+          <div className="cinematic-proc-steps">
+            {STEPS.map((s) => {
+              const Icon = s.icon
+              return (
+                <div key={s.num} className="cinematic-proc-card">
+                  <div className="cinematic-proc-node" aria-hidden="true">
+                    <span className="cinematic-node-dot" />
+                  </div>
+
+                  <div className="cinematic-proc-card-inner">
+                    <div className="cinematic-proc-icon-box">
+                      <Icon size={18} className="text-cyan-400" />
+                      <span className="cinematic-proc-num font-display">{s.num}</span>
+                    </div>
+                    <div className="cinematic-proc-text">
+                      <h3 className="cinematic-proc-card-title font-display">{s.title}</h3>
+                      <p className="cinematic-proc-card-desc">{s.desc}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </div>
