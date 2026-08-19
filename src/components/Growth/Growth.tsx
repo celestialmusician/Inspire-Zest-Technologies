@@ -1,105 +1,214 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGsap } from '@/hooks/useGsap'
+import { Code2, Users, FolderCheck, Trophy, Sparkles } from 'lucide-react'
 import './Growth.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const GROWTH_SERVICES = ['SEO', 'Google Ads', 'Social Media', 'Content Strategy', 'Performance Marketing']
+interface StatItem {
+  id: string
+  number: number
+  prefix?: string
+  suffix: string
+  label: string
+  sublabel: string
+  icon: typeof Code2
+  color: string
+  glowColor: string
+}
+
+const STATS: StatItem[] = [
+  {
+    id: 'code',
+    number: 500,
+    suffix: 'k+',
+    label: 'Lines of Code',
+    sublabel: 'Engineered with clean, type-safe architecture & unit tests',
+    icon: Code2,
+    color: '#00F0FF',
+    glowColor: 'rgba(0, 240, 255, 0.25)',
+  },
+  {
+    id: 'clients',
+    number: 50,
+    suffix: '+',
+    label: 'Active Clients',
+    sublabel: 'Empowering enterprise brands across India & Middle East',
+    icon: Users,
+    color: '#00F5A0',
+    glowColor: 'rgba(0, 245, 160, 0.25)',
+  },
+  {
+    id: 'projects',
+    number: 120,
+    suffix: '+',
+    label: 'Completed Projects',
+    sublabel: 'From high-conversion e-commerce to complex ERP portals',
+    icon: FolderCheck,
+    color: '#B026FF',
+    glowColor: 'rgba(176, 38, 255, 0.25)',
+  },
+  {
+    id: 'uptime',
+    number: 99.8,
+    suffix: '%',
+    label: 'Client Satisfaction',
+    sublabel: 'Delivering exceptional reliability, speed, and 24/7 support',
+    icon: Trophy,
+    color: '#FFB800',
+    glowColor: 'rgba(255, 184, 0, 0.25)',
+  },
+]
 
 export default function Growth() {
   const sectionRef = useRef<HTMLElement>(null)
+  const numbersRef = useRef<(HTMLSpanElement | null)[]>([])
 
-  useGsap(() => {
-    // Kinetic phrase reveal
-    gsap.fromTo('.growth-phrase',
-      { opacity: 0, y: 50, rotateX: -30, skewY: 2 },
-      {
-        opacity: 1, y: 0, rotateX: 0, skewY: 0,
-        stagger: 0.18,
-        duration: 1,
-        ease: 'power4.out',
-        scrollTrigger: {
-          trigger: '.growth-phrases',
-          start: 'top 75%',
-          toggleActions: 'play none none reverse',
-        }
-      }
-    )
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
 
-    // Chart bars with elastic spring bounce
-    gsap.fromTo('.growth-bar-fill',
-      { scaleY: 0 },
-      {
-        scaleY: 1,
-        stagger: 0.08,
-        duration: 1.1,
-        ease: 'back.out(2.2)',
-        scrollTrigger: {
-          trigger: '.growth-chart',
-          start: 'top 80%',
-          toggleActions: 'play none none reverse',
+    const ctx = gsap.context(() => {
+      // 1. Header & Tag Reveal
+      gsap.fromTo(
+        '.stats-header-anim',
+        { opacity: 0, y: 35, rotateX: -20 },
+        {
+          opacity: 1,
+          y: 0,
+          rotateX: 0,
+          stagger: 0.12,
+          duration: 0.9,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse',
+          },
         }
-      }
-    )
+      )
 
-    // Service pills
-    gsap.fromTo('.growth-svc',
-      { opacity: 0, scale: 0.8, y: 15 },
-      {
-        opacity: 1, scale: 1, y: 0,
-        stagger: 0.07,
-        duration: 0.6,
-        ease: 'back.out(1.8)',
-        scrollTrigger: {
-          trigger: '.growth-svcs',
-          start: 'top 85%',
-          toggleActions: 'play none none reverse',
+      // 2. Card Entrances with 3D Depth
+      gsap.fromTo(
+        '.stats-card',
+        { opacity: 0, y: 50, scale: 0.92, rotateX: 15 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          rotateX: 0,
+          stagger: 0.15,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.stats-grid',
+            start: 'top 82%',
+            toggleActions: 'play none none reverse',
+          },
         }
-      }
-    )
-  }, [], sectionRef)
+      )
+
+      // 3. Scroll-Triggered Animated Number Counters
+      STATS.forEach((stat, i) => {
+        const el = numbersRef.current[i]
+        if (!el) return
+
+        const counterObj = { val: 0 }
+        const isDecimal = stat.number % 1 !== 0
+
+        gsap.to(counterObj, {
+          val: stat.number,
+          duration: 2.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            toggleActions: 'play none none reverse',
+          },
+          onUpdate: () => {
+            el.textContent = isDecimal
+              ? counterObj.val.toFixed(1)
+              : Math.floor(counterObj.val).toString()
+          },
+        })
+      })
+    }, section)
+
+    return () => ctx.revert()
+  }, [])
 
   return (
     <section
       ref={sectionRef}
       id="growth"
-      className="growth scene"
-      aria-label="Digital growth services"
+      className="stats-section"
+      aria-label="Inspire Zest Performance Metrics"
     >
-      <div className="growth-container">
-        <div className="growth-header">
-          <span className="growth-tag" aria-hidden="true">10 — DIGITAL GROWTH</span>
+      <div className="stats-container">
+        {/* Section Header */}
+        <div className="stats-header">
+          <div className="stats-tag stats-header-anim" aria-hidden="true">
+            <Sparkles size={13} className="text-cyan-400" />
+            <span>02 — PROVEN TRACK RECORD</span>
+          </div>
+          <h2 className="stats-title font-display stats-header-anim">
+            SCALE POWERED BY <span className="stats-title-gradient">PRECISION</span>
+          </h2>
+          <p className="stats-desc stats-header-anim">
+            We don't just write code — we build scalable digital infrastructure that drives measurable
+            revenue, customer loyalty, and technological supremacy.
+          </p>
         </div>
 
-        {/* Phrases */}
-        <div className="growth-phrases" aria-label="Get found. Get noticed. Get growing.">
-          <div className="growth-phrase font-display">GET FOUND.</div>
-          <div className="growth-phrase font-display">GET NOTICED.</div>
-          <div className="growth-phrase growth-phrase--accent font-display">GET GROWING.</div>
-        </div>
-
-        {/* Illustrative chart */}
-        <div className="growth-chart" aria-hidden="true">
-          {[35, 55, 45, 72, 60, 88, 78, 95].map((h, i) => (
-            <div key={i} className="growth-bar">
+        {/* 4-Column Neon Glass Cards Grid */}
+        <div className="stats-grid" role="list" aria-label="Key Performance Indicators">
+          {STATS.map((stat, idx) => {
+            const Icon = stat.icon
+            return (
               <div
-                className="growth-bar-fill"
-                style={{
-                  height: `${h}%`,
-                  background: i === 7 ? 'linear-gradient(to top, #B026FF, #0099FF)' : `rgba(245,245,240,${0.05 + i * 0.03})`
-                }}
-              />
-            </div>
-          ))}
-        </div>
+                key={stat.id}
+                className="stats-card"
+                role="listitem"
+                style={
+                  {
+                    '--card-accent': stat.color,
+                    '--card-glow': stat.glowColor,
+                  } as React.CSSProperties
+                }
+                data-cursor="explore"
+              >
+                {/* Glowing Corner Indicator */}
+                <div className="stats-card-glow" aria-hidden="true" />
+                <div className="stats-card-border" aria-hidden="true" />
 
-        {/* Services */}
-        <div className="growth-svcs" role="list" aria-label="Growth services">
-          {GROWTH_SERVICES.map((s) => (
-            <span key={s} className="growth-svc" role="listitem">{s}</span>
-          ))}
+                {/* Top Icon Badge */}
+                <div className="stats-card-icon-wrap" aria-hidden="true">
+                  <Icon size={24} style={{ color: stat.color }} />
+                </div>
+
+                {/* Live Number Counter */}
+                <div className="stats-card-number-row">
+                  {stat.prefix && <span className="stats-card-prefix">{stat.prefix}</span>}
+                  <span
+                    ref={(el) => {
+                      numbersRef.current[idx] = el
+                    }}
+                    className="stats-card-digits font-display"
+                  >
+                    0
+                  </span>
+                  <span className="stats-card-suffix font-display" style={{ color: stat.color }}>
+                    {stat.suffix}
+                  </span>
+                </div>
+
+                {/* Label & Description */}
+                <h3 className="stats-card-label font-display">{stat.label}</h3>
+                <p className="stats-card-sublabel">{stat.sublabel}</p>
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>

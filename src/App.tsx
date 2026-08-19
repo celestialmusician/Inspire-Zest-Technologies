@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { useLenis } from '@/hooks/useLenis'
 import { ThemeProvider } from '@/context/ThemeContext'
 import CustomCursor from '@/components/CustomCursor'
@@ -6,14 +6,13 @@ import GlobalBackground from '@/components/GlobalBackground'
 import Navigation from '@/components/Navigation'
 import LoadingScreen from '@/components/LoadingScreen'
 import PortalOpeningHero from '@/components/PortalOpeningHero'
-import AccordionHero from '@/components/AccordionHero'
+import Growth from '@/components/Growth'
 import Intro from '@/components/Intro'
 import Services from '@/components/Services'
-import TechnologyNetwork from '@/components/TechnologyNetwork'
 import Projects from '@/components/Projects'
+import TechnologyNetwork from '@/components/TechnologyNetwork'
 import About from '@/components/About'
 import Process from '@/components/Process'
-import Growth from '@/components/Growth'
 import WhyUs from '@/components/WhyUs'
 import Testimonials from '@/components/Testimonials'
 import FAQ from '@/components/FAQ'
@@ -27,7 +26,6 @@ import './index.css'
 
 export default function App() {
   const [loaded, setLoaded] = useState(false)
-  const [showContact, setShowContact] = useState(false)
 
   // Initialize Lenis + ScrollTrigger sync
   useLenis()
@@ -72,15 +70,16 @@ export default function App() {
         <FloatingWhatsApp />
 
         <main id="main-content" tabIndex={-1}>
-          <PortalOpeningHero />
-          <AccordionHero />
+          <div id="hero">
+            <PortalOpeningHero />
+          </div>
+          <Growth />
           <Intro />
           <Services />
-          <TechnologyNetwork />
           <Projects />
+          <TechnologyNetwork />
           <About />
           <Process />
-          <Growth />
           <WhyUs />
           <Testimonials />
           <FAQ />

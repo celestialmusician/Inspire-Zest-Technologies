@@ -1,22 +1,35 @@
 import { useRef, useEffect } from 'react'
+import { MapPin, Globe } from 'lucide-react'
 import './Footer.css'
 
 const NAV_COLS = [
   {
-    label: 'Services',
-    links: ['Web Development', 'Mobile Apps', 'ERP & Software', 'Digital Marketing', 'Branding'],
+    label: 'Core Services',
+    links: [
+      { name: 'Web Development & 3D', href: '#services' },
+      { name: 'Mobile App Engineering', href: '#services' },
+      { name: 'AI & Enterprise Software', href: '#services' },
+      { name: 'ERP & Business Systems', href: '#services' },
+      { name: 'E-Commerce Solutions', href: '#services' },
+      { name: 'Branding & Growth Marketing', href: '#services' },
+    ],
   },
   {
-    label: 'Company',
-    links: ['About', 'Work', 'Process', 'Contact'],
+    label: 'Navigation',
+    links: [
+      { name: 'Featured Work', href: '#projects' },
+      { name: 'Architecture & Tech', href: '#technology' },
+      { name: 'Client Testimonials', href: '#testimonials' },
+      { name: 'Contact & Inquiries', href: '#contact' },
+    ],
   },
 ]
 
 const SOCIALS = [
-  { label: 'Instagram', href: '#' },
-  { label: 'LinkedIn',  href: '#' },
-  { label: 'Facebook',  href: '#' },
-  { label: 'YouTube',   href: '#' },
+  { label: 'LinkedIn', href: 'https://linkedin.com' },
+  { label: 'Instagram', href: 'https://instagram.com' },
+  { label: 'Twitter / X', href: 'https://x.com' },
+  { label: 'GitHub', href: 'https://github.com' },
 ]
 
 export default function Footer() {
@@ -39,29 +52,35 @@ export default function Footer() {
   }, [])
 
   return (
-    <footer className="footer" aria-label="Site footer">
+    <footer className="footer-award" aria-label="Site footer">
       <div ref={cardRef} className="footer-glass-card">
-        {/* Animated ambient top glass light sweep */}
+        {/* Ambient sweep glow */}
         <div className="footer-glass-glow" aria-hidden="true" />
-        {/* Interactive cursor spotlight */}
         <div className="footer-cursor-spotlight" aria-hidden="true" />
 
-        {/* Top section */}
-        <div className="footer-top">
-          <div className="footer-brand">
-            <span className="footer-logo text-gradient-brand">INSPIREZEST</span>
-            <p className="footer-tagline">LET'S MAKE<br />SOMETHING<br />MATTER.</p>
+        {/* Top Section */}
+        <div className="footer-top-grid">
+          <div className="footer-brand-block">
+            <span className="footer-logo font-display">INSPIREZEST</span>
+            <p className="footer-tagline font-display">
+              ARCHITECTING THE FUTURE <br />
+              OF DIGITAL EXPERIENCES.
+            </p>
+            <p className="footer-subtext">
+              Transforming bold business ideas into scalable software platforms, converting brands,
+              and category-leading products.
+            </p>
           </div>
 
-          <div className="footer-nav">
+          <div className="footer-nav-grid">
             {NAV_COLS.map((col) => (
               <div key={col.label} className="footer-nav-col">
                 <span className="footer-nav-label">{col.label}</span>
                 <ul role="list">
                   {col.links.map((l) => (
-                    <li key={l}>
-                      <a href="#" className="footer-nav-link">
-                        {l}
+                    <li key={l.name}>
+                      <a href={l.href} className="footer-nav-link">
+                        {l.name}
                       </a>
                     </li>
                   ))}
@@ -70,8 +89,22 @@ export default function Footer() {
             ))}
 
             <div className="footer-nav-col">
-              <span className="footer-nav-label">Connect</span>
-              <ul role="list">
+              <span className="footer-nav-label">Global Offices</span>
+              <div className="footer-office-loc">
+                <div className="footer-loc-item">
+                  <MapPin size={14} className="text-cyan-400" />
+                  <span>Kollam, Kerala, India</span>
+                </div>
+                <div className="footer-loc-item">
+                  <Globe size={14} className="text-purple-400" />
+                  <span>Abu Dhabi, UAE</span>
+                </div>
+              </div>
+
+              <span className="footer-nav-label" style={{ marginTop: '1.5rem' }}>
+                Follow Us
+              </span>
+              <ul role="list" className="footer-social-list">
                 {SOCIALS.map((s) => (
                   <li key={s.label}>
                     <a
@@ -79,7 +112,6 @@ export default function Footer() {
                       className="footer-nav-link"
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={`InspireZest on ${s.label}`}
                     >
                       {s.label}
                     </a>
@@ -90,19 +122,19 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="footer-bottom">
-          <div className="footer-location" aria-label="Location">
-            KOLLAM · KERALA · INDIA
-          </div>
+        {/* Bottom Bar */}
+        <div className="footer-bottom-bar">
           <div className="footer-copy">
-            Copyright © {new Date().getFullYear()} All rights reserved | InspireZest Technologies Pvt Ltd
+            © {new Date().getFullYear()} Inspire Zest Technologies Pvt Ltd. All rights reserved.
+          </div>
+          <div className="footer-legal-links">
+            <a href="#portal-opening">Back to Top ↑</a>
           </div>
         </div>
 
-        {/* Huge backdrop watermark */}
+        {/* Huge Watermark */}
         <div className="footer-watermark font-display" aria-hidden="true">
-          INSPIREZEST
+          INSPIRE ZEST
         </div>
       </div>
     </footer>

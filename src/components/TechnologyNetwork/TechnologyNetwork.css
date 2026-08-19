@@ -1,250 +1,195 @@
-/* ---------- Technology Network & 3D Spline Scene Styles ---------- */
-.tech {
-  min-height: auto;
-  padding: 6rem 4rem;
+/* ═════════════════════════════════════════════════════════════════
+   INTERACTIVE VELOCITY TECH STACK MARQUEE
+═════════════════════════════════════════════════════════════════ */
+
+.tech-marquee-section {
   position: relative;
+  width: 100%;
+  padding: 8rem 0;
+  background: #0B0F19;
   overflow: hidden;
-  background: #0A0C0E;
+  z-index: 20;
 }
 
-.tech-container {
-  max-width: 1440px;
+.tech-marquee-container {
+  max-width: 1240px;
   margin: 0 auto;
-  position: relative;
-  z-index: 2;
+  padding: 0 2rem;
 }
 
-/* ---------- Header & Spline 3D Scene Split Row ---------- */
-.tech-header-wrapper {
-  margin-bottom: 3.5rem;
-  position: relative;
-  z-index: 3;
-}
-
-.tech-header-content {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 3.5rem;
-  align-items: center;
-}
-
-.tech-header-text {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 520px;
+/* ── Header ── */
+.tech-header-block {
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto 4rem;
 }
 
 .tech-tag {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.28em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
   color: #00F0FF;
   text-transform: uppercase;
-  display: inline-block;
-  margin-bottom: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  padding: 0.35rem 0.9rem;
+  background: rgba(0, 240, 255, 0.06);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 9999px;
 }
 
 .tech-heading {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(2.75rem, 5vw, 4.5rem);
-  font-weight: 800;
-  line-height: 1.02;
-  letter-spacing: -0.025em;
-  color: #FFFFFF;
-  margin-bottom: 1.15rem;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-}
-
-.tech-sub {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: clamp(0.9rem, 1.3vw, 1.05rem);
-  color: #9EA5A8;
-  line-height: 1.7;
-}
-
-/* ---------- Floating Spline 3D Scene (No Box / No Border) ---------- */
-.tech-spline-container {
-  position: relative;
-  width: 100%;
-  height: 480px;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  overflow: visible;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.tech-spline-view {
-  width: 100% !important;
-  height: 100% !important;
-  display: block;
-  background: transparent !important;
-}
-
-/* Fallback Loader */
-.spline-fallback-loader {
-  width: 100%;
-  height: 100%;
-  min-height: 280px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  background: transparent;
-}
-
-.spline-spinner {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 2px solid rgba(0, 245, 160, 0.15);
-  border-top-color: #00F5A0;
-  border-right-color: #00F0FF;
-  animation: splineSpin 0.9s linear infinite;
-}
-
-.spline-loading-text {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.65rem;
+  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
   font-weight: 700;
-  letter-spacing: 0.25em;
-  color: #00F5A0;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: #F8FAFC;
+  margin-bottom: 1.2rem;
 }
 
-@keyframes splineSpin {
-  to { transform: rotate(360deg); }
+.tech-title-gradient {
+  background: linear-gradient(135deg, #00F0FF 0%, #00F5A0 50%, #B026FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-/* ---------- Ambient Three.js Canvas Behind Grid ---------- */
-.tech-canvas {
-  position: absolute;
-  top: 0;
-  right: -5%;
-  width: 50%;
-  height: 100%;
-  z-index: 1;
-  opacity: 0.35;
-  pointer-events: none;
+.tech-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #94A3B8;
 }
 
-.tech-canvas canvas {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* ---------- Tech Labels Grid ---------- */
-.tech-grid {
+/* ── Marquee Wrappers ── */
+.marquee-wrapper {
   position: relative;
-  z-index: 3;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1px;
-  border: 1px solid rgba(245, 245, 240, 0.08);
-  border-radius: 12px;
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.03);
-  margin-top: 2rem;
+  padding: 1rem 0;
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
 }
 
-.tech-label {
+.marquee-wrapper--reverse {
+  margin-top: 1.2rem;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  will-change: transform;
+}
+
+/* ── Badge Card ── */
+.tech-badge-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.8rem;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+.tech-badge-card:hover {
+  transform: translateY(-4px) scale(1.04);
+  border-color: rgba(0, 240, 255, 0.5);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 240, 255, 0.2);
+}
+
+.tech-badge-icon {
+  font-size: 1.6rem;
+}
+
+.tech-badge-info {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
-  padding: 1.4rem;
-  background: #0D1013;
-  transition: background 0.25s ease, transform 0.25s ease;
 }
 
-.tech-label:hover {
-  background: #14181E;
-  transform: translateY(-2px);
-}
-
-.tech-label-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  box-shadow: 0 0 8px currentColor;
-}
-
-.tech-label-name {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(0.85rem, 1.4vw, 0.95rem);
-  font-weight: 600;
-  color: #F5F5F0;
+.tech-badge-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #F8FAFC;
   letter-spacing: -0.01em;
 }
 
-.tech-label-cat {
+.tech-badge-cat {
   font-family: 'Inter', sans-serif;
-  font-size: 0.55rem;
-  letter-spacing: 0.2em;
-  color: #8A8A8A;
+  font-size: 0.68rem;
+  color: #94A3B8;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
-/* ---------- Responsive Tablet Breakpoints ---------- */
-@media (max-width: 1024px) {
-  .tech {
-    padding: 4.5rem 2.5rem;
-  }
-  .tech-header-content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  .tech-header-text {
-    max-width: 100%;
-  }
-  .tech-spline-container {
-    height: 380px;
-  }
+.tech-badge-glow {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  filter: blur(20px);
+  opacity: 0.15;
+  pointer-events: none;
 }
 
-/* ---------- Responsive Mobile Breakpoints ---------- */
+/* ── Feature Pillars Grid ── */
+.tech-pillars-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 5rem;
+}
+
+.tech-pillar-card {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 24px;
+  padding: 2.5rem 2rem;
+  backdrop-filter: blur(16px);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.tech-pillar-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.tech-pillar-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #F8FAFC;
+  margin-bottom: 0.6rem;
+}
+
+.tech-pillar-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #94A3B8;
+}
+
+/* ── Responsive Rules ── */
 @media (max-width: 767px) {
-  .tech {
-    padding: 3.5rem 1.25rem !important;
+  .tech-marquee-section {
+    padding: 5rem 0;
   }
-  .tech-header-wrapper {
-    margin-bottom: 2rem !important;
-  }
-  .tech-header-content {
-    grid-template-columns: 1fr !important;
-    gap: 1.5rem !important;
-  }
-  .tech-tag {
-    margin-bottom: 0.65rem !important;
-    font-size: 0.65rem !important;
-    letter-spacing: 0.22em !important;
-  }
-  .tech-heading {
-    font-size: clamp(2.2rem, 8.5vw, 3.2rem) !important;
-    line-height: 1.05 !important;
-    margin-bottom: 0.75rem !important;
-    letter-spacing: -0.02em !important;
-  }
-  .tech-sub {
-    font-size: 0.88rem !important;
-    line-height: 1.55 !important;
-  }
-  .tech-spline-container {
-    height: 280px !important;
-  }
-  .tech-canvas {
-    display: none !important;
-  }
-  .tech-grid {
-    max-width: 100% !important;
-    margin-top: 1.5rem !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 1px !important;
-  }
-  .tech-label {
-    padding: 1.1rem !important;
+  .tech-pillars-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 }

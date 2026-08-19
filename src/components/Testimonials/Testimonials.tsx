@@ -1,182 +1,182 @@
-import * as React from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { testimonials } from '@/data/testimonials'
+import { Sparkles, Quote, Star, ChevronLeft, ChevronRight } from 'lucide-react'
 import './Testimonials.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-interface Speaker {
-  name: string
-  role: string
-  src: string
-}
-
-// ─── Team / client portraits ─────────────────────────────────────────────────
-// Replace these with real photos — drop images in public/images/team/
-const SPEAKERS: Speaker[] = [
-  { name: 'Alex Johnson',    role: 'CEO & Founder',       src: 'https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/avatar-images/avatar-01.jpg' },
-  { name: 'Sarah Chen',      role: 'CTO',                 src: 'https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/avatar-images/avatar-02.jpg' },
-  { name: 'Marcus Rivera',   role: 'Lead Designer',       src: 'https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/avatar-images/avatar-03.jpg' },
-  { name: 'Emily Watson',    role: 'Product Manager',     src: 'https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/avatar-images/avatar-04.jpg' },
-  { name: 'David Kim',       role: 'Senior Developer',    src: 'https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/avatar-images/avatar-05.jpg' },
-  { name: 'Lisa Thompson',   role: 'Marketing Director',  src: 'https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/avatar-images/avatar-01.jpg' },
-  { name: 'James Wilson',    role: 'UX Researcher',       src: 'https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/avatar-images/avatar-02.jpg' },
-  { name: 'Rachel Green',    role: 'Data Scientist',      src: 'https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/avatar-images/avatar-03.jpg' },
-  { name: 'Michael Brown',   role: 'DevOps Engineer',     src: 'https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/avatar-images/avatar-04.jpg' },
-  { name: 'Anna Davis',      role: 'Content Strategist',  src: 'https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev/avatar-images/avatar-05.jpg' },
-]
-
-// ─── Deterministic scattered grid layout ─────────────────────────────────────
-// One portrait per row, with every third row holding a second one.
-// No Math.random → SSR-safe, consistent on every render.
-function buildLayout(count: number, cols: number): number[][] {
-  const rows: number[][] = []
-  let i = 0
-  let r = 0
-  while (i < count) {
-    const row = new Array<number>(cols).fill(-1)
-    const a = (r * 2 + (r % 2)) % cols
-    row[a] = i++
-    if (r % 3 === 0 && i < count) {
-      let b = (a + 2) % cols
-      if (b === a) b = (a + 1) % cols
-      row[b] = i++
-    }
-    rows.push(row)
-    r++
-  }
-  return rows
-}
-
-// ─── Responsive column count ──────────────────────────────────────────────────
-function useResponsiveCols(desired: number): number {
-  const [cols, setCols] = React.useState(desired)
-  React.useEffect(() => {
-    const sm = window.matchMedia('(min-width: 640px)')
-    const lg = window.matchMedia('(min-width: 1024px)')
-    const update = () => {
-      if (lg.matches)      setCols(desired)
-      else if (sm.matches) setCols(Math.min(desired, 3))
-      else                 setCols(Math.min(desired, 2))
-    }
-    update()
-    sm.addEventListener('change', update)
-    lg.addEventListener('change', update)
-    return () => {
-      sm.removeEventListener('change', update)
-      lg.removeEventListener('change', update)
-    }
-  }, [desired])
-  return cols
-}
-
-// ─── Component ────────────────────────────────────────────────────────────────
 export default function Testimonials() {
-  const rootRef   = React.useRef<HTMLElement>(null)
-  const hintRef   = React.useRef<HTMLDivElement>(null)
-  const cols      = useResponsiveCols(4)
-  const layout    = React.useMemo(() => buildLayout(SPEAKERS.length, cols), [cols])
-  const ctxRef    = React.useRef<gsap.Context | null>(null)
+  const sectionRef = useRef<HTMLElement>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
 
-  React.useEffect(() => {
-    const root = rootRef.current
-    if (!root) return
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
 
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-    ctxRef.current = gsap.context(() => {
-      const items = gsap.utils.toArray<HTMLElement>('.spw-item', root)
-
-      if (reduce) {
-        gsap.set(items, { scale: 1 })
-        return
-      }
-
-      // Scroll hint fades out over the first 40 % of the section
-      gsap.to(hintRef.current, {
-        autoAlpha: 0,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: root,
-          start: 'top top',
-          end: '+=40%',
-          scrub: true,
-        },
-      })
-
-      // Each portrait scales 0 → 1 → 0 as it passes through the viewport
-      items.forEach((el) => {
-        gsap.timeline({
+    const ctx = gsap.context(() => {
+      // 1. Entrance animation
+      gsap.fromTo(
+        '.tst-header-anim',
+        { opacity: 0, y: 30, rotateX: -15 },
+        {
+          opacity: 1,
+          y: 0,
+          rotateX: 0,
+          stagger: 0.1,
+          duration: 0.9,
+          ease: 'power3.out',
           scrollTrigger: {
-            trigger: el,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true,
+            trigger: section,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse',
           },
-        })
-          .fromTo(el, { scale: 0 }, { scale: 1, ease: 'power2.out', duration: 0.5 })
-          .to(el,                   { scale: 0, ease: 'power2.in',  duration: 0.5 })
-      })
-    }, root)
+        }
+      )
 
-    return () => ctxRef.current?.revert()
-  }, [cols])
+      // 2. Card entrance
+      gsap.fromTo(
+        '.tst-featured-card',
+        { opacity: 0, y: 40, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.tst-featured-card',
+            start: 'top 82%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      )
+    }, section)
+
+    return () => ctx.revert()
+  }, [])
+
+  const switchTestimonial = (newIdx: number) => {
+    gsap.to('.tst-quote-anim', {
+      opacity: 0,
+      y: -15,
+      duration: 0.25,
+      ease: 'power2.in',
+      onComplete: () => {
+        setActiveIndex(newIdx)
+        gsap.fromTo(
+          '.tst-quote-anim',
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' }
+        )
+      },
+    })
+  }
+
+  const prev = () => {
+    const nextIdx = activeIndex === 0 ? testimonials.length - 1 : activeIndex - 1
+    switchTestimonial(nextIdx)
+  }
+
+  const next = () => {
+    const nextIdx = activeIndex === testimonials.length - 1 ? 0 : activeIndex + 1
+    switchTestimonial(nextIdx)
+  }
+
+  const active = testimonials[activeIndex]
 
   return (
     <section
-      ref={rootRef}
+      ref={sectionRef}
       id="testimonials"
-      className="spw-root"
-      aria-label="Team — Scroll Portrait Wall"
+      className="testimonials-award-section"
+      aria-label="Client Testimonials and Social Proof"
     >
-      {/* ── Scroll hint (fades out on scroll) ── */}
-      <div ref={hintRef} className="spw-hint" aria-hidden="true">
-        <span className="spw-hint-text">scroll down to see effect</span>
-      </div>
-
-      {/* ── Sticky centred title (mix-blend-mode: exclusion) ── */}
-      <div className="spw-title-wrap" aria-hidden="true">
-        <h2 className="spw-title">Our Team</h2>
-        <p className="spw-date">INSPIREZEST TECHNOLOGIES</p>
-      </div>
-
-      {/* ── Scattered portrait grid ── */}
-      <div className="spw-grid">
-        {layout.map((row, ri) => (
-          <div key={ri} className="spw-row">
-            {row.map((idx, ci) => {
-              if (idx === -1) return (
-                <div key={ci} className="spw-cell spw-cell--empty" />
-              )
-
-              const s      = SPEAKERS[idx]
-              const origin = ci < cols / 2 ? 'right bottom' : 'left bottom'
-
-              return (
-                <div key={ci} className="spw-cell">
-                  <div
-                    className="spw-item"
-                    style={{ transformOrigin: origin, transform: 'scale(0)' }}
-                  >
-                    <img
-                      src={s.src}
-                      alt={s.name}
-                      loading="lazy"
-                      decoding="async"
-                      draggable={false}
-                      className="spw-img"
-                    />
-                    <div className="spw-caption">
-                      <span className="spw-caption-name">{s.name}</span>
-                      <span className="spw-caption-role">({s.role})</span>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
+      <div className="tst-container">
+        {/* Section Header */}
+        <div className="tst-header">
+          <div className="tst-tag tst-header-anim" aria-hidden="true">
+            <Sparkles size={13} className="text-cyan-400" />
+            <span>06 — SOCIAL PROOF & TESTIMONIALS</span>
           </div>
-        ))}
+          <h2 className="tst-title font-display tst-header-anim">
+            TRUSTED BY <span className="tst-title-gradient">CATEGORY LEADERS</span>
+          </h2>
+          <p className="tst-subtitle tst-header-anim">
+            Here is what our founding partners and enterprise executives have to say about working with
+            Inspire Zest Technologies.
+          </p>
+        </div>
+
+        {/* Featured Glowing Testimonial Card */}
+        <div className="tst-featured-card" data-cursor="drag">
+          <div className="tst-card-glow" aria-hidden="true" />
+          <Quote className="tst-quote-icon" size={64} aria-hidden="true" />
+
+          {/* Star Rating Row */}
+          <div className="tst-rating-row tst-quote-anim" aria-label="5 out of 5 stars">
+            {[...Array(active.rating)].map((_, i) => (
+              <Star key={i} size={18} className="text-yellow-400 fill-yellow-400" />
+            ))}
+            <span className="tst-project-pill">{active.project}</span>
+          </div>
+
+          {/* Quote Text */}
+          <blockquote className="tst-quote-text tst-quote-anim font-display">
+            "{active.quote}"
+          </blockquote>
+
+          {/* Author Details & Navigation */}
+          <div className="tst-author-bar tst-quote-anim">
+            <div className="tst-author-profile">
+              <img
+                src={active.avatar}
+                alt={active.name}
+                className="tst-author-avatar"
+                loading="lazy"
+              />
+              <div className="tst-author-info">
+                <span className="tst-author-name font-display">{active.name}</span>
+                <span className="tst-author-role">
+                  {active.role} · <strong className="text-cyan-400">{active.company}</strong>
+                </span>
+              </div>
+            </div>
+
+            {/* Carousel Controls */}
+            <div className="tst-nav-controls">
+              <button
+                className="tst-nav-btn"
+                onClick={prev}
+                aria-label="Previous testimonial"
+                data-cursor="explore"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <div className="tst-nav-dots" role="tablist">
+                {testimonials.map((_, i) => (
+                  <button
+                    key={i}
+                    role="tab"
+                    aria-selected={i === activeIndex}
+                    aria-label={`Testimonial ${i + 1}`}
+                    className={`tst-dot ${i === activeIndex ? 'tst-dot--active' : ''}`}
+                    onClick={() => switchTestimonial(i)}
+                  />
+                ))}
+              </div>
+              <button
+                className="tst-nav-btn"
+                onClick={next}
+                aria-label="Next testimonial"
+                data-cursor="explore"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )

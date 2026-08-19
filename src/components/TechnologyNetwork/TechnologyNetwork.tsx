@@ -1,220 +1,199 @@
-import { useRef, useMemo } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import * as THREE from 'three'
+import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGsap } from '@/hooks/useGsap'
-import { useWebGLCapability } from '@/hooks/useWebGLCapability'
-import { technologies } from '@/data/technologies'
-import { SplineScene } from '@/components/ui/splite'
+import { Sparkles, Cpu, Layers } from 'lucide-react'
 import './TechnologyNetwork.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// ── Network Scene ────────────────────────────────────────────
-function NetworkScene({ count }: { count: number }) {
-  const pointsRef = useRef<THREE.Points>(null)
-  const linesRef  = useRef<THREE.LineSegments>(null)
-
-  const nodeCount = Math.min(technologies.length, count)
-
-  const { positions, linePositions } = useMemo(() => {
-    const pos = new Float32Array(nodeCount * 3)
-    const linePairs: number[] = []
-
-    for (let i = 0; i < nodeCount; i++) {
-      const theta = (i / nodeCount) * Math.PI * 2
-      const r     = 1.5 + Math.random() * 0.8
-      pos[i * 3]     = Math.cos(theta) * r + (Math.random() - 0.5) * 0.5
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 1.5
-      pos[i * 3 + 2] = Math.sin(theta) * r * 0.5 + (Math.random() - 0.5) * 0.5
-    }
-
-    // Connect nearby nodes
-    for (let i = 0; i < nodeCount; i++) {
-      for (let j = i + 1; j < nodeCount; j++) {
-        const dx = pos[i*3] - pos[j*3]
-        const dy = pos[i*3+1] - pos[j*3+1]
-        const dist = Math.sqrt(dx*dx + dy*dy)
-        if (dist < 2.2) {
-          linePairs.push(
-            pos[i*3], pos[i*3+1], pos[i*3+2],
-            pos[j*3], pos[j*3+1], pos[j*3+2]
-          )
-        }
-      }
-    }
-
-    return {
-      positions: pos,
-      linePositions: new Float32Array(linePairs),
-    }
-  }, [nodeCount])
-
-  const pointGeo = useMemo(() => {
-    const g = new THREE.BufferGeometry()
-    g.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-    return g
-  }, [positions])
-
-  const lineGeo = useMemo(() => {
-    const g = new THREE.BufferGeometry()
-    g.setAttribute('position', new THREE.BufferAttribute(linePositions, 3))
-    return g
-  }, [linePositions])
-
-  useFrame(({ clock, mouse }) => {
-    if (pointsRef.current) {
-      pointsRef.current.rotation.y = clock.elapsedTime * 0.06 + mouse.x * 0.2
-      pointsRef.current.rotation.x = mouse.y * 0.1
-    }
-    if (linesRef.current) {
-      linesRef.current.rotation.y = clock.elapsedTime * 0.06 + mouse.x * 0.2
-      linesRef.current.rotation.x = mouse.y * 0.1
-    }
-  })
-
-  return (
-    <>
-      <ambientLight intensity={0.2} />
-      <pointLight position={[3, 3, 3]} intensity={0.5} color="#0099FF" />
-
-      <points ref={pointsRef} geometry={pointGeo}>
-        <pointsMaterial
-          size={0.06}
-          color="#F5F5F0"
-          transparent
-          opacity={0.9}
-          sizeAttenuation
-        />
-      </points>
-
-      <lineSegments ref={linesRef} geometry={lineGeo}>
-        <lineBasicMaterial
-          color="#333330"
-          transparent
-          opacity={0.4}
-          linewidth={1}
-        />
-      </lineSegments>
-    </>
-  )
+interface TechBadge {
+  name: string
+  category: string
+  color: string
+  icon: string
 }
 
-// ── Component ────────────────────────────────────────────────
+const TECH_ROW_1: TechBadge[] = [
+  { name: 'Python', category: 'Backend & AI', color: '#3776AB', icon: '🐍' },
+  { name: 'Django', category: 'Web Framework', color: '#092E20', icon: '⚡' },
+  { name: 'React 19', category: 'Frontend UI', color: '#00F0FF', icon: '⚛️' },
+  { name: 'Next.js 15', category: 'Fullstack SSR', color: '#FFFFFF', icon: '▲' },
+  { name: 'Flutter', category: 'Mobile Apps', color: '#02569B', icon: '📱' },
+  { name: 'PyTorch', category: 'Neural Networks', color: '#EE4C2C', icon: '🔥' },
+  { name: 'TypeScript', category: 'Type Safety', color: '#3178C6', icon: '🔷' },
+  { name: 'Node.js', category: 'Microservices', color: '#339933', icon: '🟢' },
+]
+
+const TECH_ROW_2: TechBadge[] = [
+  { name: 'AWS Cloud', category: 'Infrastructure', color: '#FF9900', icon: '☁️' },
+  { name: 'Three.js / WebGL', category: '3D Spatial', color: '#B026FF', icon: '🌐' },
+  { name: 'PostgreSQL', category: 'Relational DB', color: '#4169E1', icon: '🐘' },
+  { name: 'Docker', category: 'Containerization', color: '#2496ED', icon: '🐳' },
+  { name: 'Tailwind CSS', category: 'Design Systems', color: '#38B2AC', icon: '🎨' },
+  { name: 'GSAP Motion', category: '60fps Animation', color: '#00F5A0', icon: '✨' },
+  { name: 'Redis Cache', category: 'High Speed IO', color: '#DC382D', icon: '⚡' },
+  { name: 'GraphQL', category: 'API Protocol', color: '#E10098', icon: '◈' },
+]
+
 export default function TechnologyNetwork() {
   const sectionRef = useRef<HTMLElement>(null)
-  const { supportsWebGL, particleCount } = useWebGLCapability()
+  const marquee1Ref = useRef<HTMLDivElement>(null)
+  const marquee2Ref = useRef<HTMLDivElement>(null)
 
-  useGsap(() => {
-    gsap.fromTo('.tech-heading',
-      { opacity: 0, y: 30, rotateX: -25 },
-      {
-        opacity: 1, y: 0, rotateX: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.tech-header-wrapper',
-          start: 'top 82%',
-          toggleActions: 'play none none reverse',
+  useEffect(() => {
+    const section = sectionRef.current
+    const m1 = marquee1Ref.current
+    const m2 = marquee2Ref.current
+    if (!section || !m1 || !m2) return
+
+    const ctx = gsap.context(() => {
+      // 1. Entrance animation
+      gsap.fromTo(
+        '.tech-header-anim',
+        { opacity: 0, y: 30, rotateX: -15 },
+        {
+          opacity: 1,
+          y: 0,
+          rotateX: 0,
+          stagger: 0.1,
+          duration: 0.9,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse',
+          },
         }
-      }
-    )
+      )
 
-    gsap.fromTo('.tech-spline-container',
-      { opacity: 0, scale: 0.94, y: 25 },
-      {
-        opacity: 1, scale: 1, y: 0,
-        duration: 1.1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.tech-header-wrapper',
-          start: 'top 80%',
-          toggleActions: 'play none none reverse',
+      // 2. Velocity-Responsive Marquee Scrub via ScrollTrigger
+      let lastScrollY = window.scrollY
+      let velocity = 1
+
+      const updateMarquee = () => {
+        const currentScrollY = window.scrollY
+        const delta = Math.abs(currentScrollY - lastScrollY)
+        lastScrollY = currentScrollY
+
+        // Boost velocity on fast scroll, smoothly decay back to base speed
+        velocity += (delta * 0.08 - velocity) * 0.1
+        velocity = Math.max(1, Math.min(velocity, 6))
+      }
+
+      window.addEventListener('scroll', updateMarquee, { passive: true })
+
+      // Continuous infinite ticker
+      let pos1 = 0
+      let pos2 = 0
+
+      const ticker = gsap.ticker.add(() => {
+        pos1 -= 0.8 * velocity
+        pos2 += 0.8 * velocity
+
+        // Reset positions smoothly
+        if (m1) {
+          if (pos1 <= -m1.scrollWidth / 2) pos1 = 0
+          m1.style.transform = `translate3d(${pos1}px, 0, 0)`
         }
-      }
-    )
-
-    gsap.fromTo('.tech-label',
-      { opacity: 0, y: 30, scale: 0.85, rotateY: 15 },
-      {
-        opacity: 1, y: 0, scale: 1, rotateY: 0,
-        stagger: 0.04,
-        duration: 0.7,
-        ease: 'back.out(1.6)',
-        scrollTrigger: {
-          trigger: '.tech-grid',
-          start: 'top 85%',
-          toggleActions: 'play none none reverse',
+        if (m2) {
+          if (pos2 >= 0) pos2 = -m2.scrollWidth / 2
+          m2.style.transform = `translate3d(${pos2}px, 0, 0)`
         }
-      }
-    )
 
-    // Continuous scroll rotation drift
-    gsap.to('.tech-canvas', {
-      rotateZ: 5,
-      y: -25,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 1.5,
+        // Return velocity to 1
+        velocity += (1 - velocity) * 0.05
+      })
+
+      return () => {
+        window.removeEventListener('scroll', updateMarquee)
+        gsap.ticker.remove(ticker)
       }
-    })
-  }, [], sectionRef)
+    }, section)
+
+    return () => ctx.revert()
+  }, [])
 
   return (
     <section
       ref={sectionRef}
       id="technology"
-      className="tech scene"
-      aria-label="Technology stack"
+      className="tech-marquee-section"
+      aria-label="Inspire Zest Technology Stack"
     >
-      <div className="tech-container">
-        {/* Header & Spline 3D Scene Row */}
-        <div className="tech-header-wrapper">
-          <div className="tech-header-content">
-            <div className="tech-header-text">
-              <span className="tech-tag" aria-hidden="true">05 — TECHNOLOGY</span>
-              <h2 className="tech-heading font-display">OUR STACK</h2>
-              <p className="tech-sub">
-                Built on proven technology, chosen for your project. Engineered for speed, scalability, and immersive next-gen experiences.
-              </p>
-            </div>
+      <div className="tech-marquee-container">
+        {/* Section Header */}
+        <div className="tech-header-block">
+          <div className="tech-tag tech-header-anim" aria-hidden="true">
+            <Sparkles size={13} className="text-cyan-400" />
+            <span>05 — ARCHITECTURAL STRENGTH</span>
+          </div>
+          <h2 className="tech-heading font-display tech-header-anim">
+            BUILT ON <span className="tech-title-gradient">PROVEN TECHNOLOGY</span>
+          </h2>
+          <p className="tech-desc tech-header-anim">
+            We employ cutting-edge, battle-tested frameworks engineered for raw performance, bank-grade
+            security, and infinite horizontal scalability.
+          </p>
+        </div>
 
-            {/* Floating Spline 3D Animation next to OUR STACK */}
-            <div className="tech-spline-container">
-              <SplineScene
-                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                className="tech-spline-view"
-              />
-            </div>
+        {/* Marquee Row 1 (Leftward) */}
+        <div className="marquee-wrapper" aria-hidden="true">
+          <div ref={marquee1Ref} className="marquee-track">
+            {[...TECH_ROW_1, ...TECH_ROW_1, ...TECH_ROW_1].map((tech, idx) => (
+              <div key={`${tech.name}-${idx}`} className="tech-badge-card" data-cursor="explore">
+                <span className="tech-badge-icon">{tech.icon}</span>
+                <div className="tech-badge-info">
+                  <span className="tech-badge-name font-display">{tech.name}</span>
+                  <span className="tech-badge-cat">{tech.category}</span>
+                </div>
+                <div
+                  className="tech-badge-glow"
+                  style={{ background: tech.color }}
+                  aria-hidden="true"
+                />
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Ambient WebGL Canvas Background */}
-        {supportsWebGL && (
-          <div className="tech-canvas" aria-hidden="true">
-            <Canvas
-              camera={{ position: [0, 0, 5], fov: 50 }}
-              dpr={[1, 1.5]}
-              gl={{ antialias: false, alpha: true }}
-            >
-              <NetworkScene count={particleCount} />
-            </Canvas>
+        {/* Marquee Row 2 (Rightward) */}
+        <div className="marquee-wrapper marquee-wrapper--reverse" aria-hidden="true">
+          <div ref={marquee2Ref} className="marquee-track">
+            {[...TECH_ROW_2, ...TECH_ROW_2, ...TECH_ROW_2].map((tech, idx) => (
+              <div key={`${tech.name}-${idx}`} className="tech-badge-card" data-cursor="explore">
+                <span className="tech-badge-icon">{tech.icon}</span>
+                <div className="tech-badge-info">
+                  <span className="tech-badge-name font-display">{tech.name}</span>
+                  <span className="tech-badge-cat">{tech.category}</span>
+                </div>
+                <div
+                  className="tech-badge-glow"
+                  style={{ background: tech.color }}
+                  aria-hidden="true"
+                />
+              </div>
+            ))}
           </div>
-        )}
+        </div>
 
-        {/* Tech labels grid */}
-        <div className="tech-grid" role="list" aria-label="Technologies we use">
-          {technologies.map((t) => (
-            <div key={t.id} className="tech-label" role="listitem" data-cursor="explore">
-              <span className="tech-label-dot" style={{ background: t.color }} aria-hidden="true" />
-              <span className="tech-label-name">{t.name}</span>
-              <span className="tech-label-cat">{t.category}</span>
-            </div>
-          ))}
+        {/* Bottom Feature Cards */}
+        <div className="tech-pillars-grid">
+          <div className="tech-pillar-card">
+            <Cpu size={28} className="text-cyan-400 mb-3" />
+            <h3 className="tech-pillar-title font-display">Modern AI & Microservices</h3>
+            <p className="tech-pillar-desc">
+              Decoupled, event-driven microservices designed with LLM integrations and automated
+              background task workers.
+            </p>
+          </div>
+          <div className="tech-pillar-card">
+            <Layers size={28} className="text-purple-400 mb-3" />
+            <h3 className="tech-pillar-title font-display">Zero Downtime Deployments</h3>
+            <p className="tech-pillar-desc">
+              Automated CI/CD pipelines, container orchestration, and multi-region CDN caching for
+              lightning-fast response times.
+            </p>
+          </div>
         </div>
       </div>
     </section>
