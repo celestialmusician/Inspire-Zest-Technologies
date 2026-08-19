@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useLenis } from '@/hooks/useLenis'
+import { useGlobalScrollOrchestration } from '@/hooks/useGlobalScrollOrchestration'
 import { ThemeProvider } from '@/context/ThemeContext'
 import CustomCursor from '@/components/CustomCursor'
 import GlobalBackground from '@/components/GlobalBackground'
@@ -28,14 +29,17 @@ import './index.css'
 export default function App() {
   const [loaded, setLoaded] = useState(false)
 
-  // Initialize Lenis + ScrollTrigger sync
+  // Initialize Lenis camera-dolly smooth scroll physics
   useLenis()
+
+  // Initialize site-wide 3D perspective scroll orchestration
+  useGlobalScrollOrchestration(loaded)
 
   const handleLoad = () => {
     setLoaded(true)
     setTimeout(() => {
       ScrollTrigger.refresh()
-    }, 150)
+    }, 200)
   }
 
   const scrollToContact = () => {
