@@ -6,8 +6,8 @@ export interface Project {
   description: string
   impact: string
   technologies: string[]
-  gradient: string
   accentColor: string
+  image: string
   year: string
   url: string
 }
@@ -17,12 +17,12 @@ export const projects: Project[] = [
     id: 'winskart',
     title: 'Winskart Global',
     client: 'Winskart E-Commerce',
-    category: 'E-Commerce & Digital Platform',
-    description: 'High-performance multi-vendor marketplace engine engineered with ultra-fast catalog search, real-time order routing, and localized payment gateway orchestration.',
+    category: 'Next-Gen Multi-Vendor Commerce',
+    description: 'High-throughput e-commerce infrastructure engineered with instant catalog search, automated inventory routing, and sub-second payment settlement across global markets.',
     impact: '+240% Order Volume · 0.4s Page Load',
-    technologies: ['React', 'Node.js', 'PostgreSQL', 'Redis', 'AWS Cloud'],
-    gradient: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15) 0%, rgba(11, 15, 25, 0.95) 100%)',
-    accentColor: '#00F0FF',
+    technologies: ['React 19', 'Node.js', 'PostgreSQL', 'Redis', 'AWS Cloud'],
+    accentColor: '#2997FF',
+    image: 'https://images.unsplash.com/photo-1556742049-0a67e557224d?q=80&w=1200&auto=format&fit=crop', // Modern dark terminal e-commerce checkout
     year: '2024',
     url: 'https://winskart.com',
   },
@@ -30,12 +30,12 @@ export const projects: Project[] = [
     id: 'atrium',
     title: 'Atrium Design Studio',
     client: 'Atrium Architects',
-    category: 'Brand & Architectural Experience',
-    description: 'Immersive digital portfolio showcasing luxury residential & commercial spaces with cinematic transitions, WebGL spatial rendering, and interactive floorplans.',
-    impact: 'Featured on Awwwards Nominee · +180% Inquiries',
-    technologies: ['Next.js', 'Three.js', 'GSAP', 'Tailwind CSS', 'WebGL'],
-    gradient: 'linear-gradient(135deg, rgba(176, 38, 255, 0.15) 0%, rgba(11, 15, 25, 0.95) 100%)',
-    accentColor: '#B026FF',
+    category: 'Spatial Web & Architecture',
+    description: 'Cinematic 3D architectural portfolio featuring WebGL spatial room explorations, physics-driven lighting transitions, and interactive blueprint inspectors.',
+    impact: 'Awwwards Nominee · +180% High-Ticket Inquiries',
+    technologies: ['Next.js 15', 'Three.js', 'GSAP', 'Tailwind CSS', 'WebGL'],
+    accentColor: '#BF5AF2',
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop', // Dark minimalist architectural interior
     year: '2024',
     url: 'https://atriumdesign.in',
   },
@@ -44,11 +44,11 @@ export const projects: Project[] = [
     title: 'Homely Spices',
     client: 'Homely Spices D2C',
     category: 'Direct-to-Consumer Foodtech',
-    description: 'Export-grade spice brand digital commerce ecosystem with automated subscription billing, farm-to-table traceability, and dynamic flavor pairing quiz.',
+    description: 'Global export-grade foodtech ecosystem with custom recurring subscription logic, farm-level QR traceability, and high-conversion personalized flavor funnels.',
     impact: '3.8x Conversion Rate · 50k+ Monthly Shoppers',
     technologies: ['React', 'Django REST', 'PostgreSQL', 'Stripe', 'Docker'],
-    gradient: 'linear-gradient(135deg, rgba(0, 245, 160, 0.15) 0%, rgba(11, 15, 25, 0.95) 100%)',
-    accentColor: '#00F5A0',
+    accentColor: '#30D158',
+    image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1200&auto=format&fit=crop', // Dark culinary studio / spice essence
     year: '2024',
     url: 'https://homelyspices.com',
   },
@@ -56,12 +56,12 @@ export const projects: Project[] = [
     id: 'vimala-hridaya',
     title: 'Vimala Hridaya',
     client: 'Vimala Hridaya Institution',
-    category: 'EdTech & Campus Management',
-    description: 'Comprehensive campus management ecosystem featuring intelligent attendance automation, LMS portal, fee disbursement gateway, and parent communication channels.',
-    impact: '15,000+ Active Daily Users · 99.9% Uptime',
-    technologies: ['Flutter', 'Python', 'FastAPI', 'MySQL', 'Firebase'],
-    gradient: 'linear-gradient(135deg, rgba(0, 153, 255, 0.15) 0%, rgba(11, 15, 25, 0.95) 100%)',
-    accentColor: '#0099FF',
+    category: 'EdTech & Campus Cloud',
+    description: 'Unified educational ecosystem with intelligent biometric attendance, integrated LMS portal, automated tuition disbursement, and real-time parent mobile notifications.',
+    impact: '15,000+ Active Users · 99.9% Uptime',
+    technologies: ['Flutter 3.x', 'Python', 'FastAPI', 'MySQL', 'Firebase'],
+    accentColor: '#0A84FF',
+    image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop', // Apple Macbook pro dark code development
     year: '2023',
     url: 'https://vimalahridaya.edu',
   },
@@ -69,12 +69,12 @@ export const projects: Project[] = [
     id: 'nila-palace',
     title: 'Nila Palace',
     client: 'Nila Palace Luxury Hotels',
-    category: 'Hospitality & Luxury Booking Engine',
+    category: 'Hospitality & Direct Booking Engine',
     description: 'Bespoke direct booking engine for a 4-star luxury hotel with dynamic tariff algorithms, banquet reservation systems, and automated guest concierge notifications.',
     impact: '-35% OTA Commission Loss · +62% Direct Bookings',
     technologies: ['React', 'Node.js', 'MongoDB', 'Razorpay', 'PWA'],
-    gradient: 'linear-gradient(135deg, rgba(255, 184, 0, 0.15) 0%, rgba(11, 15, 25, 0.95) 100%)',
-    accentColor: '#FFB800',
+    accentColor: '#FF9F0A',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200&auto=format&fit=crop', // Luxury hotel dark night ambience
     year: '2023',
     url: 'https://nilapalace.com',
   },
@@ -86,8 +86,8 @@ export const projects: Project[] = [
     description: 'Unified hardware management portal and partner distribution platform for enterprise CCTV, biometric devices, and AI security cameras across the Middle East & India.',
     impact: 'B2B Partner Ecosystem · 10k+ Deployed Devices',
     technologies: ['React', 'Go', 'PostgreSQL', 'WebSockets', 'AWS IoT'],
-    gradient: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15) 0%, rgba(176, 38, 255, 0.1) 100%)',
-    accentColor: '#00F0FF',
+    accentColor: '#64D2FF',
+    image: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?q=80&w=1200&auto=format&fit=crop', // Cybernetic visual / camera hardware
     year: '2023',
     url: 'https://frankstreet.com',
   },

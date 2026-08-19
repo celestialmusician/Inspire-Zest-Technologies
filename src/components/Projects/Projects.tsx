@@ -21,7 +21,6 @@ export default function Projects() {
 
     const ctx = gsap.context(() => {
       if (!isMobile) {
-        // Desktop horizontal scroll calculation
         const scrollDistance = track.scrollWidth - window.innerWidth
 
         const pinTl = gsap.timeline({
@@ -55,58 +54,57 @@ export default function Projects() {
     <section
       ref={sectionRef}
       id="projects"
-      className="horizontal-projects-section"
-      aria-label="Featured Client Projects"
+      className="apple-projects-section"
+      aria-label="Apple-Grade Portfolio Showcase"
     >
-      {/* Scroll Progress Bar for Pinned Track */}
-      <div className="proj-scroll-progress" aria-hidden="true">
-        <div ref={progressBarRef} className="proj-scroll-progress-bar" />
+      {/* Top Hairline Progress */}
+      <div className="apple-proj-progress" aria-hidden="true">
+        <div ref={progressBarRef} className="apple-proj-progress-bar" />
       </div>
 
-      {/* Horizontal Track (Desktop) / Vertical Stack (Mobile) */}
-      <div ref={trackRef} className="proj-horizontal-track">
-        {/* Intro Card inside Track */}
-        <div className="proj-intro-slide">
-          <div className="proj-tag" aria-hidden="true">
+      {/* Horizontal Track */}
+      <div ref={trackRef} className="apple-proj-track">
+        {/* Intro Slide */}
+        <div className="apple-proj-intro">
+          <div className="apple-proj-tag" aria-hidden="true">
             <Sparkles size={13} className="text-cyan-400" />
-            <span>04 — FEATURED WORK</span>
+            <span>04 — FLAGSHIP BUILDS</span>
           </div>
-          <h2 className="proj-main-heading font-display">
-            CASE STUDIES & <br />
-            <span className="proj-title-gradient">FLAGSHIP</span> BUILDS
+          <h2 className="apple-proj-heading font-display">
+            PORTFOLIO <br />
+            <span className="apple-title-gradient">SHOWCASE</span>
           </h2>
-          <p className="proj-intro-desc">
-            Explore how we engineered robust, transformative digital systems that delivered explosive
-            growth and technological competitive advantage.
+          <p className="apple-proj-desc">
+            Explore our curated flagship engineering builds. Scalable platforms, spatial 3D
+            architectures, and high-conversion commerce ecosystems.
           </p>
-          <div className="proj-scroll-prompt" aria-hidden="true">
-            <span className="proj-prompt-line" />
-            <span>SCROLL TO EXPLORE PORTFOLIO →</span>
+          <div className="apple-proj-scroll-hint" aria-hidden="true">
+            <span className="apple-hint-bar" />
+            <span>SCROLL TO EXPLORE →</span>
           </div>
         </div>
 
-        {/* Project Cards */}
+        {/* Project Cards with Full-Bleed 4K Tech Imagery */}
         {projects.map((p, i) => (
           <ProjectCard key={p.id} project={p} index={i} total={projects.length} />
         ))}
 
         {/* Outro Card */}
-        <div className="proj-outro-slide">
-          <div className="proj-outro-card">
-            <Layers size={40} className="text-cyan-400 mb-4" />
-            <h3 className="proj-outro-title font-display">HAVE A VISION IN MIND?</h3>
-            <p className="proj-outro-desc">
-              Let's engineer your next digital breakthrough. We take custom projects from concept to
-              market-defining launch.
+        <div className="apple-proj-outro">
+          <div className="apple-outro-card">
+            <Layers size={36} className="text-cyan-400 mb-3" />
+            <h3 className="apple-outro-title font-display">Have a flagship idea?</h3>
+            <p className="apple-outro-desc">
+              Let's engineer your next digital breakthrough with Apple-grade precision and speed.
             </p>
             <a
               href="#contact"
-              className="proj-outro-btn"
+              className="apple-outro-btn"
               data-cursor="go"
               aria-label="Start a project with Inspire Zest"
             >
-              <span>DISCUSS YOUR PROJECT</span>
-              <ArrowUpRight size={18} />
+              <span>Start a Project</span>
+              <ArrowUpRight size={17} />
             </a>
           </div>
         </div>
@@ -126,7 +124,6 @@ function ProjectCard({
 }) {
   const cardRef = useRef<HTMLDivElement>(null)
 
-  // 3D Card Tilt on Hover
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const card = cardRef.current
     if (!card || window.innerWidth < 1024) return
@@ -134,8 +131,8 @@ function ProjectCard({
     const x = e.clientX - rect.left - rect.width / 2
     const y = e.clientY - rect.top - rect.height / 2
 
-    const rotX = -(y / rect.height) * 14
-    const rotY = (x / rect.width) * 14
+    const rotX = -(y / rect.height) * 12
+    const rotY = (x / rect.width) * 12
 
     gsap.to(card, {
       rotateX: rotX,
@@ -160,66 +157,68 @@ function ProjectCard({
   return (
     <article
       ref={cardRef}
-      className="project-slide-card"
-      style={
-        {
-          '--p-accent': project.accentColor,
-          '--p-gradient': project.gradient,
-        } as React.CSSProperties
-      }
+      className="apple-project-card"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       data-cursor="view"
       aria-label={`Project ${index + 1} of ${total}: ${project.title}`}
     >
-      {/* Background Neon Ambient Wash */}
-      <div className="proj-card-bg-gradient" aria-hidden="true" />
-      <div className="proj-card-border" aria-hidden="true" />
+      {/* Full-Bleed 4K Tech Image */}
+      <div className="apple-card-image-bg">
+        <img
+          src={project.image}
+          alt={project.title}
+          className="apple-card-img"
+          loading="lazy"
+        />
+        <div className="apple-card-image-vignette" aria-hidden="true" />
+      </div>
 
       {/* Top Meta Bar */}
-      <div className="proj-card-top-bar">
-        <span className="proj-card-index font-display">
+      <div className="apple-card-top">
+        <span className="apple-card-counter font-display">
           0{index + 1} / 0{total}
         </span>
-        <span className="proj-card-category">{project.category}</span>
-        <span className="proj-card-year font-display">{project.year}</span>
+        <span className="apple-card-cat-pill">{project.category}</span>
+        <span className="apple-card-year font-display">{project.year}</span>
       </div>
 
-      {/* Main Project Content */}
-      <div className="proj-card-body">
-        <span className="proj-card-client" style={{ color: project.accentColor }}>
-          {project.client}
-        </span>
-        <h3 className="proj-card-heading font-display">{project.title}</h3>
-        <p className="proj-card-summary">{project.description}</p>
+      {/* Bottom Frosted Glass Info Overlay */}
+      <div className="apple-card-glass-bottom">
+        <div className="apple-card-main-info">
+          <span className="apple-card-client-tag" style={{ color: project.accentColor }}>
+            {project.client}
+          </span>
+          <h3 className="apple-card-title font-display">{project.title}</h3>
+          <p className="apple-card-description">{project.description}</p>
 
-        {/* Impact Badge */}
-        <div className="proj-card-impact-pill">
-          <Sparkles size={14} style={{ color: project.accentColor }} aria-hidden="true" />
-          <span>{project.impact}</span>
-        </div>
-      </div>
-
-      {/* Tech Stack & Launch Link */}
-      <div className="proj-card-footer">
-        <div className="proj-tech-pill-group">
-          {project.technologies.map((tech) => (
-            <span key={tech} className="proj-tech-tag">
-              {tech}
-            </span>
-          ))}
+          <div className="apple-card-impact-tag">
+            <Sparkles size={14} style={{ color: project.accentColor }} aria-hidden="true" />
+            <span>{project.impact}</span>
+          </div>
         </div>
 
-        <a
-          href={project.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="proj-launch-btn"
-          aria-label={`Visit live site for ${project.title}`}
-        >
-          <span>LIVE EXPERIENCE</span>
-          <ExternalLink size={15} aria-hidden="true" />
-        </a>
+        {/* Tech Stack & Launch */}
+        <div className="apple-card-foot">
+          <div className="apple-tech-pills">
+            {project.technologies.map((t) => (
+              <span key={t} className="apple-tech-tag">
+                {t}
+              </span>
+            ))}
+          </div>
+
+          <a
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="apple-launch-link"
+            aria-label={`Open live project for ${project.title}`}
+          >
+            <span>Live Experience</span>
+            <ExternalLink size={14} aria-hidden="true" />
+          </a>
+        </div>
       </div>
     </article>
   )

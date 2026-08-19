@@ -1,45 +1,56 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @import "tailwindcss";
 
-/* ── DESIGN TOKENS ─────────────────────────────────────────── */
+/* ── APPLE PRO DESIGN TOKENS ─────────────────────────────────── */
 :root {
-  --bg:        #050505;
-  --primary:   #F5F5F0;
-  --secondary: #8A8A8A;
-  --accent:    #00F0FF;
-  --accent-purple: #7B2CBF;
-  --accent-cyan: #00F5A0;
-  --brand-gradient: linear-gradient(135deg, #00F5A0 0%, #0066FF 50%, #7B2CBF 100%);
-  --brand-gradient-text: linear-gradient(90deg, #00F5A0 0%, #0066FF 50%, #00F0FF 100%);
-  --black:     #000000;
-  --white:     #FFFFFF;
+  --bg:            #000000;
+  --bg-secondary:  #08080A;
+  --bg-card:       rgba(22, 22, 26, 0.72);
+  --primary:       #F5F5F7;
+  --secondary:     #86868B;
+  --tertiary:      #424245;
+  --accent:        #2997FF; /* Apple Pro Blue */
+  --accent-cyan:   #00F5D4;
+  --accent-purple: #BF5AF2;
+  --accent-emerald:#30D158;
+  
+  --titanium-gradient: linear-gradient(180deg, #FFFFFF 0%, #A1A1A6 100%);
+  --brand-gradient: linear-gradient(135deg, #2997FF 0%, #BF5AF2 50%, #00F5D4 100%);
+  --brand-gradient-text: linear-gradient(180deg, #FFFFFF 20%, #A1A1A6 100%);
+  --black:         #000000;
+  --white:         #FFFFFF;
 
-  --font-display: 'Syne', 'Space Grotesk', sans-serif;
-  --font-body:    'Plus Jakarta Sans', 'Inter', sans-serif;
+  --font-display:  'Space Grotesk', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  --font-body:     'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
 
   /* fluid type scale */
-  --text-hero:    clamp(2.75rem, 6.5vw, 7.5rem);
-  --text-display: clamp(2.25rem, 5vw, 5.5rem);
-  --text-heading: clamp(1.5rem, 3.5vw, 3rem);
-  --text-sub:     clamp(0.95rem, 1.8vw, 1.25rem);
-  --text-body:    clamp(0.875rem, 1.5vw, 1rem);
-  --text-label:   clamp(0.625rem, 1vw, 0.75rem);
+  --text-hero:    clamp(2.8rem, 6.8vw, 7.5rem);
+  --text-display: clamp(2.2rem, 5vw, 5.5rem);
+  --text-heading: clamp(1.6rem, 3.6vw, 3.2rem);
+  --text-sub:     clamp(0.98rem, 1.8vw, 1.25rem);
+  --text-body:    clamp(0.9rem, 1.5vw, 1.05rem);
+  --text-label:   clamp(0.68rem, 1vw, 0.8rem);
 
   /* easing */
+  --ease-apple:     cubic-bezier(0.16, 1, 0.3, 1);
   --ease-cinematic: cubic-bezier(0.76, 0, 0.24, 1);
-  --ease-out:       cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in:        cubic-bezier(0.55, 0, 1, 0.45);
 }
 
-/* ── BRAND GRADIENT UTILITY ─────────────────────────────────── */
-.text-gradient-brand {
-  background: linear-gradient(90deg, #00F5A0 0%, #0066FF 50%, #00F0FF 100%);
+/* ── TITANIUM GRADIENT UTILITY ───────────────────────────────── */
+.text-titanium {
+  background: linear-gradient(180deg, #FFFFFF 15%, #A1A1A6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
+.text-gradient-brand {
+  background: linear-gradient(135deg, #2997FF 0%, #BF5AF2 50%, #00F5D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
 /* ── GLOBAL RESET ──────────────────────────────────────────── */
 *, *::before, *::after {
@@ -51,6 +62,7 @@
 html {
   scroll-behavior: auto; /* Lenis takes over */
   overflow-x: hidden;
+  background-color: var(--bg);
 }
 
 body {
@@ -80,19 +92,14 @@ body {
 }
 
 /* ── SCROLLBAR ─────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 2px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--secondary); }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #000000; }
+::-webkit-scrollbar-thumb { background: #2C2C2E; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #48484A; }
 
 /* ── TYPOGRAPHY UTILITIES ──────────────────────────────────── */
 .font-display { font-family: var(--font-display); }
 .font-body    { font-family: var(--font-body); }
-
-.text-hero    { font-size: var(--text-hero); }
-.text-display { font-size: var(--text-display); }
-.text-heading { font-size: var(--text-heading); }
-.text-sub     { font-size: var(--text-sub); }
-.text-label   { font-size: var(--text-label); }
 
 /* ── GRAIN OVERLAY ─────────────────────────────────────────── */
 .grain::after {
@@ -104,31 +111,9 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 180px 180px;
-  opacity: 0.03;
+  opacity: 0.025;
   pointer-events: none;
   z-index: 9999;
-  animation: grain-shift 8s steps(10) infinite;
-}
-
-@keyframes grain-shift {
-  0%, 100% { transform: translate(0, 0); }
-  10%       { transform: translate(-3%, -5%); }
-  20%       { transform: translate(-6%, 2%); }
-  30%       { transform: translate(4%, -3%); }
-  40%       { transform: translate(7%, 6%); }
-  50%       { transform: translate(-2%, 8%); }
-  60%       { transform: translate(5%, -8%); }
-  70%       { transform: translate(-7%, 3%); }
-  80%       { transform: translate(3%, -7%); }
-  90%       { transform: translate(-4%, 5%); }
-}
-
-/* ── CLIP UTILITIES ────────────────────────────────────────── */
-.clip-reveal {
-  clip-path: inset(0 0 100% 0);
-}
-.clip-full {
-  clip-path: inset(0 0 0% 0);
 }
 
 /* ── SCENE WRAPPER ─────────────────────────────────────────── */
@@ -136,14 +121,7 @@ body {
   position: relative;
   width: 100%;
   overflow: hidden;
-}
-
-/* ── OVERLAY ───────────────────────────────────────────────── */
-.overlay-dark {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, transparent 40%, var(--bg) 100%);
-  pointer-events: none;
+  background-color: var(--bg);
 }
 
 /* ── FOCUS VISIBLE ─────────────────────────────────────────── */
@@ -159,27 +137,6 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .grain::after { animation: none; }
-}
-
-/* ── LOADING SCREEN ────────────────────────────────────────── */
-.loading-screen {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  background: var(--black);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-/* ── HORIZONTAL SCROLL CONTAINER ──────────────────────────── */
-.horizontal-track {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  will-change: transform;
 }
 
 /* ── LENIS SMOOTH ──────────────────────────────────────────── */
@@ -197,253 +154,4 @@ html.lenis, html.lenis body {
 }
 .lenis.lenis-smooth iframe {
   pointer-events: none;
-}
-
-/* ── SKIP LINK ─────────────────────────────────────────────── */
-.skip-link {
-  position: absolute;
-  top: -100%;
-  left: 1rem;
-  background: #C8FF00;
-  color: #050505;
-  padding: 0.5rem 1rem;
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-decoration: none;
-  z-index: 100000;
-  transition: top 0.2s;
-}
-.skip-link:focus {
-  top: 1rem;
-  cursor: auto;
-}
-
-/* ── THEME MODE SYSTEM (DARK / LIGHT) ───────────────────────── */
-:root,
-[data-theme="dark"] {
-  --bg: #0A0C0E;
-  --bg-surface: #0D1014;
-  --bg-card: #12151A;
-  --bg-hover: #171C23;
-  --text-main: #F5F5F0;
-  --text-muted: #9EA5A8;
-  --text-dim: #6B7280;
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-focus: rgba(0, 245, 160, 0.4);
-  --nav-bg: rgba(10, 12, 14, 0.88);
-}
-
-[data-theme="light"] {
-  --bg: #F4F6F8;
-  --bg-surface: #FFFFFF;
-  --bg-card: #FFFFFF;
-  --bg-hover: #EAEFF5;
-  --text-main: #0B0E14;
-  --text-muted: #4B5563;
-  --text-dim: #6B7280;
-  --border-subtle: rgba(0, 0, 0, 0.1);
-  --border-focus: #0066FF;
-  --nav-bg: rgba(244, 246, 248, 0.92);
-}
-
-/* Global Theme Transitions */
-body,
-section.scene,
-.nav,
-.about,
-.proc,
-.growth,
-.why,
-.tst,
-.tech,
-.srv,
-.proj,
-.faq,
-.contact,
-.fcta,
-.footer {
-  transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
-}
-
-/* ── LIGHT THEME COMPONENT OVERRIDES ────────────────────────── */
-[data-theme="light"] body {
-  background-color: var(--bg);
-  color: #0A0D12;
-}
-
-[data-theme="light"] section.scene,
-[data-theme="light"] .about,
-[data-theme="light"] .proc,
-[data-theme="light"] .growth,
-[data-theme="light"] .why,
-[data-theme="light"] .tst,
-[data-theme="light"] .tech,
-[data-theme="light"] .srv,
-[data-theme="light"] .proj,
-[data-theme="light"] .faq,
-[data-theme="light"] .contact,
-[data-theme="light"] .fcta,
-[data-theme="light"] .footer,
-[data-theme="light"] .intro {
-  background-color: var(--bg);
-  color: #0A0D12;
-}
-
-/* Headings and Lines */
-[data-theme="light"] .intro-line,
-[data-theme="light"] .srv-heading,
-[data-theme="light"] .srv-title,
-[data-theme="light"] .tech-heading,
-[data-theme="light"] .tech-label-name,
-[data-theme="light"] .proj-heading,
-[data-theme="light"] .proj-title,
-[data-theme="light"] .about-line,
-[data-theme="light"] .about-col-title,
-[data-theme="light"] .proc-heading,
-[data-theme="light"] .proc-step-title,
-[data-theme="light"] .growth-heading,
-[data-theme="light"] .growth-stat-value,
-[data-theme="light"] .why-heading-line,
-[data-theme="light"] .why-pillar-label,
-[data-theme="light"] .tst-heading,
-[data-theme="light"] .tst-quote,
-[data-theme="light"] .tst-author,
-[data-theme="light"] .faq-heading,
-[data-theme="light"] .faq-question-text,
-[data-theme="light"] .faq-cta-title,
-[data-theme="light"] .contact-heading,
-[data-theme="light"] .footer-heading,
-[data-theme="light"] .footer-brand {
-  color: #0A0D12 !important;
-}
-
-/* Subtitles and Body Paragraphs */
-[data-theme="light"] .intro-body p,
-[data-theme="light"] .srv-sub,
-[data-theme="light"] .srv-desc,
-[data-theme="light"] .tech-sub,
-[data-theme="light"] .proj-sub,
-[data-theme="light"] .about-col p,
-[data-theme="light"] .proc-sub,
-[data-theme="light"] .proc-step-desc,
-[data-theme="light"] .growth-sub,
-[data-theme="light"] .growth-stat-label,
-[data-theme="light"] .why-body,
-[data-theme="light"] .tst-sub,
-[data-theme="light"] .tst-role,
-[data-theme="light"] .tst-company,
-[data-theme="light"] .faq-sub,
-[data-theme="light"] .faq-answer-text,
-[data-theme="light"] .faq-cta-desc,
-[data-theme="light"] .contact-sub,
-[data-theme="light"] .contact-label,
-[data-theme="light"] .footer-copy,
-[data-theme="light"] .footer-link {
-  color: #374151 !important;
-}
-
-/* Card and Container Backgrounds */
-[data-theme="light"] .srv-item,
-[data-theme="light"] .faq-item,
-[data-theme="light"] .why-pillar,
-[data-theme="light"] .about-stat-card,
-[data-theme="light"] .growth-card,
-[data-theme="light"] .proc-step,
-[data-theme="light"] .tech-label,
-[data-theme="light"] .tech-grid,
-[data-theme="light"] .proj-item,
-[data-theme="light"] .tst-card,
-[data-theme="light"] .contact-form,
-[data-theme="light"] .contact-info-card {
-  background: #FFFFFF !important;
-  border-color: rgba(0, 0, 0, 0.1) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
-}
-
-[data-theme="light"] .faq-cta-card {
-  background: #FFFFFF !important;
-  border-color: rgba(0, 102, 255, 0.25) !important;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08) !important;
-}
-
-/* Form Inputs */
-[data-theme="light"] .contact-input,
-[data-theme="light"] .contact-textarea,
-[data-theme="light"] .contact-select {
-  background: #F9FAFB !important;
-  border-color: rgba(0, 0, 0, 0.15) !important;
-  color: #0A0D12 !important;
-}
-
-[data-theme="light"] .contact-input:focus,
-[data-theme="light"] .contact-textarea:focus {
-  border-color: #0066FF !important;
-  background: #FFFFFF !important;
-}
-
-/* Section Tags */
-[data-theme="light"] .srv-tag,
-[data-theme="light"] .tech-tag,
-[data-theme="light"] .proj-tag,
-[data-theme="light"] .about-tag,
-[data-theme="light"] .proc-tag,
-[data-theme="light"] .growth-tag,
-[data-theme="light"] .why-tag,
-[data-theme="light"] .tst-tag,
-[data-theme="light"] .faq-tag,
-[data-theme="light"] .contact-tag {
-  color: #0052CC !important;
-}
-
-/* Canvas and Grain adjustments */
-[data-theme="light"] .global-canvas {
-  opacity: 0.1 !important;
-}
-
-[data-theme="light"] .grain {
-  display: none !important;
-}
-
-/* ── GLOBAL MOBILE SECTION SPACING OVERRIDES ────────────────── */
-@media (max-width: 767px) {
-  section.scene,
-  .intro,
-  .srv,
-  .tech,
-  .proj,
-  .about,
-  .proc,
-  .growth,
-  .why,
-  .tst,
-  .fcta,
-  .contact {
-    padding-top: 3.25rem !important;
-    padding-bottom: 3.25rem !important;
-    padding-left: 1.25rem !important;
-    padding-right: 1.25rem !important;
-    min-height: auto !important;
-  }
-
-  .intro-headline,
-  .srv-header,
-  .tech-header,
-  .proj-header,
-  .about-tag-row,
-  .proc-header,
-  .growth-header,
-  .why-tag,
-  .tst-tag,
-  .contact-tag {
-    margin-bottom: 1.25rem !important;
-  }
-
-  .tech-grid,
-  .proj-list,
-  .proc-timeline,
-  .why-grid,
-  .growth-grid {
-    margin-top: 2rem !important;
-  }
 }

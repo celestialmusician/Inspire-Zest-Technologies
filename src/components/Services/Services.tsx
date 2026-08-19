@@ -34,17 +34,16 @@ export default function Services() {
     const container = containerRef.current
     if (!container) return
 
-    const isMobile = window.innerWidth < 768
+    const isMobile = window.innerWidth < 1024
 
     const ctx = gsap.context(() => {
       // 1. Header entrance
       gsap.fromTo(
-        '.srv-header-item',
-        { opacity: 0, y: 30, rotateX: -15 },
+        '.apple-srv-header-item',
+        { opacity: 0, y: 30 },
         {
           opacity: 1,
           y: 0,
-          rotateX: 0,
           stagger: 0.1,
           duration: 0.8,
           ease: 'power3.out',
@@ -56,21 +55,21 @@ export default function Services() {
         }
       )
 
-      // 2. Stacked 3D Cards Scrub Animation
+      // 2. Apple Stacked Keynote Cards Scrub Animation
       const cards = cardsRef.current.filter(Boolean) as HTMLDivElement[]
 
       cards.forEach((card, index) => {
-        if (index === cards.length - 1) return // Last card doesn't need to shrink
+        if (index === cards.length - 1) return // Last card doesn't stack away
 
         gsap.to(card, {
-          scale: isMobile ? 0.94 : 0.9,
+          scale: isMobile ? 0.95 : 0.92,
           opacity: 0.35,
           filter: 'blur(4px)',
-          yPercent: -5 * index,
+          yPercent: -4 * index,
           ease: 'none',
           scrollTrigger: {
             trigger: cards[index + 1],
-            start: 'top 70%',
+            start: 'top 65%',
             end: 'top 20%',
             scrub: true,
           },
@@ -90,27 +89,26 @@ export default function Services() {
     <section
       ref={containerRef}
       id="services"
-      className="stacked-services-section"
-      aria-label="Inspire Zest Core Services"
+      className="apple-services-section"
+      aria-label="Inspire Zest Core Engineering Services"
     >
-      <div className="services-container">
-        {/* Sticky Header Row */}
-        <div className="services-header">
-          <div className="services-tag srv-header-item" aria-hidden="true">
+      <div className="apple-services-container">
+        {/* Section Header */}
+        <div className="apple-services-header">
+          <div className="apple-services-tag apple-srv-header-item" aria-hidden="true">
             <Sparkles size={13} className="text-cyan-400" />
-            <span>03 — WHAT WE DO</span>
+            <span>03 — CORE PILLARS</span>
           </div>
-          <h2 className="services-title font-display srv-header-item">
-            ENGINEERING THE <span className="services-title-gradient">EXTRAORDINARY</span>
+          <h2 className="apple-services-title font-display apple-srv-header-item">
+            ENGINEERING WITHOUT <span className="apple-title-gradient">COMPROMISE</span>
           </h2>
-          <p className="services-subtitle srv-header-item">
-            Full-lifecycle technology solutions architected for high-growth disruptors and global
-            enterprises.
+          <p className="apple-services-sub apple-srv-header-item">
+            Precision-crafted digital platforms, high-performance apps, and enterprise AI systems.
           </p>
         </div>
 
-        {/* Stacked Cards Container */}
-        <div className="services-stack-list" role="list" aria-label="Services List">
+        {/* Stacked Cards List */}
+        <div className="apple-services-stack" role="list" aria-label="Services List">
           {services.map((svc, idx) => {
             const Icon = ICON_MAP[svc.iconType] || Code
             return (
@@ -119,57 +117,71 @@ export default function Services() {
                 ref={(el) => {
                   cardsRef.current[idx] = el
                 }}
-                className="service-stack-card"
+                className="apple-service-card"
                 role="listitem"
                 style={
                   {
                     '--svc-accent': svc.accentColor,
-                    '--svc-glow': svc.glowColor,
-                    top: `calc(10vh + ${idx * 24}px)`,
+                    top: `calc(12vh + ${idx * 24}px)`,
                   } as React.CSSProperties
                 }
               >
-                {/* Ambient Radial Card Glow */}
-                <div className="service-card-ambient-glow" aria-hidden="true" />
-
-                {/* Left Side: Number, Category & Description */}
-                <div className="service-card-left">
-                  <div className="service-card-num-row">
-                    <span className="service-card-num font-display">{svc.number}</span>
-                    <div className="service-card-icon-pill">
-                      <Icon size={20} style={{ color: svc.accentColor }} />
-                      <span style={{ color: svc.accentColor }}>{svc.title}</span>
+                {/* Left Side: Typography, Capabilities, CTA */}
+                <div className="apple-card-left">
+                  <div className="apple-card-badge-row">
+                    <span className="apple-card-index font-display">{svc.number}</span>
+                    <div className="apple-card-pill">
+                      <Icon size={16} style={{ color: svc.accentColor }} />
+                      <span>{svc.title}</span>
                     </div>
                   </div>
 
-                  <h3 className="service-card-headline font-display">{svc.headline}</h3>
-                  <p className="service-card-description">{svc.description}</p>
+                  <h3 className="apple-card-headline font-display">{svc.headline}</h3>
+                  <p className="apple-card-desc">{svc.description}</p>
 
-                  <button
-                    className="service-card-action"
-                    onClick={scrollToContact}
-                    data-cursor="go"
-                    aria-label={`Get started with ${svc.title}`}
-                  >
-                    <span>REQUEST CONSULTATION</span>
-                    <ArrowRight size={16} aria-hidden="true" />
-                  </button>
-                </div>
-
-                {/* Right Side: Capabilities Matrix */}
-                <div className="service-card-right">
-                  <span className="service-matrix-title">CORE CAPABILITIES</span>
-                  <div className="service-capabilities-grid">
+                  {/* Capabilities List */}
+                  <div className="apple-card-caps">
                     {svc.capabilities.map((cap) => (
-                      <div key={cap} className="service-cap-badge">
+                      <div key={cap} className="apple-cap-item">
                         <CheckCircle2
-                          size={16}
+                          size={15}
                           style={{ color: svc.accentColor, flexShrink: 0 }}
                           aria-hidden="true"
                         />
                         <span>{cap}</span>
                       </div>
                     ))}
+                  </div>
+
+                  <button
+                    className="apple-card-cta"
+                    onClick={scrollToContact}
+                    data-cursor="go"
+                    aria-label={`Inquire about ${svc.title}`}
+                  >
+                    <span>Request Technical Proposal</span>
+                    <ArrowRight size={15} aria-hidden="true" />
+                  </button>
+                </div>
+
+                {/* Right Side: Full-Bleed 4K Tech Imagery Showcase */}
+                <div className="apple-card-right">
+                  <div className="apple-img-bezel">
+                    <img
+                      src={svc.image}
+                      alt={svc.title}
+                      className="apple-service-img"
+                      loading="lazy"
+                    />
+                    <div className="apple-img-glass-overlay" aria-hidden="true">
+                      <div className="apple-img-status-pill">
+                        <span
+                          className="apple-status-dot"
+                          style={{ background: svc.accentColor }}
+                        />
+                        <span>PRODUCTION READY</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

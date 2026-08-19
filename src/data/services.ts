@@ -6,7 +6,7 @@ export interface Service {
   description: string
   capabilities: string[]
   accentColor: string
-  glowColor: string
+  image: string
   iconType: string
 }
 
@@ -14,103 +14,103 @@ export const services: Service[] = [
   {
     id: 'web-development',
     number: '01',
-    title: 'Web Development',
-    headline: 'High-Performance, Award-Winning Web Applications',
-    description: 'We engineer lightning-fast, visually breathtaking web applications built with modern architectures, 60fps animations, and enterprise-grade scalability.',
+    title: 'Web & Spatial Engineering',
+    headline: 'Uncompromising speed. 60fps cinematic fluidity.',
+    description: 'We engineer ultra-responsive web applications with Next.js, WebGL, and custom GSAP pipelines. Designed for sub-second load times, fluid micro-interactions, and flawless cross-device fidelity.',
     capabilities: [
-      'Custom React & Next.js Platforms',
-      'Headless CMS Architectures',
-      'Interactive 3D & WebGL Experiences',
-      'Full-Stack Cloud Infrastructures',
-      'Core Web Vitals & Speed Optimization',
+      'Next.js 15 & React 19 Architecture',
+      'WebGL & Three.js 3D Environments',
+      'Headless CMS & Cloud Integrations',
+      'Sub-second Core Web Vitals Optimization',
+      'Custom Micro-interaction Design Systems',
     ],
-    accentColor: '#00F0FF',
-    glowColor: 'rgba(0, 240, 255, 0.25)',
+    accentColor: '#2997FF', // Apple Pro Blue
+    image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1200&auto=format&fit=crop', // Cybernetic server / glowing circuitry
     iconType: 'code',
   },
   {
     id: 'mobile-app-dev',
     number: '02',
-    title: 'Mobile App Dev',
-    headline: 'Native & Cross-Platform iOS / Android Apps',
-    description: 'Seamless, intuitive mobile experiences engineered with Flutter & React Native. From biometric security to offline-first sync and instant notifications.',
+    title: 'Mobile App Engineering',
+    headline: 'Native precision. Designed for every palm.',
+    description: 'Native iOS & Android apps engineered with Flutter and Swift. From biometric security protocols to instant real-time synchronization, we build apps that top charts.',
     capabilities: [
-      'Cross-Platform Flutter & React Native',
       'Native iOS (Swift) & Android (Kotlin)',
-      'App Store Optimization (ASO)',
-      'Real-Time WebSockets & Push Alerts',
-      'Secure Mobile Payment Integrations',
+      'Cross-Platform Flutter 3.x Architecture',
+      'Real-Time WebSockets & Background Sync',
+      'Biometric Key Management & Apple Pay',
+      'App Store Optimization & Release Pipeline',
     ],
-    accentColor: '#00F5A0',
-    glowColor: 'rgba(0, 245, 160, 0.25)',
+    accentColor: '#30D158', // Apple Emerald Green
+    image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1200&auto=format&fit=crop', // Dark minimalist glass smartphone in studio
     iconType: 'smartphone',
   },
   {
     id: 'ai-software-solutions',
     number: '03',
-    title: 'AI & Software Solutions',
-    headline: 'Next-Gen Intelligent Automation & Custom Logic',
-    description: 'Leverage generative AI, custom neural network pipelines, predictive data modeling, and bespoke algorithms tailored specifically for high-efficiency enterprise workflows.',
+    title: 'AI & Neural Systems',
+    headline: 'Intelligence engineered into every layer.',
+    description: 'Custom generative AI pipelines, automated LLM orchestration, and computer vision models that streamline complex enterprise operations and unlock predictive insights.',
     capabilities: [
-      'Generative AI & LLM Integrations',
-      'Intelligent Workflow Automation',
-      'Predictive Analytics & Data Science',
-      'Computer Vision & NLP Engines',
-      'Custom Microservice APIs',
+      'Custom LLM Agents & Retrieval Systems',
+      'Automated Enterprise Decision Engines',
+      'Predictive Analytics & Neural Models',
+      'Computer Vision & NLP Pipelines',
+      'Private Cloud AI Infrastructure',
     ],
-    accentColor: '#B026FF',
-    glowColor: 'rgba(176, 38, 255, 0.25)',
+    accentColor: '#BF5AF2', // Apple Purple
+    image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1200&auto=format&fit=crop', // Quantum AI processor glow
     iconType: 'cpu',
   },
   {
     id: 'erp-systems',
     number: '04',
-    title: 'ERP & Business Systems',
-    headline: 'End-to-End Enterprise Resource Orchestration',
-    description: 'Bespoke ERP, billing, inventory, HRMS, and CRM systems that eliminate departmental silos, cut overhead, and provide executive real-time visibility.',
+    title: 'Enterprise ERP & Cloud',
+    headline: 'Mission-critical orchestration at enterprise scale.',
+    description: 'Bespoke enterprise ERP, automated supply chain routing, real-time inventory synchronization, and unified financial analytics built for zero downtime.',
     capabilities: [
-      'Custom ERP & CRM Architecture',
-      'Multi-Branch Inventory Management',
-      'Automated Billing & Invoicing',
-      'HRMS & Biometric Payroll Sync',
-      'Role-Based Granular Access Control',
+      'Custom Modular ERP & CRM Architecture',
+      'Multi-Branch Supply Chain Intelligence',
+      'Automated Invoicing & Global Taxation',
+      'Role-Based Zero-Trust Access Control',
+      'High-Throughput Microservice APIs',
     ],
-    accentColor: '#0099FF',
-    glowColor: 'rgba(0, 153, 255, 0.25)',
+    accentColor: '#0A84FF', // Apple Electric Blue
+    image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1200&auto=format&fit=crop', // Modern dark data center / cloud servers
     iconType: 'layers',
   },
   {
     id: 'e-commerce',
     number: '05',
-    title: 'E-Commerce Platforms',
-    headline: 'Scalable Commerce Engines Engineered to Convert',
-    description: 'High-conversion multi-currency online stores and multi-vendor marketplaces built with bespoke checkout funnels, automated fulfillment, and AI recommendations.',
+    title: 'Global Commerce Engines',
+    headline: 'Engineered for conversion. Built to scale.',
+    description: 'High-volume e-commerce platforms engineered with frictionless checkout funnels, multi-currency settlement, and AI-driven personalized product discovery.',
     capabilities: [
-      'Custom Headless E-Commerce',
-      'Multi-Vendor Marketplace Systems',
-      'Global Payment Gateways (Stripe, Razorpay, Tabby)',
-      'Automated Warehouse & Logistics Sync',
-      'Conversion Rate Optimization (CRO)',
+      'Custom Headless Commerce Architecture',
+      'Multi-Vendor Marketplace Infrastructure',
+      'Instant Global Payment Integrations',
+      'Automated Fulfillment & Inventory Sync',
+      'Sub-0.5s Product Filtering & Search',
     ],
-    accentColor: '#FFB800',
-    glowColor: 'rgba(255, 184, 0, 0.25)',
+    accentColor: '#FF9F0A', // Apple Amber
+    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1200&auto=format&fit=crop', // High-end luxury product minimal studio
     iconType: 'shopping-bag',
   },
   {
     id: 'branding-digital-marketing',
     number: '06',
-    title: 'Branding & Digital Marketing',
-    headline: 'Data-Driven Growth & Category-Defining Brands',
-    description: 'Hyper-targeted performance marketing, Google Ads, technical SEO, and distinct brand identities that establish authority and scale customer acquisition.',
+    title: 'Brand & Growth Strategy',
+    headline: 'Defining categories. Dominating markets.',
+    description: 'Hyper-targeted performance marketing, programmatic SEO, and distinctive digital brand systems that capture market share and maximize customer lifetime value.',
     capabilities: [
-      'Strategic Brand Identity & Design Systems',
+      'Strategic Design Systems & Identity',
+      'High-Impact Performance Marketing',
       'Technical & Programmatic SEO',
-      'High-ROI Paid Advertising (Meta & Google)',
-      'Social Media Dominance & Content Creation',
-      'Conversion Funnel & Retention Strategy',
+      'Cinematic Motion Graphics & Video',
+      'Data-Driven Conversion Optimization',
     ],
-    accentColor: '#FF0055',
-    glowColor: 'rgba(255, 0, 85, 0.25)',
+    accentColor: '#FF375F', // Apple Rose Pink
+    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop', // Refined abstract iridescent spatial wave
     iconType: 'trending-up',
   },
 ]

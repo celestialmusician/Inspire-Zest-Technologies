@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { getLenis } from '@/hooks/useLenis'
-import { ArrowUpRight, Sparkles, ShieldCheck } from 'lucide-react'
+import { ArrowUpRight, Cpu, Sparkles, ChevronDown } from 'lucide-react'
 import './PortalOpeningHero.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -12,14 +12,14 @@ export default function PortalOpeningHero() {
   const stickyRef    = useRef<HTMLDivElement>(null)
   const canvasRef    = useRef<HTMLCanvasElement>(null)
   const contentRef   = useRef<HTMLDivElement>(null)
+  const techFrameRef = useRef<HTMLDivElement>(null)
+  const badgeRef     = useRef<HTMLDivElement>(null)
   const titleRef     = useRef<HTMLHeadingElement>(null)
   const subtitleRef  = useRef<HTMLParagraphElement>(null)
-  const badgeRef     = useRef<HTMLDivElement>(null)
   const ctasRef      = useRef<HTMLDivElement>(null)
-  const statsBarRef  = useRef<HTMLDivElement>(null)
   const spotlightRef = useRef<HTMLDivElement>(null)
 
-  // ── 1. Interactive 3D Canvas Particle Constellation ────────────────────────
+  // ── 1. Minimal Ambient Canvas Tech Starfield ──────────────────────────────
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -31,39 +31,24 @@ export default function PortalOpeningHero() {
     let height = (canvas.height = window.innerHeight)
 
     const isMobile = window.innerWidth < 768
-    const numParticles = isMobile ? 35 : 75
-    const connectionDist = isMobile ? 80 : 130
+    const numParticles = isMobile ? 30 : 60
 
-    let mouseX = width / 2
-    let mouseY = height / 2
-    let targetMouseX = mouseX
-    let targetMouseY = mouseY
-
-    interface Particle {
+    interface Star {
       x: number
       y: number
-      vx: number
-      vy: number
       radius: number
-      color: string
       alpha: number
-      baseAlpha: number
+      speed: number
     }
 
-    const colors = ['#00F0FF', '#00F5A0', '#B026FF', '#ffffff']
-    const particles: Particle[] = []
-
+    const stars: Star[] = []
     for (let i = 0; i < numParticles; i++) {
-      const baseAlpha = Math.random() * 0.6 + 0.2
-      particles.push({
+      stars.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.7,
-        vy: (Math.random() - 0.5) * 0.7,
-        radius: Math.random() * 2 + 1,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        alpha: baseAlpha,
-        baseAlpha,
+        radius: Math.random() * 1.5 + 0.5,
+        alpha: Math.random() * 0.5 + 0.1,
+        speed: Math.random() * 0.2 + 0.05,
       })
     }
 
@@ -73,25 +58,15 @@ export default function PortalOpeningHero() {
       height = canvas.height = window.innerHeight
     }
 
-    const handleMouseMove = (e: MouseEvent) => {
-      targetMouseX = e.clientX
-      targetMouseY = e.clientY
-    }
-
     window.addEventListener('resize', handleResize)
-    window.addEventListener('mousemove', handleMouseMove)
 
     const render = () => {
-      // Smooth mouse follow
-      mouseX += (targetMouseX - mouseX) * 0.05
-      mouseY += (targetMouseY - mouseY) * 0.05
-
       ctx.clearRect(0, 0, width, height)
 
-      // Draw subtle background grid
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)'
+      // Draw subtle specular grid
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.015)'
       ctx.lineWidth = 1
-      const gridSize = 60
+      const gridSize = 80
       for (let x = 0; x < width; x += gridSize) {
         ctx.beginPath()
         ctx.moveTo(x, 0)
@@ -105,60 +80,17 @@ export default function PortalOpeningHero() {
         ctx.stroke()
       }
 
-      // Update & Draw particles
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i]
-        p.x += p.vx
-        p.y += p.vy
+      // Draw subtle particles
+      for (let i = 0; i < stars.length; i++) {
+        const s = stars[i]
+        s.y -= s.speed
+        if (s.y < 0) s.y = height
 
-        // Wrap around bounds
-        if (p.x < 0) p.x = width
-        if (p.x > width) p.x = 0
-        if (p.y < 0) p.y = height
-        if (p.y > height) p.y = 0
-
-        // Distance to cursor
-        const dx = mouseX - p.x
-        const dy = mouseY - p.y
-        const distToMouse = Math.sqrt(dx * dx + dy * dy)
-
-        if (distToMouse < 180) {
-          p.alpha = Math.min(1, p.baseAlpha + (1 - distToMouse / 180) * 0.6)
-          // Gentle push away from cursor
-          p.x -= (dx / distToMouse) * 0.8
-          p.y -= (dy / distToMouse) * 0.8
-        } else {
-          p.alpha += (p.baseAlpha - p.alpha) * 0.03
-        }
-
-        // Draw particle dot
         ctx.beginPath()
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2)
-        ctx.fillStyle = p.color
-        ctx.globalAlpha = p.alpha
-        ctx.shadowBlur = 10
-        ctx.shadowColor = p.color
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2)
+        ctx.fillStyle = '#FFFFFF'
+        ctx.globalAlpha = s.alpha
         ctx.fill()
-        ctx.shadowBlur = 0
-
-        // Connect nearby particles with glowing lines
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j]
-          const pdx = p.x - p2.x
-          const pdy = p.y - p2.y
-          const pdist = Math.sqrt(pdx * pdx + pdy * pdy)
-
-          if (pdist < connectionDist) {
-            const lineAlpha = (1 - pdist / connectionDist) * 0.25 * Math.min(p.alpha, p2.alpha)
-            ctx.beginPath()
-            ctx.moveTo(p.x, p.y)
-            ctx.lineTo(p2.x, p2.y)
-            ctx.strokeStyle = '#00F0FF'
-            ctx.globalAlpha = lineAlpha
-            ctx.lineWidth = 0.8
-            ctx.stroke()
-          }
-        }
       }
 
       ctx.globalAlpha = 1.0
@@ -170,29 +102,29 @@ export default function PortalOpeningHero() {
     return () => {
       cancelAnimationFrame(animationFrameId)
       window.removeEventListener('resize', handleResize)
-      window.removeEventListener('mousemove', handleMouseMove)
     }
   }, [])
 
-  // ── 2. Interactive Spotlight & 3D Tilt on Desktop ──────────────────────────
+  // ── 2. Interactive 3D Card Tilt & Specular Reflection ─────────────────────
   useEffect(() => {
     const stage = stickyRef.current
-    if (!stage || window.innerWidth < 768) return
+    const frame = techFrameRef.current
+    if (!stage || !frame || window.innerWidth < 1024) return
 
-    const spotXTo = gsap.quickTo(spotlightRef.current, 'x', { duration: 0.3, ease: 'power2.out' })
-    const spotYTo = gsap.quickTo(spotlightRef.current, 'y', { duration: 0.3, ease: 'power2.out' })
-    const tiltXTo = gsap.quickTo(contentRef.current, 'rotationX', { duration: 0.7, ease: 'power2.out' })
-    const tiltYTo = gsap.quickTo(contentRef.current, 'rotationY', { duration: 0.7, ease: 'power2.out' })
+    const tiltXTo = gsap.quickTo(frame, 'rotationX', { duration: 0.6, ease: 'power2.out' })
+    const tiltYTo = gsap.quickTo(frame, 'rotationY', { duration: 0.6, ease: 'power2.out' })
+    const spotXTo = gsap.quickTo(spotlightRef.current, 'x', { duration: 0.4, ease: 'power2.out' })
+    const spotYTo = gsap.quickTo(spotlightRef.current, 'y', { duration: 0.4, ease: 'power2.out' })
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = stage.getBoundingClientRect()
       const xNorm = (e.clientX - rect.left) / rect.width - 0.5
       const yNorm = (e.clientY - rect.top) / rect.height - 0.5
 
+      tiltXTo(-yNorm * 10)
+      tiltYTo(xNorm * 12)
       spotXTo(e.clientX)
       spotYTo(e.clientY)
-      tiltXTo(-yNorm * 12)
-      tiltYTo(xNorm * 14)
     }
 
     const handleMouseLeave = () => {
@@ -209,63 +141,52 @@ export default function PortalOpeningHero() {
     }
   }, [])
 
-  // ── 3. GSAP Timeline & ScrollTrigger Zoom Scrub ───────────────────────────
+  // ── 3. GSAP Timeline & Apple ScrollTrigger Scrub ──────────────────────────
   useEffect(() => {
     const container = containerRef.current
     const content = contentRef.current
-    const title = titleRef.current
-    const subtitle = subtitleRef.current
-    const badge = badgeRef.current
-    const ctas = ctasRef.current
-    const statsBar = statsBarRef.current
+    const frame = techFrameRef.current
     if (!container || !content) return
 
     const isMobile = window.innerWidth < 768
 
     const ctx = gsap.context(() => {
-      // ── Entrance Split-Text Kinetic Reveal on Load ──
-      const introTl = gsap.timeline({ defaults: { ease: 'power4.out' } })
+      // Entrance Timeline on Load
+      const loadTl = gsap.timeline({ defaults: { ease: 'power3.out' } })
 
-      introTl
+      loadTl
         .fromTo(
-          badge,
-          { opacity: 0, y: -20, scale: 0.9 },
+          badgeRef.current,
+          { opacity: 0, y: -20, scale: 0.95 },
           { opacity: 1, y: 0, scale: 1, duration: 0.8, delay: 0.2 }
         )
         .fromTo(
-          '.hero-word-wrap',
-          { yPercent: 120, opacity: 0, rotateX: -40, skewX: -6 },
-          {
-            yPercent: 0,
-            opacity: 1,
-            rotateX: 0,
-            skewX: 0,
-            stagger: 0.06,
-            duration: 1.1,
-          },
+          '.hero-split-word',
+          { yPercent: 120, opacity: 0 },
+          { yPercent: 0, opacity: 1, stagger: 0.05, duration: 1.1, ease: 'power4.out' },
           '-=0.5'
         )
         .fromTo(
-          subtitle,
-          { opacity: 0, y: 25 },
+          subtitleRef.current,
+          { opacity: 0, y: 20 },
           { opacity: 1, y: 0, duration: 0.8 },
           '-=0.6'
         )
         .fromTo(
-          ctas,
-          { opacity: 0, y: 30, scale: 0.95 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'back.out(1.7)' },
+          ctasRef.current,
+          { opacity: 0, y: 25 },
+          { opacity: 1, y: 0, duration: 0.8 },
           '-=0.5'
         )
         .fromTo(
-          statsBar,
-          { opacity: 0, y: 35 },
-          { opacity: 1, y: 0, duration: 0.9 },
-          '-=0.5'
+          frame,
+          { opacity: 0, y: 60, scale: 0.92 },
+          { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'power3.out' },
+          '-=0.6'
         )
 
-      // ── Pinned 3D Perspective Zoom Scrub on Scroll ──
-      const scrollTl = gsap.timeline({
+      // Pinned Apple-style Zoom Scrub on Scroll
+      const scrubTl = gsap.timeline({
         scrollTrigger: {
           trigger: container,
           start: 'top top',
@@ -276,35 +197,24 @@ export default function PortalOpeningHero() {
         },
       })
 
-      scrollTl
-        // 1. Content scales up and rushes past camera with 3D depth
+      scrubTl
         .to(
           content,
           {
-            scale: isMobile ? 1.8 : 2.6,
-            z: 400,
+            y: -80,
             opacity: 0,
+            scale: 0.92,
             ease: 'power1.in',
           },
           0
         )
-        // 2. Canvas particle field stretches into a warp speed perspective
         .to(
-          canvasRef.current,
+          frame,
           {
-            scale: 1.4,
-            opacity: 0.15,
-            ease: 'none',
-          },
-          0
-        )
-        // 3. Title text shadow intensifies before dissolving
-        .to(
-          title,
-          {
-            letterSpacing: '0.08em',
-            textShadow: '0 0 60px rgba(0, 240, 255, 0.9), 0 0 100px rgba(176, 38, 255, 0.7)',
-            ease: 'none',
+            scale: isMobile ? 1.4 : 1.8,
+            z: 300,
+            opacity: 0,
+            ease: 'power1.in',
           },
           0
         )
@@ -313,7 +223,6 @@ export default function PortalOpeningHero() {
     return () => ctx.revert()
   }, [])
 
-  // ── Scroll to Target Helper ───────────────────────────────────────────────
   const scrollToProjects = () => {
     const el = document.getElementById('projects')
     if (el) el.scrollIntoView({ behavior: 'smooth' })
@@ -342,40 +251,35 @@ export default function PortalOpeningHero() {
     <section
       ref={containerRef}
       id="portal-opening"
-      className="hero-section-container"
-      aria-label="Inspire Zest Technologies — Hero"
+      className="apple-hero-container"
+      aria-label="Inspire Zest Technologies — Keynote Hero"
     >
-      <div ref={stickyRef} className="hero-sticky-stage">
-        {/* Layer 1: Three.js / Canvas Interactive Constellation */}
-        <canvas ref={canvasRef} className="hero-particle-canvas" aria-hidden="true" />
+      <div ref={stickyRef} className="apple-hero-stage">
+        {/* Layer 1: Minimalist Starfield & Grid */}
+        <canvas ref={canvasRef} className="apple-hero-canvas" aria-hidden="true" />
 
-        {/* Layer 2: Interactive Mouse Spotlight */}
-        <div ref={spotlightRef} className="hero-cursor-spotlight" aria-hidden="true" />
+        {/* Layer 2: Interactive Specular Spotlight */}
+        <div ref={spotlightRef} className="apple-hero-spotlight" aria-hidden="true" />
 
-        {/* Layer 3: Ambient Radial Glows & Cyber Grids */}
-        <div className="hero-ambient-glow hero-ambient-glow--cyan" aria-hidden="true" />
-        <div className="hero-ambient-glow hero-ambient-glow--purple" aria-hidden="true" />
-        <div className="hero-vignette" aria-hidden="true" />
-
-        {/* Layer 4: Main 3D Perspective Content Box */}
-        <div ref={contentRef} className="hero-3d-content">
-          {/* Top Pill Badge */}
-          <div ref={badgeRef} className="hero-badge" data-cursor="explore">
-            <span className="hero-badge-pulse" aria-hidden="true" />
-            <Sparkles className="hero-badge-icon" aria-hidden="true" size={14} />
-            <span className="hero-badge-text">INSPIRE ZEST TECHNOLOGIES · NEXT-GEN WEB AGENCY</span>
-            <span className="hero-badge-live">LIVE 2025</span>
+        {/* Layer 3: Main Apple Keynote Content Box */}
+        <div ref={contentRef} className="apple-hero-content">
+          {/* Top Titanium Pill */}
+          <div ref={badgeRef} className="apple-pill-badge" data-cursor="explore">
+            <span className="apple-badge-dot" aria-hidden="true" />
+            <span>INSPIRE ZEST TECHNOLOGIES</span>
+            <span className="apple-badge-sep">/</span>
+            <span className="apple-badge-dim">PRO ARCHITECTURE</span>
           </div>
 
-          {/* Kinetic Headline with Split Words */}
-          <h1 ref={titleRef} className="hero-headline font-display">
+          {/* Kinetic Titanium Headline */}
+          <h1 ref={titleRef} className="apple-hero-title font-display">
             {titleWords.map((word, i) => (
-              <span key={i} className="hero-word-outer">
+              <span key={i} className="apple-word-clip">
                 <span
-                  className={`hero-word-wrap ${
+                  className={`hero-split-word ${
                     word === 'Marketing' || word === 'Web' || word === 'Solutions'
-                      ? 'hero-word-highlight'
-                      : ''
+                      ? 'apple-title-accent'
+                      : 'apple-title-titanium'
                   }`}
                 >
                   {word}&nbsp;
@@ -384,63 +288,78 @@ export default function PortalOpeningHero() {
             ))}
           </h1>
 
-          {/* Subtitle & Value Prop */}
-          <p ref={subtitleRef} className="hero-subtext">
-            We architect award-winning digital experiences, bespoke enterprise software, high-converting
-            e-commerce platforms, and scalable growth strategies for category leaders worldwide.
+          {/* Subtext */}
+          <p ref={subtitleRef} className="apple-hero-subtext">
+            We architect award-winning web platforms, high-converting mobile apps, and enterprise AI
+            systems engineered for category leaders worldwide.
           </p>
 
-          {/* CTA Button Group */}
-          <div ref={ctasRef} className="hero-cta-group">
+          {/* Apple-style CTAs */}
+          <div ref={ctasRef} className="apple-hero-cta-group">
             <button
-              className="hero-btn-primary"
+              className="apple-btn-white"
               onClick={scrollToProjects}
               data-cursor="view"
-              aria-label="Explore our work"
+              aria-label="Explore Selected Work"
             >
-              <span>EXPLORE SELECTED WORK</span>
-              <ArrowUpRight className="hero-btn-arrow" size={18} aria-hidden="true" />
+              <span>Explore Selected Work</span>
+              <ArrowUpRight size={17} aria-hidden="true" />
             </button>
             <button
-              className="hero-btn-secondary"
+              className="apple-btn-glass"
               onClick={scrollToContact}
               data-cursor="go"
-              aria-label="Start a project with us"
+              aria-label="Start a Project"
             >
-              <span>START A PROJECT</span>
-              <div className="hero-btn-glow" aria-hidden="true" />
+              <span>Start a Project</span>
             </button>
           </div>
+        </div>
 
-          {/* Key Quick Highlights Bar */}
-          <div ref={statsBarRef} className="hero-quick-stats">
-            <div className="hero-stat-pill">
-              <ShieldCheck size={16} className="text-cyan-400" />
-              <span>Awwwards Tier Motion</span>
+        {/* Layer 4: 3D Floating Keynote Tech Visual */}
+        <div ref={techFrameRef} className="apple-hero-tech-frame">
+          <div className="apple-frame-glass-bezel">
+            {/* Top Bar of Device Frame */}
+            <div className="apple-frame-header">
+              <div className="apple-frame-dots">
+                <span />
+                <span />
+                <span />
+              </div>
+              <span className="apple-frame-title">inspirezest-core.engine // v4.2.0</span>
+              <div className="apple-frame-chip">
+                <Cpu size={13} className="text-cyan-400" />
+                <span>AI OPTIMIZED</span>
+              </div>
             </div>
-            <div className="hero-stat-divider" aria-hidden="true" />
-            <div className="hero-stat-pill">
-              <span className="hero-stat-bullet" />
-              <span>99.8% System Uptime</span>
-            </div>
-            <div className="hero-stat-divider" aria-hidden="true" />
-            <div className="hero-stat-pill">
-              <span className="hero-stat-bullet hero-stat-bullet--purple" />
-              <span>Offices in India & UAE</span>
+
+            {/* High-Resolution Tech Showcase Image */}
+            <div className="apple-frame-image-wrapper">
+              <img
+                src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1400&auto=format&fit=crop"
+                alt="Inspire Zest Core Tech Visualization"
+                className="apple-frame-img"
+                loading="eager"
+                decoding="async"
+              />
+              <div className="apple-frame-overlay-glass" aria-hidden="true">
+                <div className="apple-frame-floating-pill">
+                  <Sparkles size={14} className="text-cyan-400" />
+                  <span>Sub-0.4s Latency · Enterprise Scalability</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Scroll Indicator */}
+        {/* Bottom Scroll Prompt */}
         <button
-          className="hero-scroll-hint"
+          className="apple-scroll-prompt"
           onClick={scrollToNext}
-          aria-label="Scroll down to explore"
+          aria-label="Scroll to discover"
         >
-          <span className="hero-scroll-mouse">
-            <span className="hero-scroll-wheel" />
-          </span>
-          <span className="hero-scroll-label">SCROLL TO DISCOVER</span>
+          <span>SCROLL TO DISCOVER</span>
+          <ChevronDown size={16} className="apple-scroll-arrow" aria-hidden="true" />
         </button>
       </div>
     </section>

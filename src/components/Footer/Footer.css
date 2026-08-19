@@ -1,12 +1,12 @@
 /* ═════════════════════════════════════════════════════════════════
-   AWARD FOOTER COMPONENT
+   APPLE PRO FOOTER COMPONENT
 ═════════════════════════════════════════════════════════════════ */
 
 .footer-award {
   position: relative;
   width: 100%;
   padding: 2rem 2rem 3rem;
-  background: #0B0F19;
+  background: #000000;
   z-index: 25;
 }
 
@@ -14,13 +14,14 @@
   position: relative;
   max-width: 1340px;
   margin: 0 auto;
-  background: rgba(15, 23, 42, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(22, 22, 26, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 36px;
   padding: 5rem 4.5rem 3rem;
-  backdrop-filter: blur(24px);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
   overflow: hidden;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 35px 90px rgba(0, 0, 0, 0.95);
 }
 
 .footer-glass-glow {
@@ -29,7 +30,7 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.6), rgba(176, 38, 255, 0.6), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
 }
 
 .footer-cursor-spotlight {
@@ -40,7 +41,7 @@
   height: 600px;
   margin-top: -300px;
   margin-left: -300px;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -57,10 +58,8 @@
 .footer-logo {
   font-size: 2rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #00F0FF, #00F5A0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.03em;
+  color: #F5F5F7;
   display: inline-block;
   margin-bottom: 1.2rem;
 }
@@ -68,7 +67,7 @@
 .footer-tagline {
   font-size: clamp(1.4rem, 2vw, 1.8rem);
   font-weight: 700;
-  color: #F8FAFC;
+  color: #F5F5F7;
   line-height: 1.2;
   margin-bottom: 1rem;
 }
@@ -77,7 +76,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 0.92rem;
   line-height: 1.6;
-  color: #94A3B8;
+  color: #86868B;
   max-width: 380px;
 }
 
@@ -88,12 +87,12 @@
 }
 
 .footer-nav-label {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #F8FAFC;
+  color: #F5F5F7;
   display: block;
   margin-bottom: 1.2rem;
 }
@@ -110,14 +109,14 @@
 .footer-nav-link {
   font-family: 'Inter', sans-serif;
   font-size: 0.88rem;
-  color: #94A3B8;
+  color: #86868B;
   text-decoration: none;
   transition: color 0.2s ease, transform 0.2s ease;
   display: inline-block;
 }
 
 .footer-nav-link:hover {
-  color: #00F0FF;
+  color: #F5F5F7;
   transform: translateX(3px);
 }
 
@@ -133,7 +132,7 @@
   gap: 0.5rem;
   font-family: 'Inter', sans-serif;
   font-size: 0.85rem;
-  color: #CBD5E1;
+  color: #D2D2D7;
 }
 
 /* ── Bottom Bar ── */
@@ -151,15 +150,15 @@
 }
 
 .footer-legal-links a {
-  color: #00F0FF;
+  color: #86868B;
   text-decoration: none;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  transition: opacity 0.2s ease;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 
 .footer-legal-links a:hover {
-  opacity: 0.8;
+  color: #F5F5F7;
 }
 
 .footer-watermark {
@@ -170,7 +169,7 @@
   font-size: clamp(4.5rem, 13vw, 12rem);
   font-weight: 900;
   letter-spacing: -0.04em;
-  color: rgba(255, 255, 255, 0.02);
+  color: rgba(255, 255, 255, 0.015);
   white-space: nowrap;
   pointer-events: none;
   z-index: 1;

@@ -1,12 +1,12 @@
 /* ═════════════════════════════════════════════════════════════════
-   FINAL CTA SECTION — MAGNETIC CALL TO ACTION
+   APPLE PRO FINAL CTA SECTION
 ═════════════════════════════════════════════════════════════════ */
 
 .fcta-award-section {
   position: relative;
   width: 100%;
   padding: 10rem 2rem;
-  background: #05070D;
+  background: #000000;
   overflow: hidden;
   text-align: center;
   z-index: 25;
@@ -28,19 +28,19 @@
   gap: 0.5rem;
   font-family: 'Inter', sans-serif;
   font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  color: #00F0FF;
+  letter-spacing: 0.2em;
+  color: #2997FF;
   text-transform: uppercase;
   font-weight: 600;
   margin-bottom: 2rem;
   padding: 0.35rem 0.9rem;
-  background: rgba(0, 240, 255, 0.06);
-  border: 1px solid rgba(0, 240, 255, 0.2);
+  background: rgba(41, 151, 255, 0.08);
+  border: 1px solid rgba(41, 151, 255, 0.2);
   border-radius: 9999px;
 }
 
 .fcta-headline {
-  margin-bottom: 3.5rem;
+  margin-bottom: 3rem;
 }
 
 .fcta-overflow-wrap {
@@ -50,51 +50,50 @@
 
 .fcta-line-1 {
   display: block;
-  font-size: clamp(2.4rem, 5.5vw, 5.2rem);
+  font-size: clamp(2.4rem, 5.5vw, 5rem);
   font-weight: 700;
-  color: #94A3B8;
+  color: #86868B;
   line-height: 1.1;
   letter-spacing: -0.03em;
 }
 
 .fcta-line-2 {
   display: block;
-  font-size: clamp(2.4rem, 5.5vw, 5.2rem);
+  font-size: clamp(2.4rem, 5.5vw, 5rem);
   font-weight: 700;
-  color: #F8FAFC;
+  color: #F5F5F7;
   line-height: 1.1;
   letter-spacing: -0.03em;
 }
 
 .fcta-highlight {
-  background: linear-gradient(135deg, #00F0FF 0%, #00F5A0 50%, #B026FF 100%);
+  background: linear-gradient(180deg, #FFFFFF 20%, #A1A1A6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 35px rgba(0, 240, 255, 0.4));
 }
 
 .fcta-magnetic-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.8rem;
-  padding: 1.25rem 2.8rem;
-  background: linear-gradient(135deg, #00F0FF 0%, #00B4D8 100%);
-  color: #05070D;
+  padding: 1.15rem 2.8rem;
+  background: #FFFFFF;
+  color: #000000;
   border-radius: 9999px;
   border: none;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   cursor: pointer;
-  box-shadow: 0 0 45px rgba(0, 240, 255, 0.5), 0 10px 30px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 4px 25px rgba(255, 255, 255, 0.25);
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
   will-change: transform;
 }
 
 .fcta-magnetic-btn:hover {
-  box-shadow: 0 0 65px rgba(0, 240, 255, 0.8), 0 15px 40px rgba(0, 0, 0, 0.8);
+  transform: scale(1.04);
+  box-shadow: 0 8px 35px rgba(255, 255, 255, 0.45);
 }
 
 .fcta-btn-icon {
@@ -102,15 +101,15 @@
 }
 
 .fcta-magnetic-btn:hover .fcta-btn-icon {
-  transform: translate(4px, -4px);
+  transform: translate(3px, -3px);
 }
 
 .fcta-subtext {
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
   line-height: 1.6;
-  color: #94A3B8;
-  max-width: 600px;
+  color: #86868B;
+  max-width: 580px;
   margin-top: 2rem;
 }
 
@@ -119,9 +118,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 750px;
-  height: 450px;
-  background: radial-gradient(ellipse, rgba(0, 240, 255, 0.15) 0%, rgba(176, 38, 255, 0.08) 50%, transparent 75%);
+  width: 700px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(41, 151, 255, 0.1) 0%, transparent 70%);
   filter: blur(80px);
   pointer-events: none;
   z-index: 1;

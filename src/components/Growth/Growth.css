@@ -1,18 +1,18 @@
 /* ═════════════════════════════════════════════════════════════════
-   STATS COUNTER SECTION — NEON GLASSMORPHISM KPI CARDS
+   STATS COUNTER SECTION — APPLE PRO FROSTED GLASS KPI CARDS
 ═════════════════════════════════════════════════════════════════ */
 
 .stats-section {
   position: relative;
   width: 100%;
   padding: 8rem 2rem;
-  background: #0B0F19;
+  background: #000000;
   overflow: hidden;
   z-index: 15;
 }
 
 .stats-container {
-  max-width: 1240px;
+  max-width: 1280px;
   margin: 0 auto;
 }
 
@@ -29,39 +29,37 @@
   gap: 0.5rem;
   font-family: 'Inter', sans-serif;
   font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  color: #00F0FF;
+  letter-spacing: 0.2em;
+  color: #2997FF;
   text-transform: uppercase;
   font-weight: 600;
   margin-bottom: 1.2rem;
   padding: 0.35rem 0.9rem;
-  background: rgba(0, 240, 255, 0.06);
-  border: 1px solid rgba(0, 240, 255, 0.2);
+  background: rgba(41, 151, 255, 0.08);
+  border: 1px solid rgba(41, 151, 255, 0.2);
   border-radius: 9999px;
 }
 
 .stats-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+  font-size: clamp(2.2rem, 4.2vw, 3.8rem);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.03em;
-  color: #F8FAFC;
+  color: #F5F5F7;
   margin-bottom: 1.2rem;
 }
 
 .stats-title-gradient {
-  background: linear-gradient(135deg, #00F0FF 0%, #00F5A0 50%, #B026FF 100%);
+  background: linear-gradient(180deg, #FFFFFF 20%, #A1A1A6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 25px rgba(0, 240, 255, 0.3));
 }
 
 .stats-desc {
   font-family: 'Inter', sans-serif;
   font-size: 1.05rem;
   line-height: 1.6;
-  color: #94A3B8;
+  color: #86868B;
 }
 
 /* ── 4-Card Grid ── */
@@ -74,22 +72,22 @@
 /* ── Individual Card ── */
 .stats-card {
   position: relative;
-  background: rgba(15, 23, 42, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
-  padding: 2.5rem 1.8rem;
-  backdrop-filter: blur(16px);
+  background: rgba(22, 22, 26, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 28px;
+  padding: 2.8rem 2rem;
+  backdrop-filter: saturate(180%) blur(20px);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
 }
 
 .stats-card:hover {
-  transform: translateY(-8px);
-  border-color: var(--card-accent);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 30px var(--card-glow);
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
 .stats-card-glow {
@@ -101,15 +99,15 @@
   background: radial-gradient(circle, var(--card-glow) 0%, transparent 70%);
   pointer-events: none;
   border-radius: 50%;
-  filter: blur(25px);
-  opacity: 0.6;
+  filter: blur(30px);
+  opacity: 0.4;
 }
 
 .stats-card-icon-wrap {
   width: 52px;
   height: 52px;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
@@ -127,7 +125,7 @@
 .stats-card-digits {
   font-size: clamp(2.8rem, 3.8vw, 3.6rem);
   font-weight: 700;
-  color: #F8FAFC;
+  color: #F5F5F7;
   line-height: 1;
   letter-spacing: -0.04em;
 }
@@ -141,10 +139,9 @@
 
 /* ── Label & Desc ── */
 .stats-card-label {
-  font-family: 'Space Grotesk', sans-serif;
   font-size: 1.15rem;
   font-weight: 600;
-  color: #F8FAFC;
+  color: #F5F5F7;
   margin-bottom: 0.5rem;
   letter-spacing: -0.01em;
 }
@@ -153,7 +150,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 0.85rem;
   line-height: 1.5;
-  color: #94A3B8;
+  color: #86868B;
 }
 
 /* ── Responsive Rules ── */
