@@ -18,7 +18,6 @@ export default function PortalOpeningHero() {
   const subtitleRef  = useRef<HTMLParagraphElement>(null)
   const ctasRef      = useRef<HTMLDivElement>(null)
   const spotlightRef = useRef<HTMLDivElement>(null)
-  const statsBarRef  = useRef<HTMLDivElement>(null)
 
   // ── 1. Interactive Mouse Spotlight & Kinetic Camera Parallax ──────────────
   useEffect(() => {
@@ -108,12 +107,6 @@ export default function PortalOpeningHero() {
           { opacity: 0, y: 25 },
           { opacity: 1, y: 0, duration: 0.8 },
           '-=0.5'
-        )
-        .fromTo(
-          statsBarRef.current,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.8 },
-          '-=0.4'
         )
 
       // 2. Pinned Fullscreen Parallax & Zoom Scrub on Scroll
@@ -247,22 +240,6 @@ export default function PortalOpeningHero() {
             >
               <span>Start a Project</span>
             </button>
-          </div>
-
-          {/* Quick Highlight Floating Tray with Text Decryption */}
-          <div ref={statsBarRef} className="apple-hero-quick-tray">
-            <div className="apple-tray-item">
-              <Sparkles size={14} className="text-cyan-400" />
-              <TextScramble text="Award-Winning Motion" speed={30} />
-            </div>
-            <div className="apple-tray-dot" />
-            <div className="apple-tray-item">
-              <TextScramble text="99.8% System Uptime" speed={30} />
-            </div>
-            <div className="apple-tray-dot" />
-            <div className="apple-tray-item">
-              <TextScramble text="India & UAE Hubs" speed={30} />
-            </div>
           </div>
         </div>
 

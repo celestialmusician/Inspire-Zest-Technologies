@@ -186,37 +186,6 @@
   transform: scale(1.02);
 }
 
-/* ── Quick Highlight Tray ── */
-.apple-hero-quick-tray {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  margin-top: 2.8rem;
-  padding: 0.55rem 1.4rem;
-  border-radius: 9999px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-}
-
-.apple-tray-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--secondary);
-}
-
-.apple-tray-dot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--border-hover);
-}
-
 /* ── Scroll Prompt ── */
 .apple-scroll-prompt {
   position: absolute;
@@ -256,15 +225,6 @@
   }
   .apple-hero-content {
     padding-top: 5rem;
-  }
-  .apple-hero-quick-tray {
-    flex-direction: column;
-    border-radius: 18px;
-    gap: 0.5rem;
-    padding: 0.8rem 1.2rem;
-  }
-  .apple-tray-dot {
-    display: none;
   }
   .apple-hero-cta-group {
     flex-direction: column;
