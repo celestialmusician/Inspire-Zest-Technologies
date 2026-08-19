@@ -1,138 +1,103 @@
 /* ═════════════════════════════════════════════════════════════════
-   APPLE PRO FINAL CTA SECTION
+   FINAL CALL TO ACTION SECTION (LIGHT & DARK DYNAMIC)
 ═════════════════════════════════════════════════════════════════ */
 
 .fcta-award-section {
   position: relative;
   width: 100%;
-  padding: 10rem 2rem;
-  background: #000000;
+  padding: 10rem 2rem 8rem;
+  background: var(--bg);
   overflow: hidden;
-  text-align: center;
-  z-index: 25;
+  z-index: 20;
 }
 
 .fcta-container {
-  max-width: 1080px;
+  max-width: 1280px;
   margin: 0 auto;
-  position: relative;
-  z-index: 2;
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.fcta-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
-  color: #2997FF;
-  text-transform: uppercase;
-  font-weight: 600;
-  margin-bottom: 2rem;
-  padding: 0.35rem 0.9rem;
-  background: rgba(41, 151, 255, 0.08);
-  border: 1px solid rgba(41, 151, 255, 0.2);
-  border-radius: 9999px;
-}
-
 .fcta-headline {
-  margin-bottom: 3rem;
+  font-size: clamp(2.6rem, 6.2vw, 5.8rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  margin-bottom: 2rem;
 }
 
 .fcta-overflow-wrap {
-  overflow: hidden;
   display: block;
+  overflow: hidden;
 }
 
 .fcta-line-1 {
   display: block;
-  font-size: clamp(2.4rem, 5.5vw, 5rem);
-  font-weight: 700;
-  color: #86868B;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+  color: var(--primary);
+  will-change: transform, opacity;
 }
 
 .fcta-line-2 {
   display: block;
-  font-size: clamp(2.4rem, 5.5vw, 5rem);
-  font-weight: 700;
-  color: #F5F5F7;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-}
-
-.fcta-highlight {
-  background: linear-gradient(180deg, #FFFFFF 20%, #A1A1A6 100%);
+  background: var(--brand-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 35px rgba(41, 151, 255, 0.35));
+  will-change: transform, opacity;
 }
 
-.fcta-magnetic-btn {
+.fcta-sub {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  line-height: 1.6;
+  color: var(--secondary);
+  max-width: 640px;
+  margin-bottom: 3.5rem;
+}
+
+.fcta-magnetic-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.fcta-huge-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.8rem;
-  padding: 1.15rem 2.8rem;
-  background: #FFFFFF;
-  color: #000000;
+  padding: 1.2rem 3rem;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
   border-radius: 9999px;
   border: none;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.92rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 4px 25px rgba(255, 255, 255, 0.25);
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
-  will-change: transform;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
 }
 
-.fcta-magnetic-btn:hover {
-  transform: scale(1.04);
-  box-shadow: 0 8px 35px rgba(255, 255, 255, 0.45);
+.fcta-huge-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
 }
 
-.fcta-btn-icon {
-  transition: transform 0.3s ease;
+.fcta-btn-arrow {
+  transition: transform 0.25s ease;
 }
 
-.fcta-magnetic-btn:hover .fcta-btn-icon {
-  transform: translate(3px, -3px);
-}
-
-.fcta-subtext {
-  font-family: 'Inter', sans-serif;
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #86868B;
-  max-width: 580px;
-  margin-top: 2rem;
-}
-
-.fcta-glow-mesh {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 700px;
-  height: 400px;
-  background: radial-gradient(ellipse, rgba(41, 151, 255, 0.1) 0%, transparent 70%);
-  filter: blur(80px);
-  pointer-events: none;
-  z-index: 1;
+.fcta-huge-btn:hover .fcta-btn-arrow {
+  transform: translateX(4px);
 }
 
 @media (max-width: 767px) {
   .fcta-award-section {
-    padding: 6rem 1.25rem;
+    padding: 6rem 1.25rem 4rem;
   }
-  .fcta-magnetic-btn {
-    width: 100%;
-    justify-content: center;
-    padding: 1.1rem 1.5rem;
+  .fcta-huge-btn {
+    padding: 1rem 2rem;
+    font-size: 0.95rem;
   }
 }

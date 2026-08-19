@@ -1,12 +1,12 @@
 /* ═════════════════════════════════════════════════════════════════
-   APPLE PRO PARALLAX TECH SHOWCASE SECTION
+   APPLE PRO PARALLAX TECH SHOWCASE SECTION (LIGHT & DARK DYNAMIC)
 ═════════════════════════════════════════════════════════════════ */
 
 .tech-parallax-section {
   position: relative;
   width: 100%;
   min-height: 85vh;
-  background: #000000;
+  background: var(--bg);
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -38,9 +38,7 @@
 .tech-parallax-overlay {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.9) 70%, #000000 100%),
-    linear-gradient(to bottom, #000000 0%, transparent 20%, transparent 80%, #000000 100%);
+  background: var(--vignette);
   pointer-events: none;
 }
 
@@ -65,50 +63,29 @@
   margin-bottom: 3.5rem;
 }
 
-/* ── Top Pill Badge ── */
-.tech-parallax-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.4rem 1rem;
-  border-radius: 9999px;
-  background: rgba(22, 22, 26, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  font-family: 'Inter', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  color: #F5F5F7;
-  text-transform: uppercase;
-  margin-bottom: 1.6rem;
-}
-
 /* ── Headline ── */
 .tech-parallax-title {
   font-size: clamp(2.4rem, 4.8vw, 4.4rem);
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.03em;
-  color: #F5F5F7;
+  color: var(--primary);
   margin-bottom: 1.2rem;
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
 }
 
 .tech-parallax-gradient {
-  background: linear-gradient(135deg, #2997FF 0%, #BF5AF2 50%, #00F5D4 100%);
+  background: var(--brand-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 25px rgba(41, 151, 255, 0.4));
+  filter: drop-shadow(0 0 25px rgba(41, 151, 255, 0.35));
 }
 
 /* ── Description ── */
 .tech-parallax-desc {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(0.98rem, 1.35vw, 1.12rem);
   line-height: 1.65;
-  color: #A1A1A6;
+  color: var(--secondary);
   max-width: 680px;
 }
 
@@ -126,26 +103,26 @@
   align-items: center;
   gap: 1rem;
   padding: 0.9rem 1.6rem;
-  background: rgba(22, 22, 26, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 20px;
   backdrop-filter: saturate(180%) blur(24px);
   -webkit-backdrop-filter: saturate(180%) blur(24px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .tech-parallax-chip:hover {
   transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: var(--border-hover);
 }
 
 .tech-chip-icon {
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(41, 151, 255, 0.08);
+  border: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -160,14 +137,14 @@
 .tech-chip-val {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #F5F5F7;
+  color: var(--primary);
   line-height: 1.2;
 }
 
 .tech-chip-label {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   font-size: 0.72rem;
-  color: #86868B;
+  color: var(--secondary);
   letter-spacing: 0.02em;
 }
 
