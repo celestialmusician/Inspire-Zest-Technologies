@@ -13,6 +13,14 @@ export default defineConfig({
       '@': path.resolve(import.meta.dirname, './src'),
     },
   },
+  server: {
+    allowedHosts: true,
+    host: true,
+  },
+  preview: {
+    allowedHosts: true,
+    host: true,
+  },
   build: {
     target: 'esnext',
     rollupOptions: {
@@ -26,5 +34,6 @@ export default defineConfig({
     },
   },
 })
+
 
 
