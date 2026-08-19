@@ -103,7 +103,23 @@ html {
   scroll-behavior: auto; /* Lenis takes over */
   overflow-x: hidden;
   background-color: var(--bg);
-  color-scheme: dark light;
+  color-scheme: dark;
+}
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
@@ -115,8 +131,10 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background-color 0.35s ease, color 0.35s ease;
+  text-rendering: optimizeLegibility;
+  transform: translateZ(0);
 }
+
 
 /* ── CURSOR ────────────────────────────────────────────────── */
 * {
