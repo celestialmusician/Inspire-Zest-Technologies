@@ -14,7 +14,6 @@ export default function GlobalBackground() {
   const aurora1Ref = useRef<HTMLDivElement>(null)
   const aurora2Ref = useRef<HTMLDivElement>(null)
   const aurora3Ref = useRef<HTMLDivElement>(null)
-  const hudContainerRef = useRef<HTMLDivElement>(null)
 
   // 1. GSAP Liquid Aurora Morphing & Scroll-Reactive Physics
   useEffect(() => {
@@ -23,7 +22,6 @@ export default function GlobalBackground() {
     const a1 = aurora1Ref.current
     const a2 = aurora2Ref.current
     const a3 = aurora3Ref.current
-    const hud = hudContainerRef.current
 
     const ctx = gsap.context(() => {
       // Fluid liquid blob morphing and pulsing
@@ -84,20 +82,11 @@ export default function GlobalBackground() {
           scrollTrigger: { start: 'top top', end: 'bottom bottom', scrub: 1.6 },
         })
       }
-
-      // HUD elements gentle floating parallax
-      if (hud) {
-        gsap.to(hud.querySelectorAll('.genz-hud-float'), {
-          yPercent: -40,
-          stagger: 0.1,
-          ease: 'none',
-          scrollTrigger: { start: 'top top', end: 'bottom bottom', scrub: 2 },
-        })
-      }
     })
 
     return () => ctx.revert()
   }, [reduced])
+
 
   // 2. Interactive Cyber Wave Matrix & Particle Stardust Canvas
   useEffect(() => {
@@ -280,22 +269,9 @@ export default function GlobalBackground() {
       {/* 3. Interactive Kinetic Wave Matrix Canvas */}
       <canvas ref={canvasRef} className="genz-wave-canvas" />
 
-      {/* 4. Retro-Futuristic Cyber HUD Accents */}
-      <div ref={hudContainerRef} className="genz-hud-accents">
-        <div className="genz-hud-float genz-hud-tl">
-          <span className="genz-hud-bracket">┌</span>
-          <span className="genz-hud-text">SYS.ONLINE // 2026</span>
-        </div>
-        <div className="genz-hud-float genz-hud-tr">
-          <span className="genz-hud-text">EST. 2019 · GLOBAL</span>
-          <span className="genz-hud-bracket">┐</span>
-        </div>
-        <div className="genz-hud-float genz-hud-crosshair-1">+</div>
-        <div className="genz-hud-float genz-hud-crosshair-2">+</div>
-      </div>
-
-      {/* 5. Contrast Mask to guarantee 100% text clarity & zero overwrite */}
+      {/* 4. Contrast Mask to guarantee 100% text clarity & zero overwrite */}
       <div className="genz-vignette-mask" />
     </div>
   )
 }
+
