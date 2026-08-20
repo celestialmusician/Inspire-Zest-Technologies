@@ -11,112 +11,95 @@ export default function GlobalBackground() {
   const reduced = usePrefersReducedMotion()
 
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const spotlightRef = useRef<HTMLDivElement>(null)
-  const orb1Ref = useRef<HTMLDivElement>(null)
-  const orb2Ref = useRef<HTMLDivElement>(null)
-  const orb3Ref = useRef<HTMLDivElement>(null)
-  const gridRef = useRef<HTMLDivElement>(null)
+  const aurora1Ref = useRef<HTMLDivElement>(null)
+  const aurora2Ref = useRef<HTMLDivElement>(null)
+  const aurora3Ref = useRef<HTMLDivElement>(null)
+  const hudContainerRef = useRef<HTMLDivElement>(null)
 
-  // 1. GSAP Interactive Cursor Tracking Spotlight & Floating Orbs
+  // 1. GSAP Liquid Aurora Morphing & Scroll-Reactive Physics
   useEffect(() => {
     if (reduced) return
 
-    const spotlight = spotlightRef.current
-    const orb1 = orb1Ref.current
-    const orb2 = orb2Ref.current
-    const orb3 = orb3Ref.current
+    const a1 = aurora1Ref.current
+    const a2 = aurora2Ref.current
+    const a3 = aurora3Ref.current
+    const hud = hudContainerRef.current
 
     const ctx = gsap.context(() => {
-      // Ambient Organic Orb Breathing Timelines
-      if (orb1 && orb2 && orb3) {
-        gsap.to(orb1, {
-          x: '+=80',
-          y: '-=60',
-          scale: 1.15,
-          duration: 12,
+      // Fluid liquid blob morphing and pulsing
+      if (a1 && a2 && a3) {
+        gsap.to(a1, {
+          x: '+=120',
+          y: '-=100',
+          scale: 1.25,
+          rotate: 180,
+          duration: 16,
           repeat: -1,
           yoyo: true,
           ease: 'sine.inOut',
         })
-        gsap.to(orb2, {
-          x: '-=90',
-          y: '+=80',
-          scale: 1.2,
-          duration: 15,
+        gsap.to(a2, {
+          x: '-=140',
+          y: '+=110',
+          scale: 1.3,
+          rotate: -140,
+          duration: 20,
           repeat: -1,
           yoyo: true,
           ease: 'sine.inOut',
-          delay: 1.5,
+          delay: 2,
         })
-        gsap.to(orb3, {
-          x: '+=60',
-          y: '+=70',
-          scale: 1.1,
-          duration: 14,
+        gsap.to(a3, {
+          x: '+=90',
+          y: '+=130',
+          scale: 1.18,
+          rotate: 90,
+          duration: 18,
           repeat: -1,
           yoyo: true,
           ease: 'sine.inOut',
-          delay: 3,
+          delay: 4,
         })
       }
 
-      // Parallax scroll reaction for background light fields
-      if (orb1) {
-        gsap.to(orb1, {
-          y: '80vh',
+      // Parallax scroll reaction for liquid light fields
+      if (a1) {
+        gsap.to(a1, {
+          y: '90vh',
           ease: 'none',
-          scrollTrigger: {
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: 1.5,
-          },
+          scrollTrigger: { start: 'top top', end: 'bottom bottom', scrub: 1.4 },
         })
       }
-      if (orb2) {
-        gsap.to(orb2, {
-          y: '-60vh',
+      if (a2) {
+        gsap.to(a2, {
+          y: '-70vh',
           ease: 'none',
-          scrollTrigger: {
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: 2,
-          },
+          scrollTrigger: { start: 'top top', end: 'bottom bottom', scrub: 1.8 },
         })
       }
-      if (orb3) {
-        gsap.to(orb3, {
-          y: '40vh',
+      if (a3) {
+        gsap.to(a3, {
+          y: '50vh',
           ease: 'none',
-          scrollTrigger: {
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: 1.8,
-          },
+          scrollTrigger: { start: 'top top', end: 'bottom bottom', scrub: 1.6 },
+        })
+      }
+
+      // HUD elements gentle floating parallax
+      if (hud) {
+        gsap.to(hud.querySelectorAll('.genz-hud-float'), {
+          yPercent: -40,
+          stagger: 0.1,
+          ease: 'none',
+          scrollTrigger: { start: 'top top', end: 'bottom bottom', scrub: 2 },
         })
       }
     })
 
-    // Mouse Tracking QuickTo for silky smooth spotlight
-    if (!isTouch && spotlight) {
-      const setX = gsap.quickTo(spotlight, 'x', { duration: 1.2, ease: 'power2.out' })
-      const setY = gsap.quickTo(spotlight, 'y', { duration: 1.2, ease: 'power2.out' })
-
-      const handleMouseMove = (e: MouseEvent) => {
-        setX(e.clientX)
-        setY(e.clientY)
-      }
-
-      window.addEventListener('mousemove', handleMouseMove, { passive: true })
-      return () => {
-        window.removeEventListener('mousemove', handleMouseMove)
-        ctx.revert()
-      }
-    }
-
     return () => ctx.revert()
-  }, [isTouch, reduced])
+  }, [reduced])
 
-  // 2. Interactive Constellation & Luminous Particle Grid Canvas
+  // 2. Interactive Cyber Wave Matrix & Particle Stardust Canvas
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -133,98 +116,143 @@ export default function GlobalBackground() {
     }
     window.addEventListener('resize', handleResize)
 
-    // Particle nodes configuration
-    const count = isTouch ? 35 : 75
-    interface Node {
-      x: number
-      y: number
-      vx: number
-      vy: number
-      radius: number
-      alpha: number
-      baseAlpha: number
-    }
+    // Interactive mouse coordinates with inertia
+    const mouse = { x: width / 2, y: height / 2, targetX: width / 2, targetY: height / 2, speed: 0 }
+    let lastMouseX = width / 2
+    let lastMouseY = height / 2
 
-    const nodes: Node[] = []
-    for (let i = 0; i < count; i++) {
-      const baseAlpha = Math.random() * 0.45 + 0.15
-      nodes.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        radius: Math.random() * 1.8 + 0.6,
-        alpha: baseAlpha,
-        baseAlpha,
-      })
-    }
-
-    let mouseX = -1000
-    let mouseY = -1000
     const onMouseMove = (e: MouseEvent) => {
-      mouseX = e.clientX
-      mouseY = e.clientY
+      mouse.targetX = e.clientX
+      mouse.targetY = e.clientY
     }
     if (!isTouch) {
       window.addEventListener('mousemove', onMouseMove, { passive: true })
     }
 
-    // GSAP Ticker Render Loop (Ultra Smooth 60fps/120fps)
+    // Spark / Stardust burst particles
+    interface Spark {
+      x: number
+      y: number
+      vx: number
+      vy: number
+      size: number
+      alpha: number
+      color: string
+      life: number
+      maxLife: number
+    }
+    const sparks: Spark[] = []
+    const sparkColors = ['#00F5D4', '#38BDF8', '#BF5AF2', '#FF2E93', '#FFFFFF']
+
+    let time = 0
+
+    // Grid wave properties
+    const cols = isTouch ? 22 : 42
+    const rows = isTouch ? 14 : 26
+
     const render = () => {
+      time += 0.02
+
+      // Smooth mouse easing
+      mouse.x += (mouse.targetX - mouse.x) * 0.08
+      mouse.y += (mouse.targetY - mouse.y) * 0.08
+
+      const dx = mouse.targetX - lastMouseX
+      const dy = mouse.targetY - lastMouseY
+      mouse.speed = Math.sqrt(dx * dx + dy * dy)
+      lastMouseX = mouse.targetX
+      lastMouseY = mouse.targetY
+
+      // Spawn interactive sparks on cursor movement
+      if (!isTouch && mouse.speed > 2 && Math.random() < 0.35) {
+        sparks.push({
+          x: mouse.targetX + (Math.random() - 0.5) * 20,
+          y: mouse.targetY + (Math.random() - 0.5) * 20,
+          vx: (Math.random() - 0.5) * 1.5,
+          vy: (Math.random() - 0.5) * 1.5 - 0.5,
+          size: Math.random() * 2.2 + 0.8,
+          alpha: 0.9,
+          color: sparkColors[Math.floor(Math.random() * sparkColors.length)],
+          life: 0,
+          maxLife: Math.random() * 40 + 30,
+        })
+      }
+
       ctx.clearRect(0, 0, width, height)
 
-      // Draw interactive constellation links
-      const maxDistance = isTouch ? 90 : 130
-      for (let i = 0; i < count; i++) {
-        const n1 = nodes[i]
+      // ── A. Render Kinetic Undulating Cyber Grid Matrix ──
+      const cellWidth = width / cols
+      const cellHeight = height / rows
 
-        // Move nodes
-        n1.x += n1.vx
-        n1.y += n1.vy
+      for (let i = 0; i <= cols; i++) {
+        for (let j = 0; j <= rows; j++) {
+          const baseX = i * cellWidth
+          const baseY = j * cellHeight
 
-        // Bounce on boundaries
-        if (n1.x < 0 || n1.x > width) n1.vx *= -1
-        if (n1.y < 0 || n1.y > height) n1.vy *= -1
+          // Dual sine-wave mathematical displacement
+          const wave1 = Math.sin(i * 0.32 + time * 0.8) * Math.cos(j * 0.28 + time * 0.7)
+          const wave2 = Math.sin((i + j) * 0.25 - time * 0.6)
 
-        // Mouse proximity reaction
-        if (!isTouch) {
-          const dx = mouseX - n1.x
-          const dy = mouseY - n1.y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < 150) {
-            const force = (150 - dist) / 150
-            n1.alpha = n1.baseAlpha + force * 0.6
+          // Mouse proximity gravity ripple
+          const distToMouse = Math.sqrt((baseX - mouse.x) ** 2 + (baseY - mouse.y) ** 2)
+          const mouseRippleRadius = 260
+          let mouseForce = 0
+          if (distToMouse < mouseRippleRadius) {
+            mouseForce = Math.cos((distToMouse / mouseRippleRadius) * Math.PI * 0.5) * 14
+          }
+
+          const posX = baseX + wave2 * 4
+          const posY = baseY + wave1 * 8 - mouseForce
+
+          // Dynamic point alpha & color styling
+          const baseAlpha = 0.08 + (wave1 + 1) * 0.06
+          const proximityBoost = distToMouse < mouseRippleRadius ? (1 - distToMouse / mouseRippleRadius) * 0.55 : 0
+          const finalAlpha = Math.min(baseAlpha + proximityBoost, 0.75)
+
+          const dotRadius = distToMouse < mouseRippleRadius ? 1.8 + (1 - distToMouse / mouseRippleRadius) * 1.6 : 1.1
+
+          ctx.beginPath()
+          ctx.arc(posX, posY, dotRadius, 0, Math.PI * 2)
+
+          if (proximityBoost > 0.15) {
+            ctx.fillStyle = `rgba(0, 245, 212, ${finalAlpha})`
+            ctx.shadowColor = '#00F5D4'
+            ctx.shadowBlur = 8
+          } else if ((i + j) % 7 === 0) {
+            ctx.fillStyle = `rgba(191, 90, 242, ${finalAlpha})`
+            ctx.shadowBlur = 0
           } else {
-            n1.alpha = n1.baseAlpha
+            ctx.fillStyle = `rgba(255, 255, 255, ${finalAlpha})`
+            ctx.shadowBlur = 0
           }
+
+          ctx.fill()
+          ctx.shadowBlur = 0
+        }
+      }
+
+      // ── B. Render Interactive Glowing Sparks ──
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const s = sparks[i]
+        s.life++
+        s.x += s.vx
+        s.y += s.vy
+        s.alpha = (1 - s.life / s.maxLife) * 0.8
+
+        if (s.life >= s.maxLife) {
+          sparks.splice(i, 1)
+          continue
         }
 
-        // Draw connections
-        for (let j = i + 1; j < count; j++) {
-          const n2 = nodes[j]
-          const dx = n1.x - n2.x
-          const dy = n1.y - n2.y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-
-          if (dist < maxDistance) {
-            const lineAlpha = (1 - dist / maxDistance) * 0.18 * Math.min(n1.alpha, n2.alpha)
-            ctx.beginPath()
-            ctx.moveTo(n1.x, n1.y)
-            ctx.lineTo(n2.x, n2.y)
-            ctx.strokeStyle = `rgba(0, 245, 212, ${lineAlpha})`
-            ctx.lineWidth = 0.8
-            ctx.stroke()
-          }
-        }
-
-        // Draw glowing particle node
         ctx.beginPath()
-        ctx.arc(n1.x, n1.y, n1.radius, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(56, 189, 248, ${n1.alpha})`
-        ctx.shadowColor = '#00F5D4'
-        ctx.shadowBlur = 4
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2)
+        ctx.fillStyle = s.color
+        ctx.globalAlpha = s.alpha
+        ctx.shadowColor = s.color
+        ctx.shadowBlur = 6
         ctx.fill()
         ctx.shadowBlur = 0
+        ctx.globalAlpha = 1
       }
     }
 
@@ -240,26 +268,34 @@ export default function GlobalBackground() {
   }, [isTouch])
 
   return (
-    <div className="gb-root" aria-hidden="true">
-      {/* 1. Deep Obsidian Atmosphere Base */}
-      <div className="gb-deep-space" />
+    <div className="genz-bg-root" aria-hidden="true">
+      {/* 1. Deep Space Obsidian Base */}
+      <div className="genz-space-base" />
 
-      {/* 2. Interactive Cursor Spotlight */}
-      {!isTouch && <div ref={spotlightRef} className="gb-cursor-spotlight" />}
+      {/* 2. Liquid Neon Aurora Gradient Blobs */}
+      <div ref={aurora1Ref} className="genz-aurora genz-aurora--cyan" />
+      <div ref={aurora2Ref} className="genz-aurora genz-aurora--magenta" />
+      <div ref={aurora3Ref} className="genz-aurora genz-aurora--violet" />
 
-      {/* 3. Ambient Plasma Aurora Light Fields (Deep Z-Index) */}
-      <div ref={orb1Ref} className="gb-orb gb-orb--cyan" />
-      <div ref={orb2Ref} className="gb-orb gb-orb--purple" />
-      <div ref={orb3Ref} className="gb-orb gb-orb--indigo" />
+      {/* 3. Interactive Kinetic Wave Matrix Canvas */}
+      <canvas ref={canvasRef} className="genz-wave-canvas" />
 
-      {/* 4. Fine Matrix Perspective Grid */}
-      <div ref={gridRef} className="gb-grid-mesh" />
+      {/* 4. Retro-Futuristic Cyber HUD Accents */}
+      <div ref={hudContainerRef} className="genz-hud-accents">
+        <div className="genz-hud-float genz-hud-tl">
+          <span className="genz-hud-bracket">┌</span>
+          <span className="genz-hud-text">SYS.ONLINE // 2026</span>
+        </div>
+        <div className="genz-hud-float genz-hud-tr">
+          <span className="genz-hud-text">EST. 2019 · GLOBAL</span>
+          <span className="genz-hud-bracket">┐</span>
+        </div>
+        <div className="genz-hud-float genz-hud-crosshair-1">+</div>
+        <div className="genz-hud-float genz-hud-crosshair-2">+</div>
+      </div>
 
-      {/* 5. Interactive GSAP Canvas Constellation */}
-      <canvas ref={canvasRef} className="gb-interactive-canvas" />
-
-      {/* 6. Non-Destructive Dark Vignette (Guarantees Content Readability) */}
-      <div className="gb-contrast-mask" />
+      {/* 5. Contrast Mask to guarantee 100% text clarity & zero overwrite */}
+      <div className="genz-vignette-mask" />
     </div>
   )
 }

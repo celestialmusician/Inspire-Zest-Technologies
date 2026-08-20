@@ -1,111 +1,166 @@
 /* ═════════════════════════════════════════════════════════════════
-   INTERACTIVE GSAP ATMOSPHERIC BACKGROUND (NON-DESTRUCTIVE LAYER)
+   GEN-Z EYE-CATCHY INTERACTIVE GSAP BACKGROUND (NON-DESTRUCTIVE)
 ═════════════════════════════════════════════════════════════════ */
 
-.gb-root {
+.genz-bg-root {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none !important;
   user-select: none;
   overflow: hidden;
-  background-color: #030305;
+  background-color: #030306;
 }
 
-/* ── 1. Deep Space Obsidian Base ── */
-.gb-deep-space {
+/* ── 1. Deep Space Obsidian Base with subtle cyber glow ── */
+.genz-space-base {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 30%, #070913 0%, #030305 70%, #000000 100%);
+  background: 
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(18, 24, 48, 0.4) 0%, transparent 80%),
+    radial-gradient(ellipse 60% 50% at 50% 110%, rgba(26, 12, 42, 0.45) 0%, transparent 80%),
+    #030306;
   z-index: 1;
 }
 
-/* ── 2. Interactive Cursor Spotlight ── */
-.gb-cursor-spotlight {
+/* ── 2. Liquid Neon Aurora Gradient Blobs ── */
+.genz-aurora {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 600px;
-  height: 600px;
-  margin-top: -300px;
-  margin-left: -300px;
-  border-radius: 50%;
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  filter: blur(130px);
+  will-change: transform;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.55;
+}
+
+.genz-aurora--cyan {
+  top: 12%;
+  left: 18%;
+  width: 720px;
+  height: 720px;
   background: radial-gradient(
     circle,
-    rgba(56, 189, 248, 0.12) 0%,
-    rgba(0, 245, 212, 0.06) 40%,
+    rgba(0, 245, 212, 0.28) 0%,
+    rgba(56, 189, 248, 0.12) 45%,
     transparent 70%
   );
-  filter: blur(40px);
-  pointer-events: none;
-  z-index: 2;
-  will-change: transform;
 }
 
-/* ── 3. Ambient Plasma Aurora Light Orbs ── */
-.gb-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(140px);
-  will-change: transform;
-  pointer-events: none;
-  z-index: 2;
-  opacity: 0.45;
+.genz-aurora--magenta {
+  top: 52%;
+  right: 14%;
+  width: 780px;
+  height: 780px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 46, 147, 0.22) 0%,
+    rgba(191, 90, 242, 0.1) 45%,
+    transparent 70%
+  );
 }
 
-.gb-orb--cyan {
-  top: 15%;
-  left: 15%;
+.genz-aurora--violet {
+  top: 82%;
+  left: 28%;
   width: 700px;
   height: 700px;
-  background: radial-gradient(circle, rgba(0, 245, 212, 0.22) 0%, rgba(41, 151, 255, 0.08) 55%, transparent 75%);
+  background: radial-gradient(
+    circle,
+    rgba(124, 58, 237, 0.24) 0%,
+    rgba(41, 151, 255, 0.08) 50%,
+    transparent 70%
+  );
 }
 
-.gb-orb--purple {
-  top: 50%;
-  right: 12%;
-  width: 750px;
-  height: 750px;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.18) 0%, rgba(99, 102, 241, 0.06) 55%, transparent 75%);
-}
-
-.gb-orb--indigo {
-  top: 80%;
-  left: 30%;
-  width: 650px;
-  height: 650px;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, rgba(0, 245, 212, 0.05) 55%, transparent 75%);
-}
-
-/* ── 4. Fine Matrix Perspective Grid ── */
-.gb-grid-mesh {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  background-size: 60px 60px;
-  z-index: 3;
-  opacity: 0.6;
-  mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 35%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 35%, transparent 100%);
-}
-
-/* ── 5. Interactive GSAP Canvas ── */
-.gb-interactive-canvas {
+/* ── 3. Interactive Kinetic Wave Matrix Canvas ── */
+.genz-wave-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 4;
-  opacity: 0.75;
+  z-index: 3;
+  opacity: 0.85;
 }
 
-/* ── 6. Contrast Mask (Guarantees Content Readability) ── */
-.gb-contrast-mask {
+/* ── 4. Retro-Futuristic Cyber HUD Accents ── */
+.genz-hud-accents {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.75) 100%);
+  z-index: 4;
+  pointer-events: none;
+  font-family: var(--font-display);
+}
+
+.genz-hud-float {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  will-change: transform;
+}
+
+.genz-hud-tl {
+  top: 6.5rem;
+  left: 2.5rem;
+}
+
+.genz-hud-tr {
+  top: 6.5rem;
+  right: 2.5rem;
+}
+
+.genz-hud-crosshair-1 {
+  top: 42%;
+  left: 5%;
+  font-size: 1.1rem;
+  color: rgba(0, 245, 212, 0.25);
+  font-family: monospace;
+}
+
+.genz-hud-crosshair-2 {
+  top: 78%;
+  right: 6%;
+  font-size: 1.1rem;
+  color: rgba(191, 90, 242, 0.25);
+  font-family: monospace;
+}
+
+.genz-hud-bracket {
+  color: #00F5D4;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.genz-hud-text {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* ── 5. Contrast Mask to guarantee 100% text clarity & zero overwrite ── */
+.genz-vignette-mask {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    transparent 35%,
+    rgba(3, 3, 6, 0.6) 75%,
+    rgba(3, 3, 6, 0.95) 100%
+  );
   z-index: 5;
   pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .genz-hud-accents {
+    display: none;
+  }
+  .genz-aurora {
+    filter: blur(90px);
+    opacity: 0.45;
+  }
 }
