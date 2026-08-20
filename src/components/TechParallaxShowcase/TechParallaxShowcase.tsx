@@ -32,8 +32,9 @@ export default function TechParallaxShowcase() {
             trigger: container,
             start: 'top bottom',
             end: 'bottom top',
-            scrub: true,
+            scrub: 1.2,
           },
+
         }
       )
 

@@ -18,20 +18,20 @@ export function useLenis() {
     const isTouch =
       typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
 
-    // Cinematic camera-dolly smooth scroll physics with high-framerate momentum interpolation
+    // Apple / Awwwards-grade fluid inertia smooth scroll physics
     const lenis = new Lenis({
-      duration: isTouch ? 1.05 : 1.25,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lerp: isTouch ? 0.088 : 0.072,
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 0.92,
-      touchMultiplier: 1.25,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.15,
       syncTouch: true,
-      syncTouchLerp: 0.08,
-      touchInertiaMultiplier: 35,
+      syncTouchLerp: 0.085,
+      touchInertiaMultiplier: 28,
       infinite: false,
     })
+
 
     lenisRef.current = lenis
     lenisInstance = lenis
