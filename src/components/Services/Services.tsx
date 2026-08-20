@@ -116,9 +116,11 @@ export const TextStaggerHover = React.forwardRef<
   React.HTMLAttributes<HTMLSpanElement> & TextStaggerHoverProps
 >(({ text, index, accentColor, className, ...props }, ref) => {
   const { activeSlide, changeSlide } = useHoverSliderContext()
-  const { characters } = splitText(text)
+  const words = text.split(' ')
   const isActive = activeSlide === index
   const handleMouse = () => changeSlide(index)
+
+  let globalCharIndex = 0
 
   return (
     <span
@@ -128,42 +130,54 @@ export const TextStaggerHover = React.forwardRef<
       onMouseEnter={handleMouse}
       onClick={handleMouse}
     >
-      {characters.map((char, charIndex) => (
-        <span key={`${char}-${charIndex}`} className="relative inline-block overflow-hidden">
-          <MotionConfig
-            transition={{
-              delay: charIndex * 0.014,
-              duration: 0.38,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-          >
-            <motion.span
-              className="inline-block opacity-40 transition-opacity duration-300"
-              initial={{ y: '0%' }}
-              animate={isActive ? { y: '-110%', opacity: 0 } : { y: '0%', opacity: 0.45 }}
-            >
-              {char}
-              {char === ' ' && charIndex < characters.length - 1 && <>&nbsp;</>}
-            </motion.span>
+      {words.map((word, wordIndex) => {
+        const chars = word.split('')
+        return (
+          <span key={`word-${wordIndex}`} className="inline-block whitespace-nowrap">
+            {chars.map((char) => {
+              const charIndex = globalCharIndex++
+              return (
+                <span key={`${char}-${charIndex}`} className="relative inline-block overflow-hidden">
+                  <MotionConfig
+                    transition={{
+                      delay: charIndex * 0.014,
+                      duration: 0.38,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                  >
+                    <motion.span
+                      className="inline-block opacity-40 transition-opacity duration-300"
+                      initial={{ y: '0%' }}
+                      animate={isActive ? { y: '-110%', opacity: 0 } : { y: '0%', opacity: 0.45 }}
+                    >
+                      {char}
+                    </motion.span>
 
-            <motion.span
-              className="absolute left-0 top-0 inline-block font-bold"
-              style={{
-                color: isActive ? accentColor || 'var(--primary)' : 'inherit',
-              }}
-              initial={{ y: '110%' }}
-              animate={isActive ? { y: '0%' } : { y: '110%' }}
-            >
-              {char}
-              {char === ' ' && charIndex < characters.length - 1 && <>&nbsp;</>}
-            </motion.span>
-          </MotionConfig>
-        </span>
-      ))}
+                    <motion.span
+                      className="absolute left-0 top-0 inline-block font-bold"
+                      style={{
+                        color: isActive ? accentColor || 'var(--primary)' : 'inherit',
+                      }}
+                      initial={{ y: '110%' }}
+                      animate={isActive ? { y: '0%' } : { y: '110%' }}
+                    >
+                      {char}
+                    </motion.span>
+                  </MotionConfig>
+                </span>
+              )
+            })}
+            {wordIndex < words.length - 1 && (
+              <span className="inline-block">&nbsp;</span>
+            )}
+          </span>
+        )
+      })}
     </span>
   )
 })
 TextStaggerHover.displayName = 'TextStaggerHover'
+
 
 export const clipPathVariants = {
   visible: {
