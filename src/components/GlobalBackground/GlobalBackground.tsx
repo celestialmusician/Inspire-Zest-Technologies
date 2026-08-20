@@ -1,283 +1,265 @@
-import { useRef, useMemo, useEffect } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import * as THREE from 'three'
+import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useWebGLCapability } from '@/hooks/useWebGLCapability'
 import { useIsTouch, usePrefersReducedMotion } from '@/hooks/useMediaQuery'
 import './GlobalBackground.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// ── Diagonal Marquee items ──────────────────────────────────────────────────
-const MARQUEE_ROWS: string[][] = [
-  ['Web Development', '⬡', 'Mobile Apps', '◈', 'UI / UX Design', '⬡', 'Cloud Solutions', '◈', 'AI & Machine Learning', '⬡', 'Cybersecurity', '◈'],
-  ['Digital Marketing', '⬡', 'E-Commerce', '◈', 'DevOps', '⬡', 'Data Analytics', '◈', 'API Integration', '⬡', 'SaaS Products', '◈'],
-  ['React', '⬡', 'Node.js', '◈', 'Next.js', '⬡', 'TypeScript', '◈', 'Python', '⬡', 'AWS', '◈', 'Docker', '⬡', 'GraphQL', '◈'],
-  ['Inspire Zest', '⬡', 'Innovation', '◈', 'Strategy', '⬡', 'Growth', '◈', 'Design Systems', '⬡', 'Performance', '◈'],
-  ['SEO Optimisation', '⬡', 'Branding', '◈', 'Content Strategy', '⬡', 'IoT Solutions', '⬡', 'Blockchain', '◈', 'AR / VR', '⬡'],
-  ['Flutter', '⬡', 'Swift', '◈', 'Kotlin', '⬡', 'Figma', '◈', 'Tailwind', '⬡', 'PostgreSQL', '◈', 'Redis', '⬡'],
-  ['Web Development', '⬡', 'Mobile Apps', '◈', 'UI / UX Design', '⬡', 'Cloud Solutions', '◈', 'AI & Machine Learning', '⬡', 'Cybersecurity', '◈'],
-  ['Digital Marketing', '⬡', 'E-Commerce', '◈', 'DevOps', '⬡', 'Data Analytics', '◈', 'API Integration', '⬡', 'SaaS Products', '◈'],
-]
-
-function DiagonalMarquee() {
-  return (
-    <div className="gb-marquee-wrap" aria-hidden="true">
-      <div className="gb-marquee-skew">
-        {MARQUEE_ROWS.map((items, rowIdx) => {
-          const reversed = rowIdx % 2 === 1
-          // Duplicate items for seamless infinite loop
-          const track = [...items, ...items, ...items]
-          return (
-            <div key={rowIdx} className={`gb-marquee-row ${reversed ? 'gb-marquee-row--rev' : ''}`}>
-              <div className="gb-marquee-track">
-                {track.map((label, i) => (
-                  <span
-                    key={i}
-                    className={label === '⬡' || label === '◈' ? 'gb-marquee-sep' : 'gb-marquee-pill'}
-                  >
-                    {label}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
-// GLSL Shader for interactive quantum particles with top-to-bottom motion
-const vertexShader = `
-  attribute float aSize;
-  attribute float aAlpha;
-  attribute float aSpeed;
-  uniform float uTime;
-  uniform float uScrollProgress;
-  uniform vec2 uMouse;
-  varying float vAlpha;
-  varying vec3 vPos;
-
-  void main() {
-    vec3 pos = position;
-
-    float fallOffset = mod(uTime * aSpeed * 0.4 + uScrollProgress * 6.0, 16.0);
-    pos.y = pos.y - fallOffset;
-    if (pos.y < -8.0) {
-      pos.y += 16.0;
-    }
-
-    pos.x += sin(uTime * 0.4 + pos.y * 0.5) * 0.15;
-    pos.z += cos(uTime * 0.3 + pos.x * 0.5) * 0.15;
-
-    vec2 m = uMouse * 4.0;
-    float dist = distance(pos.xy, m);
-    if (dist < 2.0) {
-      float force = (2.0 - dist) / 2.0;
-      vec2 dir = normalize(pos.xy - m);
-      pos.xy += dir * force * 0.4;
-      pos.z += force * 0.6;
-    }
-
-    vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
-    gl_PointSize = aSize * (35.0 / -mvPos.z);
-    gl_Position = projectionMatrix * mvPos;
-
-    vAlpha = aAlpha;
-    vPos = pos;
-  }
-`
-
-const fragmentShader = `
-  varying float vAlpha;
-  varying vec3 vPos;
-  void main() {
-    vec2 uv = gl_PointCoord - 0.5;
-    float dist = length(uv);
-    if (dist > 0.5) discard;
-
-    float alpha = smoothstep(0.5, 0.0, dist) * vAlpha;
-
-    vec3 cyan    = vec3(0.0, 0.94, 1.0);
-    vec3 violet  = vec3(0.75, 0.35, 0.95);
-    vec3 emerald = vec3(0.18, 0.82, 0.34);
-    
-    vec3 col = mix(cyan, violet, sin(vPos.y * 0.5 + vPos.x) * 0.5 + 0.5);
-    col = mix(col, emerald, cos(vPos.z * 0.8) * 0.3 + 0.3);
-
-    gl_FragColor = vec4(col, alpha * 0.65);
-  }
-`
-
-function BackgroundParticles({ count }: { count: number }) {
-  const pointsRef = useRef<THREE.Points>(null)
-  const matRef    = useRef<THREE.ShaderMaterial>(null)
-  const scrollRef = useRef(0)
-
-  const { positions, sizes, alphas, speeds } = useMemo(() => {
-    const pos = new Float32Array(count * 3)
-    const sz  = new Float32Array(count)
-    const al  = new Float32Array(count)
-    const sp  = new Float32Array(count)
-
-    for (let i = 0; i < count; i++) {
-      pos[i * 3]     = (Math.random() - 0.5) * 16
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 16
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 10
-      sz[i] = Math.random() * 1.8 + 0.6
-      al[i] = Math.random() * 0.7 + 0.3
-      sp[i] = Math.random() * 1.5 + 0.5
-    }
-
-    return { positions: pos, sizes: sz, alphas: al, speeds: sp }
-  }, [count])
-
-  const geometry = useMemo(() => {
-    const geo = new THREE.BufferGeometry()
-    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-    geo.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1))
-    geo.setAttribute('aAlpha', new THREE.BufferAttribute(alphas, 1))
-    geo.setAttribute('aSpeed', new THREE.BufferAttribute(speeds, 1))
-    return geo
-  }, [positions, sizes, alphas, speeds])
-
-  const shaderMat = useMemo(
-    () =>
-      new THREE.ShaderMaterial({
-        vertexShader,
-        fragmentShader,
-        uniforms: {
-          uTime: { value: 0 },
-          uScrollProgress: { value: 0 },
-          uMouse: { value: new THREE.Vector2(0, 0) },
-        },
-        transparent: true,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-      }),
-    []
-  )
-
-  useEffect(() => {
-    const onScroll = () => {
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
-      if (maxScroll > 0) scrollRef.current = window.scrollY / maxScroll
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
-
-  useFrame((state, delta) => {
-    if (matRef.current) {
-      matRef.current.uniforms.uTime.value += delta
-      matRef.current.uniforms.uScrollProgress.value = scrollRef.current
-      matRef.current.uniforms.uMouse.value.set(state.mouse.x, state.mouse.y)
-    }
-    if (pointsRef.current) {
-      pointsRef.current.rotation.y = state.clock.elapsedTime * 0.015
-    }
-  })
-
-  return (
-    <points ref={pointsRef} geometry={geometry}>
-      <primitive object={shaderMat} ref={matRef} attach="material" />
-    </points>
-  )
-}
-
 export default function GlobalBackground() {
-  const { supportsWebGL, particleCount } = useWebGLCapability()
   const isTouch = useIsTouch()
   const reduced = usePrefersReducedMotion()
 
-  const orbCyanRef    = useRef<HTMLDivElement>(null)
-  const orbPurpleRef  = useRef<HTMLDivElement>(null)
-  const orbBlueRef    = useRef<HTMLDivElement>(null)
-  const gridTrackRef  = useRef<HTMLDivElement>(null)
-  const laserBeamsRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const spotlightRef = useRef<HTMLDivElement>(null)
+  const orb1Ref = useRef<HTMLDivElement>(null)
+  const orb2Ref = useRef<HTMLDivElement>(null)
+  const orb3Ref = useRef<HTMLDivElement>(null)
+  const gridRef = useRef<HTMLDivElement>(null)
 
+  // 1. GSAP Interactive Cursor Tracking Spotlight & Floating Orbs
   useEffect(() => {
     if (reduced) return
 
+    const spotlight = spotlightRef.current
+    const orb1 = orb1Ref.current
+    const orb2 = orb2Ref.current
+    const orb3 = orb3Ref.current
+
     const ctx = gsap.context(() => {
-      gsap.to(orbCyanRef.current, {
-        y: '120vh', x: '30vw', scale: 1.3, ease: 'none',
-        scrollTrigger: { start: 'top top', end: 'bottom bottom', scrub: 1.5 },
-      })
-      gsap.to(orbPurpleRef.current, {
-        y: '-80vh', x: '-25vw', scale: 1.4, ease: 'none',
-        scrollTrigger: { start: 'top top', end: 'bottom bottom', scrub: 2 },
-      })
-      gsap.to(orbBlueRef.current, {
-        y: '60vh', scale: 1.2, ease: 'none',
-        scrollTrigger: { start: 'top top', end: 'bottom bottom', scrub: 1.8 },
-      })
-      if (gridTrackRef.current) {
-        gsap.to(gridTrackRef.current, {
-          backgroundPositionY: '800px', ease: 'none',
-          scrollTrigger: { start: 'top top', end: 'bottom bottom', scrub: true },
+      // Ambient Organic Orb Breathing Timelines
+      if (orb1 && orb2 && orb3) {
+        gsap.to(orb1, {
+          x: '+=80',
+          y: '-=60',
+          scale: 1.15,
+          duration: 12,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+        })
+        gsap.to(orb2, {
+          x: '-=90',
+          y: '+=80',
+          scale: 1.2,
+          duration: 15,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+          delay: 1.5,
+        })
+        gsap.to(orb3, {
+          x: '+=60',
+          y: '+=70',
+          scale: 1.1,
+          duration: 14,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+          delay: 3,
+        })
+      }
+
+      // Parallax scroll reaction for background light fields
+      if (orb1) {
+        gsap.to(orb1, {
+          y: '80vh',
+          ease: 'none',
+          scrollTrigger: {
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 1.5,
+          },
+        })
+      }
+      if (orb2) {
+        gsap.to(orb2, {
+          y: '-60vh',
+          ease: 'none',
+          scrollTrigger: {
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 2,
+          },
+        })
+      }
+      if (orb3) {
+        gsap.to(orb3, {
+          y: '40vh',
+          ease: 'none',
+          scrollTrigger: {
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 1.8,
+          },
         })
       }
     })
 
-    return () => ctx.revert()
-  }, [reduced])
+    // Mouse Tracking QuickTo for silky smooth spotlight
+    if (!isTouch && spotlight) {
+      const setX = gsap.quickTo(spotlight, 'x', { duration: 1.2, ease: 'power2.out' })
+      const setY = gsap.quickTo(spotlight, 'y', { duration: 1.2, ease: 'power2.out' })
 
-  useEffect(() => {
-    if (isTouch || reduced) return
+      const handleMouseMove = (e: MouseEvent) => {
+        setX(e.clientX)
+        setY(e.clientY)
+      }
 
-    const xCyan   = gsap.quickTo(orbCyanRef.current, 'x', { duration: 1.6, ease: 'power2.out' })
-    const yCyan   = gsap.quickTo(orbCyanRef.current, 'y', { duration: 1.6, ease: 'power2.out' })
-    const xPurple = gsap.quickTo(orbPurpleRef.current, 'x', { duration: 2.0, ease: 'power2.out' })
-    const yPurple = gsap.quickTo(orbPurpleRef.current, 'y', { duration: 2.0, ease: 'power2.out' })
-
-    const handleMouse = (e: MouseEvent) => {
-      const x = e.clientX - window.innerWidth / 2
-      const y = e.clientY - window.innerHeight / 2
-      xCyan(x * 0.2)
-      yCyan(y * 0.2)
-      xPurple(-x * 0.15)
-      yPurple(-y * 0.15)
+      window.addEventListener('mousemove', handleMouseMove, { passive: true })
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove)
+        ctx.revert()
+      }
     }
 
-    window.addEventListener('mousemove', handleMouse)
-    return () => window.removeEventListener('mousemove', handleMouse)
+    return () => ctx.revert()
   }, [isTouch, reduced])
+
+  // 2. Interactive Constellation & Luminous Particle Grid Canvas
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    let width = (canvas.width = window.innerWidth)
+    let height = (canvas.height = window.innerHeight)
+
+    const handleResize = () => {
+      if (!canvas) return
+      width = canvas.width = window.innerWidth
+      height = canvas.height = window.innerHeight
+    }
+    window.addEventListener('resize', handleResize)
+
+    // Particle nodes configuration
+    const count = isTouch ? 35 : 75
+    interface Node {
+      x: number
+      y: number
+      vx: number
+      vy: number
+      radius: number
+      alpha: number
+      baseAlpha: number
+    }
+
+    const nodes: Node[] = []
+    for (let i = 0; i < count; i++) {
+      const baseAlpha = Math.random() * 0.45 + 0.15
+      nodes.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        radius: Math.random() * 1.8 + 0.6,
+        alpha: baseAlpha,
+        baseAlpha,
+      })
+    }
+
+    let mouseX = -1000
+    let mouseY = -1000
+    const onMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX
+      mouseY = e.clientY
+    }
+    if (!isTouch) {
+      window.addEventListener('mousemove', onMouseMove, { passive: true })
+    }
+
+    // GSAP Ticker Render Loop (Ultra Smooth 60fps/120fps)
+    const render = () => {
+      ctx.clearRect(0, 0, width, height)
+
+      // Draw interactive constellation links
+      const maxDistance = isTouch ? 90 : 130
+      for (let i = 0; i < count; i++) {
+        const n1 = nodes[i]
+
+        // Move nodes
+        n1.x += n1.vx
+        n1.y += n1.vy
+
+        // Bounce on boundaries
+        if (n1.x < 0 || n1.x > width) n1.vx *= -1
+        if (n1.y < 0 || n1.y > height) n1.vy *= -1
+
+        // Mouse proximity reaction
+        if (!isTouch) {
+          const dx = mouseX - n1.x
+          const dy = mouseY - n1.y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          if (dist < 150) {
+            const force = (150 - dist) / 150
+            n1.alpha = n1.baseAlpha + force * 0.6
+          } else {
+            n1.alpha = n1.baseAlpha
+          }
+        }
+
+        // Draw connections
+        for (let j = i + 1; j < count; j++) {
+          const n2 = nodes[j]
+          const dx = n1.x - n2.x
+          const dy = n1.y - n2.y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+
+          if (dist < maxDistance) {
+            const lineAlpha = (1 - dist / maxDistance) * 0.18 * Math.min(n1.alpha, n2.alpha)
+            ctx.beginPath()
+            ctx.moveTo(n1.x, n1.y)
+            ctx.lineTo(n2.x, n2.y)
+            ctx.strokeStyle = `rgba(0, 245, 212, ${lineAlpha})`
+            ctx.lineWidth = 0.8
+            ctx.stroke()
+          }
+        }
+
+        // Draw glowing particle node
+        ctx.beginPath()
+        ctx.arc(n1.x, n1.y, n1.radius, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(56, 189, 248, ${n1.alpha})`
+        ctx.shadowColor = '#00F5D4'
+        ctx.shadowBlur = 4
+        ctx.fill()
+        ctx.shadowBlur = 0
+      }
+    }
+
+    gsap.ticker.add(render)
+
+    return () => {
+      gsap.ticker.remove(render)
+      window.removeEventListener('resize', handleResize)
+      if (!isTouch) {
+        window.removeEventListener('mousemove', onMouseMove)
+      }
+    }
+  }, [isTouch])
 
   return (
     <div className="gb-root" aria-hidden="true">
+      {/* 1. Deep Obsidian Atmosphere Base */}
+      <div className="gb-deep-space" />
 
-      {/* 0. Diagonal Marquee Carousel — base background layer */}
-      {!reduced && <DiagonalMarquee />}
+      {/* 2. Interactive Cursor Spotlight */}
+      {!isTouch && <div ref={spotlightRef} className="gb-cursor-spotlight" />}
 
-      {/* 1. Three.js interactive 3D WebGL particle rainfall */}
-      {supportsWebGL && !reduced && (
-        <div className="gb-canvas">
-          <Canvas camera={{ position: [0, 0, 5], fov: 60 }} dpr={[1, 1.5]}>
-            <BackgroundParticles count={Math.min(particleCount, 1600)} />
-          </Canvas>
-        </div>
-      )}
+      {/* 3. Ambient Plasma Aurora Light Fields (Deep Z-Index) */}
+      <div ref={orb1Ref} className="gb-orb gb-orb--cyan" />
+      <div ref={orb2Ref} className="gb-orb gb-orb--purple" />
+      <div ref={orb3Ref} className="gb-orb gb-orb--indigo" />
 
-      {/* 2. Floating Chromatic Aurora Light Orbs */}
-      <div ref={orbCyanRef} className="gb-orb gb-orb--cyan" />
-      <div ref={orbPurpleRef} className="gb-orb gb-orb--purple" />
-      <div ref={orbBlueRef} className="gb-orb gb-orb--blue" />
+      {/* 4. Fine Matrix Perspective Grid */}
+      <div ref={gridRef} className="gb-grid-mesh" />
 
-      {/* 3. Top-to-Bottom Glowing Laser Beams */}
-      <div ref={laserBeamsRef} className="gb-laser-beams">
-        <div className="gb-beam gb-beam--1" />
-        <div className="gb-beam gb-beam--2" />
-        <div className="gb-beam gb-beam--3" />
-      </div>
+      {/* 5. Interactive GSAP Canvas Constellation */}
+      <canvas ref={canvasRef} className="gb-interactive-canvas" />
 
-      {/* 4. Perspective Cybernetic Grid Mesh with Scroll Motion */}
-      <div ref={gridTrackRef} className="gb-grid-overlay" />
-
-      {/* 5. Vignette & Depth Mask */}
-      <div className="gb-vignette" />
+      {/* 6. Non-Destructive Dark Vignette (Guarantees Content Readability) */}
+      <div className="gb-contrast-mask" />
     </div>
   )
 }

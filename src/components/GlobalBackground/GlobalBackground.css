@@ -1,250 +1,111 @@
 /* ═════════════════════════════════════════════════════════════════
-   GLOBAL ANIMATED CYBERNETIC BACKGROUND (LIGHT & DARK DYNAMIC)
+   INTERACTIVE GSAP ATMOSPHERIC BACKGROUND (NON-DESTRUCTIVE LAYER)
 ═════════════════════════════════════════════════════════════════ */
 
 .gb-root {
   position: fixed;
   inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  overflow: hidden;
-  background-color: var(--bg);
-}
-
-/* ── 0. Diagonal Marquee Carousel ── */
-.gb-marquee-wrap {
-  position: absolute;
-  inset: -60% -40%;          /* oversized so rotation never reveals edges */
   z-index: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.gb-marquee-skew {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  transform: rotate(-18deg) translateY(-5%);
-  transform-origin: center center;
-  opacity: 0.13;             /* very subtle — sits behind everything */
-  filter: blur(0.3px);
-}
-
-[data-theme="light"] .gb-marquee-skew {
-  opacity: 0.08;
-}
-
-.gb-marquee-row {
-  width: 100%;
+  pointer-events: none !important;
+  user-select: none;
   overflow: hidden;
-  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  background-color: #030305;
 }
 
-.gb-marquee-track {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: max-content;
-  /* forward direction */
-  animation: marquee-fwd 32s linear infinite;
+/* ── 1. Deep Space Obsidian Base ── */
+.gb-deep-space {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 30%, #070913 0%, #030305 70%, #000000 100%);
+  z-index: 1;
+}
+
+/* ── 2. Interactive Cursor Spotlight ── */
+.gb-cursor-spotlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 600px;
+  height: 600px;
+  margin-top: -300px;
+  margin-left: -300px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(56, 189, 248, 0.12) 0%,
+    rgba(0, 245, 212, 0.06) 40%,
+    transparent 70%
+  );
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 2;
   will-change: transform;
 }
 
-.gb-marquee-row--rev .gb-marquee-track {
-  animation-name: marquee-rev;
-  animation-duration: 28s;
-}
-
-/* vary speeds per row */
-.gb-marquee-row:nth-child(1)  .gb-marquee-track { animation-duration: 34s; }
-.gb-marquee-row:nth-child(2)  .gb-marquee-track { animation-duration: 26s; }
-.gb-marquee-row:nth-child(3)  .gb-marquee-track { animation-duration: 38s; }
-.gb-marquee-row:nth-child(4)  .gb-marquee-track { animation-duration: 30s; }
-.gb-marquee-row:nth-child(5)  .gb-marquee-track { animation-duration: 36s; }
-.gb-marquee-row:nth-child(6)  .gb-marquee-track { animation-duration: 24s; }
-.gb-marquee-row:nth-child(7)  .gb-marquee-track { animation-duration: 40s; }
-.gb-marquee-row:nth-child(8)  .gb-marquee-track { animation-duration: 28s; }
-
-@keyframes marquee-fwd {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-33.333%); }  /* shift by 1/3 since track = items×3 */
-}
-
-@keyframes marquee-rev {
-  0%   { transform: translateX(-33.333%); }
-  100% { transform: translateX(0); }
-}
-
-.gb-marquee-pill {
-  flex-shrink: 0;
-  white-space: nowrap;
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: var(--primary);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 5px 14px;
-  background: var(--bg-card);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
-.gb-marquee-sep {
-  flex-shrink: 0;
-  font-size: 0.55rem;
-  color: var(--accent-cyan);
-  opacity: 0.7;
-  letter-spacing: 0;
-}
-
-/* ── 1. WebGL Canvas Particle Layer ── */
-.gb-canvas {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  opacity: 0.85;
-}
-
-.gb-canvas canvas {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* ── 2. Chromatic Aurora Light Orbs ── */
+/* ── 3. Ambient Plasma Aurora Light Orbs ── */
 .gb-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(120px);
+  filter: blur(140px);
   will-change: transform;
   pointer-events: none;
-  z-index: 1;
-  opacity: 0.6;
-}
-
-.gb-orb--cyan {
-  top: 10%;
-  left: 20%;
-  width: 750px;
-  height: 750px;
-  background: radial-gradient(circle, rgba(0, 245, 212, 0.22) 0%, rgba(41, 151, 255, 0.08) 50%, transparent 70%);
-}
-
-.gb-orb--purple {
-  top: 55%;
-  right: 15%;
-  width: 850px;
-  height: 850px;
-  background: radial-gradient(circle, rgba(191, 90, 242, 0.2) 0%, rgba(124, 58, 237, 0.06) 50%, transparent 70%);
-}
-
-.gb-orb--blue {
-  top: 85%;
-  left: 35%;
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(circle, rgba(41, 151, 255, 0.18) 0%, rgba(0, 245, 212, 0.05) 50%, transparent 70%);
-}
-
-[data-theme="light"] .gb-orb {
-  opacity: 0.4;
-  filter: blur(100px);
-}
-
-[data-theme="light"] .gb-orb--cyan {
-  background: radial-gradient(circle, rgba(0, 113, 227, 0.14) 0%, transparent 70%);
-}
-
-[data-theme="light"] .gb-orb--purple {
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
-}
-
-[data-theme="light"] .gb-orb--blue {
-  background: radial-gradient(circle, rgba(2, 132, 199, 0.12) 0%, transparent 70%);
-}
-
-/* ── 3. Top-to-Bottom Glowing Laser Beams ── */
-.gb-laser-beams {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.gb-beam {
-  position: absolute;
-  width: 1px;
-  height: 100vh;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(41, 151, 255, 0.4) 30%,
-    rgba(0, 245, 212, 0.8) 50%,
-    rgba(191, 90, 242, 0.4) 70%,
-    transparent 100%
-  );
-  box-shadow: 0 0 12px rgba(0, 245, 212, 0.5);
-  animation: laserStream 7s infinite linear;
+  z-index: 2;
   opacity: 0.45;
 }
 
-.gb-beam--1 {
+.gb-orb--cyan {
+  top: 15%;
   left: 15%;
-  animation-duration: 6s;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(0, 245, 212, 0.22) 0%, rgba(41, 151, 255, 0.08) 55%, transparent 75%);
 }
 
-.gb-beam--2 {
-  left: 50%;
-  animation-duration: 9s;
-  animation-delay: 2.5s;
+.gb-orb--purple {
+  top: 50%;
+  right: 12%;
+  width: 750px;
+  height: 750px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.18) 0%, rgba(99, 102, 241, 0.06) 55%, transparent 75%);
 }
 
-.gb-beam--3 {
-  right: 18%;
-  animation-duration: 7.5s;
-  animation-delay: 4.5s;
+.gb-orb--indigo {
+  top: 80%;
+  left: 30%;
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, rgba(0, 245, 212, 0.05) 55%, transparent 75%);
 }
 
-@keyframes laserStream {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(100%);
-  }
-}
-
-/* ── 4. Perspective Cybernetic Grid Mesh with Scroll Motion ── */
-.gb-grid-overlay {
+/* ── 4. Fine Matrix Perspective Grid ── */
+.gb-grid-mesh {
   position: absolute;
   inset: 0;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 70px 70px;
-  z-index: 1;
-  opacity: 0.75;
-  mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black 40%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black 40%, transparent 100%);
-}
-
-[data-theme="light"] .gb-grid-overlay {
-  background-image: 
-    linear-gradient(to right, rgba(0, 0, 0, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.035) 1px, transparent 1px);
-}
-
-/* ── 5. Vignette ── */
-.gb-vignette {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 50%, transparent 50%, var(--bg) 100%);
+    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
   z-index: 3;
+  opacity: 0.6;
+  mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 35%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 35%, transparent 100%);
+}
+
+/* ── 5. Interactive GSAP Canvas ── */
+.gb-interactive-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  opacity: 0.75;
+}
+
+/* ── 6. Contrast Mask (Guarantees Content Readability) ── */
+.gb-contrast-mask {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.75) 100%);
+  z-index: 5;
   pointer-events: none;
 }
