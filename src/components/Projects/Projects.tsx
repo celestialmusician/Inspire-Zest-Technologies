@@ -54,15 +54,20 @@ export default function Projects() {
     })
 
     // Refresh triggers after assets/images settle
-    const t = setTimeout(() => {
-      ScrollTrigger.refresh()
-    }, 400)
+    const refreshST = () => ScrollTrigger.refresh()
+    window.addEventListener('load', refreshST)
+    window.addEventListener('resize', refreshST)
+
+    const t = setTimeout(refreshST, 500)
 
     return () => {
       clearTimeout(t)
+      window.removeEventListener('load', refreshST)
+      window.removeEventListener('resize', refreshST)
       mm.revert()
     }
   }, [])
+
 
 
   return (
