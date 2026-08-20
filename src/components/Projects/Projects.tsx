@@ -17,45 +17,53 @@ export default function Projects() {
     const track = trackRef.current
     if (!section || !track) return
 
-    const isMobile = window.innerWidth < 1024
+    const mm = gsap.matchMedia()
 
-    const ctx = gsap.context(() => {
-      if (!isMobile) {
-        const getScrollDistance = () => Math.max(0, track.scrollWidth - window.innerWidth)
+    // Desktop: Pinned horizontal scroll showcase
+    mm.add('(min-width: 1024px)', () => {
+      const getScrollDistance = () => Math.max(0, track.scrollWidth - window.innerWidth)
 
-        gsap.to(track, {
-          x: () => -getScrollDistance(),
-          ease: 'none',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top top',
-            end: () => `+=${getScrollDistance()}`,
-            scrub: true,
-            pin: true,
-            anticipatePin: 1,
-            pinSpacing: true,
-            invalidateOnRefresh: true,
-            fastScrollEnd: true,
-            preventOverlaps: true,
-            onUpdate: (self) => {
-              if (progressBarRef.current) {
-                progressBarRef.current.style.transform = `scaleX(${self.progress})`
-              }
-            },
+      const tween = gsap.to(track, {
+        x: () => -getScrollDistance(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: () => `+=${getScrollDistance()}`,
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+          pinSpacing: true,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            if (progressBarRef.current) {
+              progressBarRef.current.style.transform = `scaleX(${self.progress})`
+            }
           },
-        })
-      }
-    }, section)
+        },
+      })
 
-    // Ensure ScrollTrigger updates after images load
-    const handleResize = () => ScrollTrigger.refresh()
-    window.addEventListener('resize', handleResize)
+      return () => {
+        tween.kill()
+      }
+    })
+
+    // Mobile & Tablet: Native vertical scroll flow
+    mm.add('(max-width: 1023px)', () => {
+      gsap.set(track, { clearProps: 'all' })
+    })
+
+    // Refresh triggers after assets/images settle
+    const t = setTimeout(() => {
+      ScrollTrigger.refresh()
+    }, 400)
 
     return () => {
-      window.removeEventListener('resize', handleResize)
-      ctx.revert()
+      clearTimeout(t)
+      mm.revert()
     }
   }, [])
+
 
   return (
     <section

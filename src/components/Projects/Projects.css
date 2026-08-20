@@ -340,21 +340,31 @@
 
 @media (max-width: 1023px) {
   .apple-projects-section {
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
     padding: 5rem 1.5rem;
+  }
+  .apple-proj-progress {
+    display: none;
   }
   .apple-proj-track {
     flex-direction: column;
-    height: auto;
-    width: 100%;
+    height: auto !important;
+    width: 100% !important;
     padding: 0;
     gap: 3.5rem;
+    overflow: visible !important;
   }
   .apple-proj-intro,
   .apple-project-card,
   .apple-proj-outro {
     width: 100%;
-    height: auto;
-    max-height: none;
+    height: auto !important;
+    max-height: none !important;
+  }
+  .apple-project-card {
+    min-height: 540px;
   }
   .apple-card-glass-bottom {
     margin: 1rem;
@@ -369,3 +379,4 @@
     max-width: 100%;
   }
 }
+
