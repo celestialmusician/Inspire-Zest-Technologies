@@ -63,13 +63,9 @@ export default function MobileMenu({ open, links, onClose, onNavigate }: Props) 
       role="dialog"
       aria-label="Navigation menu"
     >
-      {/* Close */}
-      <button className="mm-close" onClick={onClose} aria-label="Close menu">
-        ✕
-      </button>
-
-      <nav>
+      <nav className="mm-nav">
         <ul ref={itemsRef} className="mm-list" role="list">
+
           {links.map((l, i) => (
             <li key={l.href} className="mm-item">
               <button
